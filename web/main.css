@@ -1,0 +1,65 @@
+body {
+    margin:0;
+}
+#homeBody {
+    overflow:hidden;
+    height:100vh;
+}
+#logo_container {
+    width:1000px;
+    margin:0 auto;
+    position:relative;
+    top:50%;
+    transform:translateY(-50%);
+    animation: logo_shrink 0.4s ease 1.3s forwards;
+}
+#logoBase {
+    animation:logo_reveal 0.4s ease 0.5s forwards;
+    transform:scaleX(0);
+}
+#logo {
+    animation:logo_left 0.4s ease 1.7s forwards;
+}
+#logo object {
+    position:absolute;
+}
+#paths {
+    margin-left:35px;
+    margin-top:5px;
+    position:absolute;
+}
+#wordmark{
+    position:relative;
+    animation:fade_in 0.4s ease 1.9s forwards;
+    opacity:0;
+}
+#wave {
+    width:200vw;
+    margin-left:-30vw;
+    margin-top:-5vw;
+    position:absolute;
+}
+#homepage_buttons {
+    display:flex;
+    width:65%;
+    height:50px;
+    margin:0 auto;
+    top:-150px;
+    position:relative;
+}
+@keyframes logo_reveal {
+    from{transform:scaleX(0);margin-left:-100px;margin-top:-25px;}
+    to{transform:scaleX(1);margin-left:0px;margin-top:0px;}
+}
+@keyframes logo_shrink {
+    from {transform:scale(1) translateY(-50%);top:50%;}
+    to {transform:scale(0.5) translateY(-50%);top:-5%;}
+}
+@keyframes logo_left {
+    from {margin-left:0px;}
+    to {margin-left:-285px;}
+}
+@keyframes fade_in {
+    from{opacity:0;}
+    to {opacity:1;}
+}
