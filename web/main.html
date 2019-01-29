@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+    <script>if (typeof module === 'object') {window.module = module; moodule = undefined;}</script>
         <title>Riverdance</title>
         <script type='text/javascript'src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type='text/javascript'src="/eel.js"></script>
         <script type='text/javascript'src="main.js"></script>
         <script type='text/javascript'src="scripts/jquery.drawsvg.min.js"></script>
         <link rel="stylesheet" type="text/css" href="main.css">
@@ -32,9 +34,10 @@
                 <path class="cls-1" d="M-371,114s95,360.15,790,192c682-165,1276,562,1276,562" transform="translate(516.04 -75.75)"/>
             </svg>
             <div id='homepage_buttons'>
-                <div class='homepage_button' id='search'></div>
-                <div class='homepage_button' id='server'></div>
+                <div class='homepage_button' id='search'>Search</div>
+                <div class='homepage_button' id='server'>Collaborate</div>
             </div>
         </div>
+        <div id='search_container'></div>
     </body>
 </html>

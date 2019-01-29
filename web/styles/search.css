@@ -1,0 +1,15 @@
+#search_bar {
+    position:relative;
+    margin:0 auto;
+    width:800px;
+    top:50vh;
+    transform:translateY(-50%);
+    opacity:0;
+    animation:fade_in 0.4s ease 0.5s forwards;
+}
+#search_bar input[type=text] {
+    width:100%;
+    border:none;
+    border-radius:20px 0px;
+    padding:30px;
+}
