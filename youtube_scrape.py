@@ -3,12 +3,12 @@ import requests
 import re
 
 
-def rank_results(result_list, search_title, ):#search_artist):
+def rank_results(result_list, search_title, search_artist):
     """Rank results based on similarity to search term"""
     scores = []
-    # search_artist = search_artist.replace("+", " ").lower()
+    search_artist = search_artist.replace("+", " ").lower()+" topic"
     search_title = search_title.replace("+", " ").lower()
-    search_terms = search_title.split() # + search_artist.split()
+    search_terms = search_title.split() + search_artist.split()
 
     # Give score to each result
     for title in result_list:
@@ -23,10 +23,10 @@ def rank_results(result_list, search_title, ):#search_artist):
         # 2 points if whole title in result, 2 points for whole artist, 4 points for both
         if search_title in title:
             score += 2
-        # if search_artist in title:
-            # score += 2
-        # if search_title in title and search_artist in title:
-            # score += 4
+        if search_artist in title:
+            score += 2
+        if search_title in title and search_artist in title:
+            score += 4
         if search_title == title:
             score += 4
 
@@ -58,13 +58,13 @@ def get_video_time(url):
     return int(refined_time)
 
 
-def scrape(search_title):
+def scrape(search_title, search_artist):
     """Get video results from YouTube"""
-    # search_artist = search_artist.replace(" ", "+")
+    search_artist = search_artist.replace(" ", "+")+" topic"
     search_title = search_title.replace(" ", "+")
 
-    # search_query = search_title + "+" + search_artist
-    youtube_url = "https://www.youtube.com/results?search_query=" + search_title
+    search_query = search_title + "+" + search_artist
+    youtube_url = "https://www.youtube.com/results?sp=EgIQAQ%253D%253D&search_query=" + search_query
     header = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'}
 
     try:

@@ -6,8 +6,20 @@
         <script type='text/javascript'src="../scripts/search.js"></script>
     </head>
     <body>
+        <img id='searchBack' src="assets/arrow.svg" />
         <div id='search_bar'>
-            <input id='search_bar_text' type="text" name="searchTerm">
+            <h1>SEARCH</h1>
+            <div id='search_wrapper'>
+                <div class='search_bar_container'>
+                    <label for="searchTitle">Title</label>
+                    <input id='search_bar_title' class='search_bar_text' type="text" name="searchTitle">
+                </div>
+                <div class='search_bar_container'>
+                    <label for="searchArtist">Artist</label>
+                    <input id='search_bar_artist' class='search_bar_text' type="text" name="searchArtist">
+                </div>
+            </div>
         </div>
+        <div id='search_results'></div>
     </body>
 </html>

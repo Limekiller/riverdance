@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <script>if (typeof module === 'object') {window.module = module; moodule = undefined;}</script>
+        <script>if (typeof module === 'object') {window.module = module; moodule = undefined;}</script>
         <title>Riverdance</title>
         <script type='text/javascript'src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type='text/javascript'src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js"></script>
         <script type='text/javascript'src="/eel.js"></script>
         <script type='text/javascript'src="main.js"></script>
         <script type='text/javascript'src="scripts/jquery.drawsvg.min.js"></script>
         <link rel="stylesheet" type="text/css" href="main.css">
+        <link rel="stylesheet" type="text/css" href="universal.css">
     </head>
     <body id="homeBody">
         <div id='logo_container'>
             <div id='logo'>
-                <object id='logoBase' data="images/logo_blank.svg" type="image/svg+xml"></object>
+                <object id='logoBase' data="assets/logo_blank.svg" type="image/svg+xml"></object>
                 <svg id='paths' version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 1080" style="enable-background:new 0 0 1920 1080;" xml:space="preserve">
                     <style type="text/css">
 .st0{fill:none;stroke:#FFFFFF;stroke-width:20;stroke-miterlimit:10;}
@@ -22,7 +24,7 @@
                     <path class="st0" d="M763,580.61c0,0,64.31-70.01,133.51,0c74.61,75.49,128.63-0.81,128.63-0.81"/>
                 </svg>
             </div>
-            <object id='wordmark' data="images/wordmark.svg" type="image/svg+xml"></object>
+            <object id='wordmark' data="assets/wordmark.svg" type="image/svg+xml"></object>
         </div>
         <div id='button_container'>
             <svg id="wave" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2327.2 887.16">
@@ -31,10 +33,12 @@
                 </style>
                 </defs>
                 <title>wave</title>
-                <path class="cls-1" d="M-371,114s95,360.15,790,192c682-165,1276,562,1276,562" transform="translate(516.04 -75.75)"/>
+                <path class="cls-1" id='wave1' d="M-371,114s95,360.15,790,192c682-165,1276,562,1276,562"/>
+                <path class="cls-1" id='wave2'opacity="0" d="M179,859.5c0,0,192.8-859.5,756.1-629.2c758.3,252.5,1283.2-62.9,1283.2-62.9"/>
             </svg>
             <div id='homepage_buttons'>
                 <div class='homepage_button' id='search'>Search</div>
+                <div class='homepage_button' id='play'>Play</div>
                 <div class='homepage_button' id='server'>Collaborate</div>
             </div>
         </div>
