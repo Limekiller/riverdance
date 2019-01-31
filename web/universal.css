@@ -1,0 +1,36 @@
+body {
+    margin:0;
+    font-family: 'Archivo Narrow', sans-serif;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+a {
+    text-decoration:none;
+}
+p {
+    font-family: 'Archivo Narrow', sans-serif;
+}
+h1 {
+    font-family:'Maddac';
+    font-weight:normal;
+}
+h2 {
+    font-family:'Maddac';
+    font-weight:normal;
+}
+h3 {
+    font-family:'Maddac';
+    font-weight:normal;
+}
+h4 {
+    font-family: 'Archivo Narrow', sans-serif;
+}
+h5 {
+    font-family: 'Archivo Narrow', sans-serif;
+}
+@import url('https://fonts.googleapis.com/css?family=Archivo+Narrow:700');
+@font-face {
+    font-family: Maddac;
+    src: url(assets/Maddac.ttf);
+}
+
