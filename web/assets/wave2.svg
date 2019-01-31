@@ -1,10 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="wave" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 2327.2 887.2" style="enable-background:new 0 0 2327.2 887.2;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:none;stroke:#389BFD;stroke-width:300;stroke-miterlimit:10;}
-</style>
-<title>wave</title>
-<path class="st0" d="M179,859.5c0,0,192.8-859.5,756.1-629.2c758.3,252.5,1283.2-62.9,1283.2-62.9"/>
+<svg id="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2296.34 459.66">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #389bfd;
+        stroke-miterlimit: 10;
+        stroke-width: 300px;
+      }
+    </style>
+  </defs>
+  <title>wave2</title>
+  <path class="cls-1" d="M94,356.88S502.14,84.44,1184.14,249.44c695,168.15,1025.74-113.2,1025.74-113.2" transform="translate(-10.73 -21.99)"/>
 </svg>

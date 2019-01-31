@@ -1,8 +1,14 @@
-<svg id="wave" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2327.2 887.16">
-	<defs>
-		<style>.cls-1{fill:none;stroke:#389bfd;stroke-miterlimit:10;stroke-width:300px;}
-		</style>
-	</defs>
-	<title>wave</title>
-	<path class="cls-1" d="M-371,114s95,360.15,790,192c682-165,1276,562,1276,562" transform="translate(516.04 -75.75)"/>
+<svg id="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2296.34 459.66">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #389bfd;
+        stroke-miterlimit: 10;
+        stroke-width: 300px;
+      }
+    </style>
+  </defs>
+  <title>wave</title>
+  <path class="cls-1" d="M94,136.24s330.74,281.35,1025.74,113.2c682-165,1090.14,107.44,1090.14,107.44" transform="translate(3.19 -21.99)"/>
 </svg>
