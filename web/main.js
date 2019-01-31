@@ -7,39 +7,6 @@ $(document).ready(function() {
     window.setTimeout(function(){
         wave.drawsvg('animate');}, 1500);
 
-
-    window.setTimeout(function() {
-        var waveSVG = document.getElementById("wave");
-        var s = Snap(waveSVG);
-        var wave1 = Snap.select('#wave1');
-        var wave2 = Snap.select('#wave2');
-
-        var wave1Points = wave1.node.getAttribute('d');
-        var wave2Points = wave2.node.getAttribute('d');
-        var toWave1 = function(){
-            console.log("ah");
-            wave1.animate({ d: wave2Points }, 1000, mina.backout, toWave2);
-        }
-        var toWave2 = function(){
-              wave2.animate({ d: wave1Points }, 1000, mina.backout, toWave1);
-        }
-    }, 3000);
-
-//    var svg = document.getElementById("wave");
-//    var s = Snap(svg);
-//    var wave1 = Snap.select('#wave1');
-//    var wave2 = Snap.select('#wave2');
-//    var wave1Points = wave1.node.getAttribute('d');
-//    var wave2Points = wave2.node.getAttribute('d');
-//    var to1 = function(){
-//      wave1.animate({ d: wave2Points }, 1000, mina.backout, to2);
-//    }
-//    var to2 = function(){
-//    wave2.animate({ d: wave1Points }, 1000, mina.backout, to1);
-//    }
-//    to1();
-
-
     // Activate search page on click
     $("#search").on('click', function() {
         $('head').append('<link rel="stylesheet" type="text/css" href="styles/search.css">');
@@ -71,4 +38,11 @@ $(document).ready(function() {
         $("#search_bar h1").removeClass("search_bar_active");
     });
 
+    $("#play").on('click', function() {
+        $("#button_container").addClass('search_active_b');
+        $("#logo_container").addClass('search_active_l');
+        $("#search_container").addClass("search_active_sc");
+        $("#search_container").load("pages/search.html");
+	setTimeout(function() {window.location.replace('pages/player.html')},500);
+    });
 });

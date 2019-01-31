@@ -34,10 +34,10 @@ body {
     opacity:0;
 }
 #wave {
-    width:200vw;
-    margin-left:-30vw;
-    margin-top:-5vw;
+    width:270vw;
+    margin-top:-10vw;
     position:absolute;
+    animation:wave 20s ease infinite;
 }
 #wave .cls-1 {
     stroke:#389bfd;
@@ -109,10 +109,6 @@ body {
     from {margin-left:0px;}
     to {margin-left:-285px;}
 }
-@keyframes fade_in {
-    from{opacity:0;}
-    to {opacity:1;}
-}
 @keyframes bubble_move {
     0% {transform:translate(0);}
     25% {transform:translate(-10px, -10px);}
@@ -130,4 +126,9 @@ body {
     0% {padding:19px;}
     5% {padding:20px;}
     100% {padding:0px;}
+}
+@keyframes wave {
+    0% {transform:translateY(0px);}
+    50% {transform:translateY(-20px);}
+    100% {transform:translateY(0px);}
 }

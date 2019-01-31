@@ -1,0 +1,30 @@
+#playerContainer {
+    display:flex;
+    background:linear-gradient(#389bfd, #001d6f);
+    height:100vh;
+    opacity:0;
+    animation:fade_in 0.4s ease forwards;
+}
+#art {
+	width:300px;
+	height:300px;
+	background-color:white;
+	margin:0 auto;
+	margin-top:10vh;
+}
+.playerColumn {
+	padding:20px;
+	width:50%;
+}
+#playerControls {
+	display:flex;
+	justify-content:space-between;
+	padding-top:50px;
+	width:300px;
+	height:50px;
+	margin:0 auto;
+}
+.playerItem {
+	width:50px;	
+	background-color:white;
+}
