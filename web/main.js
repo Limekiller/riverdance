@@ -11,6 +11,7 @@ $(document).ready(function() {
     $("#search").on('click', function() {
         $('head').append('<link rel="stylesheet" type="text/css" href="styles/search.css">');
         $("#button_container").addClass('search_active_b');
+        $("#wave").addClass('wave_active');
         $("#logo_container").addClass('search_active_l');
         $("#search_container").addClass("search_active_sc");
         $("#search_container").load("pages/search.html");
@@ -30,9 +31,11 @@ $(document).ready(function() {
             }
         }
     });
+
     $(document.body).on('click', "#searchBack", function() {
         $("#button_container").removeClass('search_active_b');
         $("#logo_container").removeClass('search_active_l');
+        $("#wave").removeClass('wave_active');
         $("#search_container").removeClass("search_active_sc");
         $("#homeBody").css("overflow", "hidden");
         $("#search_bar h1").removeClass("search_bar_active");
@@ -46,3 +49,10 @@ $(document).ready(function() {
 	setTimeout(function() {window.location.replace('pages/player.html')},500);
     });
 });
+
+function addToQueue(link, title) {
+    eel.add_to_queue(title, link);
+    eel.get_queue()(function(a) {
+        console.log(a);
+    });
+}

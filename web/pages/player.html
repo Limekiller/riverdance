@@ -5,20 +5,29 @@
         <title>Riverdance</title>
         <script type='text/javascript'src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script type='text/javascript'src="/eel.js"></script>
-        <script type='text/javascript'src="../main.js"></script>
+        <script type='text/javascript'src="../scripts/player.js"></script>
         <script type='text/javascript'src="../scripts/jquery.drawsvg.min.js"></script>
         <link rel="stylesheet" type="text/css" href="../styles/player.css">
         <link rel="stylesheet" type="text/css" href="../universal.css">
     </head>
-    <body id='playerContainer'>
-	    <div class='playerColumn' id='player'>
-		    <div id='art'></div>
-		    <div id='playerControls'>
-			    <div class='playerItem' id='rw'></div>
-			    <div class='playerItem' id='play'></div>
-			    <div class='playerItem' id='ff'></div>
-		    </div>
-	    </div>
-	    <div class='playerColumn' id='songList'></div>
+    <body>
+        <div id='search_container'></div>
+        <div id='buttonBar'>
+            <img id='searchButton'class='button' src='../assets/search.svg'/> 
+        </div>
+        <div id='playerContainer'>
+            <div class='playerColumn' id='player'>
+                <div id='art'></div>
+                <div id='playerControls'>
+                    <div class='playerItem' id='rw'></div>
+                    <div class='playerItem' id='play'></div>
+                    <div class='playerItem' id='ff'></div>
+                </div>
+            </div>
+            <div class='playerColumn' id='songList'>
+                <h1>QUEUE</h1>
+                <div id='queue'></div>
+            </div>
+        </div>
     </body>
 </html>

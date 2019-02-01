@@ -34,10 +34,15 @@ body {
     opacity:0;
 }
 #wave {
-    width:270vw;
-    margin-top:-50px;
+    width:140vw;
     position:absolute;
-    margin-left:-100vw;
+    margin-left:-20vw;
+    bottom:-35vw;
+    transition:bottom 0.4s ease;
+}
+.wave_active#wave {
+    bottom:600px;
+    transition:bottom 1s ease;
 }
 #wave path {
     animation:wave 62.4s ease infinite;
@@ -131,7 +136,7 @@ body {
     100% {padding:0px;}
 }
 @keyframes wave {
-    0% {d: path("M94,136.24s330.74,281.35,1025.74,113.2c682-165,1090.14,107.44,1090.14,107.44");}
-    50% {d: path("M94,356.88S502.14,84.44,1184.14,249.44c695,168.15,1025.74-113.2,1025.74-113.2");}
-    100% {d: path("M94,136.24s330.74,281.35,1025.74,113.2c682-165,1090.14,107.44,1090.14,107.44");}
+    0% {d: path("M94,136.24s330.74,281.35,1025.74,113.2c682-165,1090.14,107.44,1090.14,107.44");margin-left:-80vw;}
+    50% {d: path("M94,356.88S502.14,84.44,1184.14,249.44c695,168.15,1025.74-113.2,1025.74-113.2");margin-left:-100vw;}
+    100% {d: path("M94,136.24s330.74,281.35,1025.74,113.2c682-165,1090.14,107.44,1090.14,107.44");margin-left:-80vw;}
 }
