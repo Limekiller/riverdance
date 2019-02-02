@@ -50,9 +50,7 @@ $(document).ready(function() {
     });
 });
 
-function addToQueue(link, title) {
-    eel.add_to_queue(title, link);
-    eel.get_queue()(function(a) {
-        console.log(a);
-    });
+function addToQueue(link, artist, title) {
+    eel.add_to_queue(artist, title, link);
+    window.location.replace('pages/player.html');
 }

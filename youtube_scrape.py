@@ -58,7 +58,7 @@ def get_video_time(url):
     return int(refined_time)
 
 
-def scrape(search_title, search_artist):
+def scrape(search_title, search_artist, get_top_result=False):
     """Get video results from YouTube"""
     search_artist = search_artist.replace(" ", "+")+" topic"
     search_title = search_title.replace(" ", "+")
@@ -94,4 +94,6 @@ def scrape(search_title, search_artist):
     # print("Video length is "+str(video_length)+' ms long')
     # return final_url, video_length
 
+    if get_top_result:
+        return [title[0], ref[0]]
     return title, ref

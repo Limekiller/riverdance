@@ -1,5 +1,6 @@
 body {
     background:linear-gradient(#389bfd, #001d6f);
+    overflow:hidden;
 }
 #playerContainer {
     display:flex;
@@ -12,6 +13,7 @@ body {
 	height:300px;
 	background-color:white;
 	margin:0 auto;
+    background-size:contain;
 }
 .playerColumn {
 	padding:20px;
@@ -21,6 +23,7 @@ body {
     margin-top:0;
     font-size:40px;
     letter-spacing:7px;
+    color:#1D00AD;
 }
 #playerControls {
 	display:flex;
@@ -32,8 +35,11 @@ body {
 }
 .playerItem {
 	width:50px;	
-	background-color:white;
+    cursor:pointer;
 }
+#rw {
+    transform:scale(-1);
+} 
 #songList {
     border-radius:20px 0px;
     color:white;
@@ -62,4 +68,34 @@ body {
 }
 .search_container_active#search_container {
     margin-top:0vh;
+}
+.queueSong {
+    background-color:#1D00AD;
+    padding:15px;
+    border-radius:20px 0px;
+    margin-bottom:20px;
+    width:75%;
+}
+.queueArtist {
+    display:block;
+    font-size:12px;
+    text-transform:capitalize;
+}
+#artLoading {
+    width:100%;
+    height:100%;
+    background-color:#0000008f;
+    background-image:url('../assets/waverepeating.svg');
+    opacity:0;
+    transition:all 0.4s ease;
+    animation:artLoadingAnim 5s linear infinite;
+    background-size:150%;
+    background-repeat-y:no-repeat;
+}
+.artLoadingActive#artLoading {
+    opacity: 1;
+}
+@keyframes artLoadingAnim {
+    from {background-position: 0px 210px;}
+    to {background-position: 600% 210px;}
 }
