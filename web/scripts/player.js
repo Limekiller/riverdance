@@ -57,7 +57,8 @@ function updateArray(array){
     });
     $("#queue").html(queueData);
     $('.queueDel').on('click', function() {
-        console.log($(this));
+	$(this).parent().css('animation', 'queueUnload 0.4s ease forwards');
+        deleteIndex($(this).parent().attr('id'));
     });
 }
 
@@ -71,10 +72,12 @@ function addToQueue(title, artist) {
     $("#search_container").css('overflow-y', 'hidden');
 }
 
+function deleteIndex(index) {
+    eel.delete_from_queue(index);
+}
+
 eel.expose(getAlbumArt);
 function getAlbumArt(artist, title) {
-    console.log(title);
-    console.log(artist);
     jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+title+'&track='+artist+'&format=json'
     $.getJSON(jsonURL, function(data) {
         $('#art').css('background-image', 'url('+data['track']['album']['image'][2]['#text']+')');

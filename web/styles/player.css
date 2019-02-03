@@ -63,6 +63,7 @@ body {
 }
 .buttonContainer:hover .buttonDesc {
     opacity:1;
+    transform:translateX(20px);
 }
 .buttonDesc {
     opacity:0;
@@ -136,6 +137,10 @@ body {
     to {background-position: 600% 210px;}
 }
 @keyframes queueLoad {
-    from {transform:scaleX(0);left:-32%;}
-    to {transform:scaleX(1);left:0%;}
+    from {transform:scaleX(0);left:-35%;opacity:0;}
+    to {transform:scaleX(1);left:0%;opacity:1;}
+}
+@keyframes queueUnload {
+    from {transform:scaleX(1);left:0%;opacity:0;}
+    to {transform:scaleX(0);left:35%;opacity:1;}
 }
