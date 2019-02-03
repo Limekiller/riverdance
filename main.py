@@ -62,7 +62,6 @@ def pause_music():
         pygame.mixer.music.unpause()
         paused = False
 
-
 @eel.expose
 def get_search_results(search_title, search_artist):
     titles, links = youtube_scrape.scrape(search_title, search_artist)
@@ -73,10 +72,10 @@ def get_search_results(search_title, search_artist):
 
 
 @eel.expose
-def add_to_queue(title, artist, link):
+def add_to_queue(title, artist):
     global play_queue
-    print(play_queue)
-    play_queue.append([title, artist, link])
+    real_title, link = youtube_scrape.scrape(title, artist, True)
+    play_queue.append([real_title, artist, link])
 
 
 @eel.expose
@@ -152,7 +151,7 @@ def play_music():
 
             # If there's a song in the queue, play it; otherwise, do nothing
             if play_queue:
-                artist, song = play_queue[0][0], play_queue[0][1]
+                artist, song = play_queue[0][1], play_queue[0][0]
                 print("Now playing: " + artist + " - " + song)
                 time_to_end = handle_song(artist, song)
                 time_start = time.time()

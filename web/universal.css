@@ -3,6 +3,7 @@ body {
     font-family: 'Archivo Narrow', sans-serif;
     font-weight:bold;
     letter-spacing:1px;
+    user-select:none;
 }
 a {
     text-decoration:none;

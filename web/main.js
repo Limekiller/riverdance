@@ -20,15 +20,27 @@ $(document).ready(function() {
     // Get search results
     $("#search_container").on('keyup', function(e) {
         if (e.keyCode == 13) {
-            if ($("#search_bar_title").val() != "" && $("#search_bar_artist").val() != "") {
-                $("#search_bar").addClass("search_bar_active");
-                $("#search_bar h1").addClass("search_bar_active");
-                eel.get_search_results($("#search_bar_title").val(),$("#search_bar_artist").val()) (function(a) {
-                    $("#homeBody").css("overflow", "auto");
-                    $("#homeBody").css("overflow-x", "hidden");
-                    $("#search_results").html(a);
+            $("#search_bar").addClass("search_bar_active");
+            $("#search_bar h1").addClass("search_bar_active");
+            jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.search&track='+$("#search_bar_field").val()+"&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json";
+
+            HTMLToAppend = ''
+            $.getJSON(jsonURL, function(data) {
+                $.each(data['results']['trackmatches']['track'], function(index, value) {
+                    title = value['name'];
+                    artist = value['artist']
+                    HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+title+'\', \''+artist+'\')">'+title+'<span>'+artist+'</span></div>';
                 });
-            }
+                $("#homeBody").css("overflow", "auto");
+                $("#homeBody").css("overflow-x", "hidden");
+                $("#search_results").html(HTMLToAppend);
+            });
+
+            //eel.get_search_results($("#search_bar_title").val(),$("#search_bar_artist").val()) (function(a) {
+            //    $("#homeBody").css("overflow", "auto");
+            //    $("#homeBody").css("overflow-x", "hidden");
+            //    $("#search_results").html(a);
+            //});
         }
     });
 
@@ -50,7 +62,7 @@ $(document).ready(function() {
     });
 });
 
-function addToQueue(link, artist, title) {
-    eel.add_to_queue(artist, title, link);
+function addToQueue(title, artist) {
+    eel.add_to_queue(title, artist);
     window.location.replace('pages/player.html');
 }

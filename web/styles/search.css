@@ -14,7 +14,6 @@
     font-size: 60px;
     letter-spacing:5px;
     color:#1D00AD;
-    margin-left:65px;
     transition:opacity 0.2s ease;
 }
 h1.search_bar_active {
@@ -40,7 +39,6 @@ h1.search_bar_active {
     border:none;
     border-radius:20px 0px;
     padding:30px;
-    margin-top:10px;
     transition:border-radius 0.4s ease;
     background-color:#1D00AD;
     color:white;
@@ -52,7 +50,7 @@ h1.search_bar_active {
     margin-top:-100px;
 }
 .search_result {
-    width:680px;
+    width:500px;
     margin:0 auto;
     background-color:#1D00AD;
     color:white;
@@ -65,6 +63,10 @@ h1.search_bar_active {
 .search_result:hover {
     cursor:pointer;
     border-radius:0px 20px;
+}
+.search_result span {
+    display:block;
+    font-size:12px;
 }
 #searchBack {
     width:50px;
