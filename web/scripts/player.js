@@ -11,6 +11,16 @@ $(document).ready(function() {
         $("#search_container").load("../pages/search.html");
     });
 
+    $('#radioButton').on('click', function() {
+        eel.toggle_radio()(function (a) {
+            if (a) {
+                $('#radioButton').addClass('buttonActive');
+            } else {
+                $('#radioButton').removeClass('buttonActive');
+            }
+        });
+    });
+
     $('#play').on('click', function() {
         eel.pause_music();
     });

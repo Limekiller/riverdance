@@ -87,6 +87,17 @@ def delete_from_queue(index):
 
 
 @eel.expose
+def toggle_radio():
+    global radio
+    if radio:
+        radio = False
+    else:
+        radio = True
+    print(radio)
+    return radio
+
+
+@eel.expose
 def get_queue():
     global play_queue
     return play_queue
@@ -98,9 +109,11 @@ def begin_playback():
 
 
 def play_music():
+    global radio
     global play_queue
     last_artist = ''
     last_song = ''
+    last_played_artist = None
     time_start = time.time()
     time_to_end = math.inf
     loops_without_music = 0
@@ -136,6 +149,7 @@ def play_music():
             last_artist, last_song = play_queue[0][1], play_queue[0][0]
             song = last_song
             artist = last_artist
+            last_played_artist = artist
             time_to_end = handle_song(artist, song)
             start_song(song)
             time_start = time.time()
@@ -159,6 +173,7 @@ def play_music():
 
             # If there's a song in the queue, play it; otherwise, do nothing
             if play_queue:
+                # loops_without_music = 0
                 artist, song = play_queue[0][1], play_queue[0][0]
                 print("Now playing: " + artist + " - " + song)
                 time_to_end = handle_song(artist, song)
@@ -172,28 +187,29 @@ def play_music():
 
         # If nobody has submitted a play request in five loops, find a similar artist to the last played artist
         # And play a song in their top 20
-        # if loops_without_music > 2:
-        #     loops_without_music = 0
-        #     artist = artist_finder.find_similar_artist(last_played_artist)
-        #     song = artist_finder.get_artist_song(artist)
-        #     if not artist or not song:
-        #         time_to_end = math.inf
-        #         continue
-        #     print("Now playing: " + artist + " - " + song)
-        #
-        #     play_queue.append([song, artist])
-        #     print("Queue updated:")
-        #     print(play_queue)
-        #     time_to_end = handle_song(song)
-        #     if not time_to_end:
-        #         time_to_end = math.inf
-        #         play_queue.pop()
-        #         continue
-        #     start_song(song)
-        #     time_start = time.time()
+        if last_played_artist and radio and len(play_queue) < 5:
+            # loops_without_music = 0
+            artist = artist_finder.find_similar_artist(last_played_artist)
+            song = artist_finder.get_artist_song(artist)
+            if not artist or not song:
+                time_to_end = math.inf
+                continue
+            song, link = youtube_scrape.scrape(song, artist, True)
+            # print("Now playing: " + artist + " - " + song)
 
-        if not play_queue:
-            loops_without_music += 1
+            play_queue.append([song, artist, link])
+            # print("Queue updated:")
+            # print(play_queue)
+            # time_to_end = handle_song(artist, song)
+            # if not time_to_end:
+            #     time_to_end = math.inf
+            #     play_queue.pop()
+            #     continue
+            # start_song(song)
+            # time_start = time.time()
+
+        # if not play_queue:
+        #     loops_without_music += 1
 
         time.sleep(2)
 
@@ -204,6 +220,7 @@ options = {
 }
 play_queue = []
 paused = False
+radio = False
 
 eel.start('main.html')
 

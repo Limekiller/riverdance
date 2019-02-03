@@ -50,6 +50,10 @@ body {
 }
 .button {
     width:50px;
+    transition:filter 0.4s ease;
+}
+.buttonActive {
+    filter:sepia(1) saturate(25) hue-rotate(-30deg) invert(1);
 }
 .buttonContainer {
     transition:transform 0.4s ease;
@@ -97,10 +101,10 @@ body {
     min-height:32px;
     width:75%;
     position:relative;
-    transition:transform 0.4s ease;
+    transition:border-radius 0.4s ease;
 }
 .queueSong:hover {
-    transform:translateX(10px);
+    border-radius:0px 20px;
 }
 .queueSong:hover .queueDel {
     opacity:1;
@@ -141,6 +145,6 @@ body {
     to {transform:scaleX(1);left:0%;opacity:1;}
 }
 @keyframes queueUnload {
-    from {transform:scaleX(1);left:0%;opacity:0;}
-    to {transform:scaleX(0);left:35%;opacity:1;}
+    from {transform:scaleX(1);left:0%;opacity:1;}
+    to {transform:scaleX(0);left:35%;opacity:0;}
 }
