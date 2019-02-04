@@ -17,7 +17,7 @@ body {
 }
 .playerColumn {
 	padding:20px;
-	width:50%;
+	width:25%;
     margin-top:100px;
 }
 .playerColumn h1 {
@@ -44,6 +44,7 @@ body {
 #songList {
     border-radius:20px 0px;
     color:white;
+    width:50%;
 }
 #buttonBar {
     padding:20px;
