@@ -111,6 +111,7 @@ def begin_playback():
 def play_music():
     global radio
     global play_queue
+    global paused
     last_artist = ''
     last_song = ''
     last_played_artist = None
@@ -153,6 +154,9 @@ def play_music():
             time_to_end = handle_song(artist, song)
             start_song(song)
             time_start = time.time()
+
+        if paused:
+            time_to_end += time.time() - time_end
 
         # Check time, and if the duration of the song has passed, handle things
         time_end = time.time()
