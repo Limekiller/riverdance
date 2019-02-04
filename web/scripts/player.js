@@ -62,14 +62,19 @@ $(document).ready(function() {
 function updateArray(array){
     var queueData = '';
     array.forEach(function(item, index) {
-       queueData += "<div class='queueSong' id='"+index+"'>"+item[0]+
-           "<span class='queueArtist'>"+item[1]+"</span><span class='queueDel'>X</span></div>";
+       queueData += '<div class="queueSong" id="'+index+'">'+item[0]+
+           '<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
     });
-    $("#queue").html(queueData);
-    $('.queueDel').on('click', function() {
-	$(this).parent().css('animation', 'queueUnload 0.4s ease forwards');
-        deleteIndex($(this).parent().attr('id'));
-    });
+    console.log($("#queue").html())
+    console.log(queueData)
+    console.log($("#queue").html() === queueData);
+    if ($("#queue").html() != queueData) {
+        $("#queue").html(queueData);
+        $('.queueDel').on('click', function() {
+        $(this).parent().css('animation', 'queueUnload 0.4s ease forwards');
+            deleteIndex($(this).parent().attr('id'));
+        });
+    }
 }
 
 function addToQueue(title, artist) {
