@@ -71,6 +71,7 @@ function updateArray(array){
     if ($("#queue").html() != queueData) {
         $("#queue").html(queueData);
         $('.queueDel').on('click', function() {
+        $(this).parent().addClass('queueSongDeleted');
         $(this).parent().css('animation', 'queueUnload 0.4s ease forwards');
             deleteIndex($(this).parent().attr('id'));
         });

@@ -161,6 +161,7 @@ def play_music():
         # Check time, and if the duration of the song has passed, handle things
         time_end = time.time()
         if time_end - time_start >= time_to_end:
+            print(time_to_end)
             pygame.mixer.stop()
             pygame.mixer.quit()
             # Attempt to delete all files in directory
