@@ -29,7 +29,7 @@ $(document).ready(function() {
                 $.each(data['results']['trackmatches']['track'], function(index, value) {
                     title = value['name'];
                     artist = value['artist']
-                    HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+title+'\', \''+artist+'\')">'+title+'<span>'+artist+'</span></div>';
+                    HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+title+'\', \''+artist+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
                 });
                 $("#homeBody").css("overflow", "auto");
                 $("#homeBody").css("overflow-x", "hidden");

@@ -60,8 +60,8 @@ def get_video_time(url):
 
 def scrape(search_title, search_artist, get_top_result=False):
     """Get video results from YouTube"""
-    search_artist = search_artist.replace(" ", "+")+" topic"
-    search_title = search_title.replace(" ", "+")
+    search_artist = search_artist.replace(" ", "+").replace("&", "and") + "+topic"
+    search_title = search_title.replace(" ", "+").replace("&", "and")
 
     search_query = search_title + "+" + search_artist
     youtube_url = "https://www.youtube.com/results?sp=EgIQAQ%253D%253D&search_query=" + search_query
@@ -84,6 +84,7 @@ def scrape(search_title, search_artist, get_top_result=False):
             ref.append(h3.find('a')['href'])
         except TypeError:
             return None, None
+
 
     # Return best matching link and its duration
     # best_title = rank_results(title, search_title)#, search_artist)

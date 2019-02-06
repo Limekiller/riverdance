@@ -25,6 +25,10 @@ $(document).ready(function() {
         eel.pause_music();
     });
 
+    $('#dl').on('click', function() {
+        eel.download_song();
+    });
+
     $(document.body).on('click', "#searchBack", function() {
         $("#search_container").removeClass('search_container_active');
         $('body').css('overflow-y', 'hidden');
@@ -42,7 +46,7 @@ $(document).ready(function() {
                 $.each(data['results']['trackmatches']['track'], function(index, value) {
                     title = value['name'];
                     artist = value['artist']
-                    HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+title+'\', \''+artist+'\')">'+title+'<span>'+artist+'</span></div>';
+                    HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+title+'\', \''+artist+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
                 });
                 $("#homeBody").css("overflow", "auto");
                 $("#homeBody").css("overflow-x", "hidden");

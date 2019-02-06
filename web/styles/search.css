@@ -54,8 +54,8 @@ h1.search_bar_active {
     margin:0 auto;
     background-color:#1D00AD;
     color:white;
-    padding:30px;
-    margin-top:50px;
+    padding:20px;
+    margin-top:35px;
     border-radius:20px 0px;
     transition:border-radius 0.4s ease;
     animation:fade_in 0.4s ease forwards;
@@ -64,9 +64,21 @@ h1.search_bar_active {
     cursor:pointer;
     border-radius:0px 20px;
 }
+.search_result:hover .resultPlus {
+    opacity:1;
+}
 .search_result span {
     display:block;
     font-size:12px;
+}
+.resultPlus {
+    position:absolute;
+    margin-top:-30px;
+    margin-left:475px;
+    font-size:30px !important;
+    opacity:0;
+    transition:all 0.4s ease;
+    cursor:pointer;
 }
 #searchBack {
     width:50px;

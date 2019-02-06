@@ -5,6 +5,7 @@ import eel
 import time
 import math
 import os
+import shutil
 import parse_emails
 import youtube_scrape
 import youtube_dl
@@ -30,7 +31,7 @@ def handle_song(artist, title):
     duration = duration / 1000
     options = {
         'format': 'bestaudio/best',
-        'outtmpl': './Music/'+title+".%(ext)s",
+        'outtmpl': './Music/temp/'+title+".%(ext)s",
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
@@ -45,9 +46,9 @@ def handle_song(artist, title):
 
 def start_song(song):
     """Play song with PyGame at correct sample rate"""
-    song_file = mutagen.mp3.MP3("./Music/" + song + ".mp3")
+    song_file = mutagen.mp3.MP3("./Music/temp/" + song + ".mp3")
     pygame.mixer.init(frequency=song_file.info.sample_rate)
-    pygame.mixer.music.load("./Music/" + song + ".mp3")
+    pygame.mixer.music.load("./Music/temp/" + song + ".mp3")
     eel.artLoading(False)
     pygame.mixer.music.play()
 
@@ -61,6 +62,13 @@ def pause_music():
     else:
         pygame.mixer.music.unpause()
         paused = False
+
+
+@eel.expose
+def download_song():
+    global play_queue
+    os.makedirs("./Music/saved/"+play_queue[0][1].title())
+    shutil.copyfile("./Music/temp/"+play_queue[0][0]+".mp3", "./Music/saved/"+play_queue[0][1].title()+"/"+play_queue[0][0].title()+".mp3")
 
 @eel.expose
 def get_search_results(search_title, search_artist):
@@ -165,7 +173,7 @@ def play_music():
             pygame.mixer.stop()
             pygame.mixer.quit()
             # Attempt to delete all files in directory
-            for file in os.scandir('./Music/'):
+            for file in os.scandir('./Music/temp/'):
                 try:
                     os.remove(file)
                 except PermissionError:
