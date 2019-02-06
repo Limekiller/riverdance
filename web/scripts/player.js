@@ -2,7 +2,7 @@ $(document).ready(function() {
 
     setInterval(function() {
         eel.get_queue()(function(a){updateArray(a);});
-    }, 5000);
+    }, 2000);
     eel.begin_playback();
 
     $('#searchButton').on('click', function() {
@@ -62,12 +62,14 @@ $(document).ready(function() {
 function updateArray(array){
     var queueData = '';
     array.forEach(function(item, index) {
-       queueData += '<div class="queueSong" id="'+index+'">'+item[0]+
-           '<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
+        console.log(index);
+       if ($('#'+index).length == 0) {
+           queueData += '<div style="animation:queueLoad 0.4s ease forwards;" class="queueSong" id="'+index+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
+       } else {
+           queueData += '<div class="queueSong" id="'+index+'">'+item[0]+
+               '<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
+       }
     });
-    console.log($("#queue").html())
-    console.log(queueData)
-    console.log($("#queue").html() === queueData);
     if ($("#queue").html() != queueData) {
         $("#queue").html(queueData);
         $('.queueDel').on('click', function() {
@@ -82,11 +84,12 @@ function updateArray(array){
 function addToQueue(title, artist) {
     $('body').css('overflow-y', 'hidden');
     eel.add_to_queue(title, artist);
-    setTimeout(function () {
-        $("#queue").append('<div style="animation:queueLoad 0.4s ease forwards;" class="queueSong">'+title+'<span class="queueArtist">'+artist+'</span></div>');
-    }, 1000);
+   // setTimeout(function () {
+   //     $("#queue").append('<div style="animation:queueLoad 0.4s ease forwards;" class="queueSong">'+title+'<span class="queueArtist">'+artist+'</span></div>');
+   // }, 1000);
     $("#search_container").removeClass('search_container_active');
     $("#search_container").css('overflow-y', 'hidden');
+	$(".queueDel").css('display', 'none');
 }
 
 function deleteIndex(index) {
