@@ -89,8 +89,7 @@ def add_to_queue(title, artist):
 @eel.expose
 def delete_from_queue(index):
     global play_queue
-    print(index)
-    play_queue.pop(int(index))
+    play_queue.pop(int(index)+1)
     print(play_queue)
 
 

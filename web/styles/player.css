@@ -30,7 +30,7 @@ body {
 #playerControls {
 	display:flex;
 	justify-content:space-between;
-	padding-top:50px;
+	padding-top:25px;
 	width:300px;
 	height:50px;
 	margin:0 auto;
@@ -120,6 +120,7 @@ body {
 .queueArtist {
     display:block;
     font-size:12px;
+    text-transform:capitalize;
 }
 .queueDel {
     position:absolute;
@@ -143,6 +144,15 @@ body {
 }
 .artLoadingActive#artLoading {
     opacity: 1;
+}
+#songInfo {
+	margin-top:15px;
+	color:white;
+}
+#songTitle {
+	display:block;
+	font-size:25px;
+	text-transform:capitalize;
 }
 @keyframes artLoadingAnim {
     from {background-position: 0px 210px;}

@@ -66,11 +66,13 @@ $(document).ready(function() {
 function updateArray(array){
     var queueData = '';
     array.forEach(function(item, index) {
-        console.log(index);
-       if ($('#'+index).length == 0) {
-           queueData += '<div style="animation:queueLoad 0.4s ease forwards;" class="queueSong" id="'+index+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
+	if (index == 0) {
+		$("#songTitle").html(item[0]);
+		$("#songArtist").html(item[1]);
+	} else if ($('#'+(index-1)).length == 0) {
+           queueData += '<div style="animation:queueLoad 0.4s ease forwards;" class="queueSong" id="'+(index-1)+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
        } else {
-           queueData += '<div class="queueSong" id="'+index+'">'+item[0]+
+           queueData += '<div class="queueSong" id="'+(index-1)+'">'+item[0]+
                '<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
        }
     });
