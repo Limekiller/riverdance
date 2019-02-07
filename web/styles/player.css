@@ -22,29 +22,42 @@ body {
     min-width:300px;
 }
 .playerColumn h1 {
-    margin-top:0;
+    margin-top:-25px;
     font-size:40px;
     letter-spacing:7px;
     color:#1D00AD;
 }
+#contentHolder {
+    display:flex;
+    width:100%;
+    justify-content:center;
+}
 #playerControls {
 	display:flex;
-	justify-content:space-between;
+	justify-content:space-around;
 	padding-top:25px;
 	width:300px;
 	height:50px;
 	margin:0 auto;
 }
 .playerItem {
-	width:50px;	
     cursor:pointer;
+    transition:transform 0.4s ease;
+    width:30px;
 }
 .playerItem:hover {
-    transform:scale(1.1);
+    transform:translateY(-5px);
 }
-#rw {
-    transform:scale(-1);
-} 
+#player {
+    background-color:#1d00ad36;
+    border-radius:20px 0px;
+    height:fit-content;
+    width:300px;
+}
+#play {
+    width:60px;
+    height:60px;
+}
 #songList {
     border-radius:20px 0px;
     color:white;
@@ -146,13 +159,19 @@ body {
     opacity: 1;
 }
 #songInfo {
+    margin:0 auto;
+    font-family:Maddac;
+    width:300px;
+    letter-spacing:5px;
+    text-transform:uppercase;
+    font-weight:normal;
+    font-size:25px;
 	margin-top:15px;
 	color:white;
 }
 #songTitle {
 	display:block;
-	font-size:25px;
-	text-transform:capitalize;
+	font-size:35px;
 }
 @keyframes artLoadingAnim {
     from {background-position: 0px 210px;}

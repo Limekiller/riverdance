@@ -5,7 +5,7 @@ const BrowserWindow = electron.BrowserWindow
 let mainWindow
 
 function createWindow () {
-    mainWindow = new BrowserWindow({width: 800, height: 600, webPreferences: {nodeIntegration: false}})
+    mainWindow = new BrowserWindow({width: 1024, height: 768, webPreferences: {nodeIntegration: false}})
         mainWindow.loadURL('http://localhost:8000/main.html');
     mainWindow.setMenu(null);
     mainWindow.webContents.clearHistory();

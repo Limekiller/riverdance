@@ -27,23 +27,25 @@
                     <span class='buttonDesc'>Create server</span>
                 </div>
             </div>
-            <div class='playerColumn' id='player'>
-                <div id='art'>
-                    <div id='artLoading'></div>
+            <div id='contentHolder'>
+                <div class='playerColumn' id='player'>
+                    <div id='art'>
+                        <div id='artLoading'></div>
+                    </div>
+                    <div id='songInfo'>
+                        <span id='songTitle'></span>
+                        <span id='songArtist'></span>
+                    </div>
+                    <div id='playerControls'>
+                        <img class='playerItem' id='dl' src='../assets/dl.svg'/>
+                        <img class='playerItem' id='play' src='../assets/play.svg'/>
+                        <img class='playerItem' id='ff' src='../assets/ffrw.svg'/>
+                    </div>
                 </div>
-		<div id='songInfo'>
-			<span id='songTitle'></span>
-			<span id='songArtist'></span>
-		</div>
-                <div id='playerControls'>
-                    <img class='playerItem' id='dl' src='../assets/dl.svg'/>
-                    <img class='playerItem' id='play' src='../assets/play.svg'/>
-                    <img class='playerItem' id='ff' src='../assets/ffrw.svg'/>
+                <div class='playerColumn' id='songList'>
+                    <h1>UP NEXT</h1>
+                    <div id='queue'></div>
                 </div>
-            </div>
-            <div class='playerColumn' id='songList'>
-                <h1>UP NEXT</h1>
-                <div id='queue'></div>
             </div>
         </div>
     </body>
