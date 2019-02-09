@@ -29,6 +29,10 @@ $(document).ready(function() {
         eel.download_song();
     });
 
+    $('#ff').on('click', function() {
+        eel.fast_forward();
+    });
+
     $(document.body).on('click', "#searchBack", function() {
         $("#search_container").removeClass('search_container_active');
         $('body').css('overflow-y', 'hidden');

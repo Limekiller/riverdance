@@ -65,9 +65,18 @@ def pause_music():
 
 
 @eel.expose
+def fast_forward():
+    global time_to_end
+    time_to_end = 0
+
+
+@eel.expose
 def download_song():
     global play_queue
-    os.makedirs("./Music/saved/"+play_queue[0][1].title())
+    try:
+        os.makedirs("./Music/saved/"+play_queue[0][1].title())
+    except FileExistsError:
+        pass
     shutil.copyfile("./Music/temp/"+play_queue[0][0]+".mp3", "./Music/saved/"+play_queue[0][1].title()+"/"+play_queue[0][0].title()+".mp3")
 
 @eel.expose
@@ -115,16 +124,30 @@ def begin_playback():
     eel.spawn(play_music)
 
 
+def use_radio():
+    global last_played_artist
+    while True:
+        if last_played_artist and radio and len(play_queue) < 5:
+            # loops_without_music = 0
+            artist = artist_finder.find_similar_artist(last_played_artist)
+            song = artist_finder.get_artist_song(artist)
+            if not artist or not song:
+                return
+            song, link = youtube_scrape.scrape(song, artist, True)
+            play_queue.append([song, artist, link])
+        eel.sleep(5)
+
+
 def play_music():
     global radio
     global play_queue
     global paused
+    global time_to_end
+    global last_played_artist
+
     last_artist = ''
     last_song = ''
-    last_played_artist = None
     time_start = time.time()
-    time_to_end = math.inf
-    loops_without_music = 0
     while True:
         # Get last email and set artist+song variables
         # artist, song = parse_emails.readmail()
@@ -197,32 +220,6 @@ def play_music():
             else:
                 time_to_end = math.inf
 
-        # If nobody has submitted a play request in five loops, find a similar artist to the last played artist
-        # And play a song in their top 20
-        if last_played_artist and radio and len(play_queue) < 5:
-            # loops_without_music = 0
-            artist = artist_finder.find_similar_artist(last_played_artist)
-            song = artist_finder.get_artist_song(artist)
-            if not artist or not song:
-                time_to_end = math.inf
-                continue
-            song, link = youtube_scrape.scrape(song, artist, True)
-            # print("Now playing: " + artist + " - " + song)
-
-            play_queue.append([song, artist, link])
-            # print("Queue updated:")
-            # print(play_queue)
-            # time_to_end = handle_song(artist, song)
-            # if not time_to_end:
-            #     time_to_end = math.inf
-            #     play_queue.pop()
-            #     continue
-            # start_song(song)
-            # time_start = time.time()
-
-        # if not play_queue:
-        #     loops_without_music += 1
-
         time.sleep(2)
 
 
@@ -233,6 +230,9 @@ options = {
 play_queue = []
 paused = False
 radio = False
+last_played_artist = None
+eel.spawn(use_radio)
+time_to_end = math.inf
 
 eel.start('main.html')
 
