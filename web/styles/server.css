@@ -1,23 +1,58 @@
+#searchBack {
+    width:50px;
+    top:25px;
+    position:absolute;
+    left:25px;
+    transition:left 0.4s ease;
+}
+#searchBack:hover {
+    left:35px;
+    cursor:pointer;
+}
 #form_title {
 	width:600px;
 	margin:0 auto;
-	margin-top:50px;
+	margin-top:100px;
 	font-size:60px;
 	letter-spacing:7px;
+    margin-bottom:-15px;
+    color:#1D00AD;
 }
 #form_container {
 	width:600px;
 	margin:0 auto;
+    opacity:0;
+    animation:fade_in 0.4s ease 0.5s forwards;
 }
 #form_container label {
 	font-size:40px;
 	font-family:Maddac;
 	letter-spacing:7px;
 	font-weight:normal;
+    color:#1D00AD;
+}
+#form_container p {
+    margin-bottom:50px;
 }
 #form_container input[type=text] {
-	padding:15px;
+	padding:25px;
 	border-radius:20px 0px;
 	display:block;
 	margin-bottom:50px;
+    border:none;
+    width:100%;
+    background-color:#1D00AD;
+    color:white;
+}
+#submit {
+    margin: 0 auto;
+    padding:20px;
+    border-radius:20px 0px;
+    background-color:#1D00AD;
+    font-family:Maddac;
+    letter-spacing:5px;
+    color:white;
+    width:80px;
+    font-size:25px;
+    font-weight:normal;
 }
