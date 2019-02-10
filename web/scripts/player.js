@@ -11,6 +11,11 @@ $(document).ready(function() {
         $("#search_container").load("../pages/search.html");
     });
 
+    $('#serverButton').on('click', function() {
+        $("#search_container").addClass('search_container_active');
+        $("#search_container").load("../pages/server.html");
+    });
+
     $('#radioButton').on('click', function() {
         eel.toggle_radio()(function (a) {
             if (a) {

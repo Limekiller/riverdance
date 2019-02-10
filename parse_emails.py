@@ -1,12 +1,23 @@
 import imaplib
 import email
 
+from_email = None
+from_pwd = None
+
+def set_variables(email, pwd):
+    global from_email
+    global from_pwd
+    from_email = email
+    from_pwd = pwd
 
 def readmail():
     """Get the most recently received email with the subject spot.dj"""
 
-    from_email = 'gcprogrammingclub@gmail.com'
-    from_pwd = 'YAYPYTHON'
+    global from_email
+    global from_pwd
+
+   # from_email = 'gcprogrammingclub@gmail.com'
+   # from_pwd = 'YAYPYTHON'
     smtp_server = 'imap.gmail.com'
 
     mail = imaplib.IMAP4_SSL(smtp_server)
