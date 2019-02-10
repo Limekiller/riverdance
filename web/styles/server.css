@@ -1,0 +1,23 @@
+#form_title {
+	width:600px;
+	margin:0 auto;
+	margin-top:50px;
+	font-size:60px;
+	letter-spacing:7px;
+}
+#form_container {
+	width:600px;
+	margin:0 auto;
+}
+#form_container label {
+	font-size:40px;
+	font-family:Maddac;
+	letter-spacing:7px;
+	font-weight:normal;
+}
+#form_container input[type=text] {
+	padding:15px;
+	border-radius:20px 0px;
+	display:block;
+	margin-bottom:50px;
+}
