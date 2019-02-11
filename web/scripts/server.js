@@ -22,7 +22,7 @@ $("#email").change(function() {
         smtpServer = "smtp.mail.me.com";
         $("#smtp_server").val("smtp.mail.me.com");
     } else {
-        $("#server_prefix").html('Invalid email address');
+        $("#server_prefix").html('Email not recognized.<br>Please enter SMTP domain: ');
         $("#smtp_server").val("");
     }
 });

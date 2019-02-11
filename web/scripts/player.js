@@ -16,9 +16,11 @@ $(document).ready(function() {
         if (!serverListening) {
             $("#search_container").addClass('search_container_active');
             $("#search_container").load("../pages/server.html");
+            $('#serverButton').addClass('buttonActive');
             serverListening = true;
         } else {
             eel.unset_email();
+            $('#serverButton').removeClass('buttonActive');
             serverListening = false;
         }
     });

@@ -38,7 +38,10 @@ def handle_song(artist, title):
         }]
     }
     with youtube_dl.YoutubeDL(options) as ydl:
-        ydl.download([video_url])
+        try:
+            ydl.download([video_url])
+        except youtube_dl.DownloadError:
+            fast_forward()
 
     # Return the song length
     return duration
@@ -154,15 +157,18 @@ def check_email():
 
 
 def use_radio():
+    global radio
     while True:
         if radio and len(play_queue) < 5:
             # loops_without_music = 0
-            artist = artist_finder.find_similar_artist(play_queue[0][1])
-            song = artist_finder.get_artist_song(artist)
-            if not artist or not song:
-                return
-            song, link = youtube_scrape.scrape(song, artist, True)
-            play_queue.append([song, artist, link])
+            try:
+                artist = artist_finder.find_similar_artist(play_queue[0][1])
+                song = artist_finder.get_artist_song(artist)
+                song, link = youtube_scrape.scrape(song, artist, True)
+                play_queue.append([song, artist, link])
+            except IndexError:
+                pass
+
         eel.sleep(1)
 
 
@@ -176,33 +182,7 @@ def play_music():
     last_song = ''
     time_start = time.time()
     while True:
-        # Get last email and set artist+song variables
-        # artist, song = parse_emails.readmail()
-        #
-        # if artist != last_artist or song != last_song:
-        #     loops_without_music = 0
-        #     last_artist, last_song = artist, song
-        #
-        #     # If there's nothing in the queue, start playing the song; otherwise just append it to the queue
-        #     if not play_queue:
-        #         play_queue.append(youtube_scrape.scrape(song, artist, True))
-        #         print("Queue updated:")
-        #         print(play_queue)
-        #         print("Now playing: " + artist + " - " + song)
-        #
-        #         # Get song duration and download file
-        #         time_to_end = handle_song(song)
-        #
-        #         # If duration is Null, skip it
-        #         if not time_to_end:
-        #             last_artist, last_song = '', ''
-        #             continue
-        #         start_song(song)
-        #         time_start = time.time()
-        #     else:
-        #         play_queue.append(youtube_scrape.scrape(song, artist, True))
-        #         print("Queue updated:")
-        #         print(play_queue)
+
         if time_to_end == math.inf and play_queue:
             last_artist, last_song = play_queue[0][1], play_queue[0][0]
             song = last_song
@@ -233,7 +213,6 @@ def play_music():
 
             # If there's a song in the queue, play it; otherwise, do nothing
             if play_queue:
-                # loops_without_music = 0
                 artist, song = play_queue[0][1], play_queue[0][0]
                 print("Now playing: " + artist + " - " + song)
                 time_to_end = handle_song(artist, song)
@@ -260,5 +239,5 @@ time_to_end = math.inf
 
 eel.spawn(use_radio)
 eel.spawn(check_email)
-eel.start('main.html', options=options)
+eel.start('main.html')
 

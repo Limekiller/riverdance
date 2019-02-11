@@ -83,6 +83,10 @@ body {
    border-radius:100px;
    transition:padding 0.4s ease;
 }
+.homepage_button img {
+    width:70px;
+    margin-top:12px;
+}
 .homepage_button:hover {
    animation:bubble_move 20s ease infinite,blorb_out 0.4s ease forwards; 
    transition:padding 0.4s ease;

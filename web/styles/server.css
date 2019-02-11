@@ -44,18 +44,27 @@
     width:100%;
     background-color:#1D00AD;
     color:white;
+    transition:border-radius 0.4s ease;
+}
+#form_container input[type=text]:hover {
+    border-radius:0px 20px;
 }
 #server_prefix {
     opacity:0;
     transition:opacity 0.4s ease;
 }
 #form_container #smtp_server{
+    transition:background-color 0.4s ease;
     width:auto;
     display:inline;
     background:none;
     border-radius:0px;
-    padding:0px;
+    padding:10px;
     font-size:15px;
+    border-radius:10px 0px;
+}
+#form_container #smtp_server:hover {
+    background-color:#1d00ad36; 
 }
 #submit {
     margin: 0 auto;

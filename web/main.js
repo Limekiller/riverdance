@@ -17,6 +17,18 @@ $(document).ready(function() {
         $("#search_container").load("pages/search.html");
     });
 
+    $("#server").on('click', function() {
+        $("#button_container").addClass('search_active_b');
+        $("#wave").addClass('wave_active');
+        $("#logo_container").addClass('search_active_l');
+        $("#search_container").addClass("search_active_sc");
+        $("#search_container").load("pages/server.html", function() {
+            $("#submit").on('click', function() {
+                window.location.replace('pages/player.html')
+            });
+        });
+    });
+
     // Get search results
     $("#search_container").on('keyup', function(e) {
         if (e.keyCode == 13) {
