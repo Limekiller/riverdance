@@ -54,6 +54,19 @@ def start_song(song):
 
 
 @eel.expose
+def set_email(email, pwd, server):
+    global server_listening
+    parse_emails.set_variables(email, pwd, server)
+    server_listening = True
+
+
+@eel.expose
+def unset_email():
+    global server_listening
+    server_listening = False
+
+
+@eel.expose
 def pause_music():
     global paused
     if not paused:
@@ -78,6 +91,7 @@ def download_song():
     except FileExistsError:
         pass
     shutil.copyfile("./Music/temp/"+play_queue[0][0]+".mp3", "./Music/saved/"+play_queue[0][1].title()+"/"+play_queue[0][0].title()+".mp3")
+
 
 @eel.expose
 def get_search_results(search_title, search_artist):
@@ -124,18 +138,32 @@ def begin_playback():
     eel.spawn(play_music)
 
 
-def use_radio():
-    global last_played_artist
+def check_email():
+    global server_listening
+    last_email = None
     while True:
-        if last_played_artist and radio and len(play_queue) < 5:
+        if server_listening:
+            email = parse_emails.readmail()
+            if email != last_email:
+                last_email = email
+                song = last_email[0]
+                artist = last_email[1]
+                song, link = youtube_scrape.scrape(song, artist, True)
+                play_queue.append([song, artist, link])
+        eel.sleep(5)
+
+
+def use_radio():
+    while True:
+        if radio and len(play_queue) < 5:
             # loops_without_music = 0
-            artist = artist_finder.find_similar_artist(last_played_artist)
+            artist = artist_finder.find_similar_artist(play_queue[0][1])
             song = artist_finder.get_artist_song(artist)
             if not artist or not song:
                 return
             song, link = youtube_scrape.scrape(song, artist, True)
             play_queue.append([song, artist, link])
-        eel.sleep(5)
+        eel.sleep(1)
 
 
 def play_music():
@@ -143,7 +171,6 @@ def play_music():
     global play_queue
     global paused
     global time_to_end
-    global last_played_artist
 
     last_artist = ''
     last_song = ''
@@ -180,7 +207,6 @@ def play_music():
             last_artist, last_song = play_queue[0][1], play_queue[0][0]
             song = last_song
             artist = last_artist
-            last_played_artist = artist
             time_to_end = handle_song(artist, song)
             start_song(song)
             time_start = time.time()
@@ -201,7 +227,6 @@ def play_music():
                 except PermissionError:
                     pass
 
-            last_played_artist = play_queue[0][1]
             play_queue.pop(0)
             print("Queue updated:")
             print(play_queue)
@@ -230,9 +255,10 @@ options = {
 play_queue = []
 paused = False
 radio = False
-last_played_artist = None
-eel.spawn(use_radio)
+server_listening = False
 time_to_end = math.inf
 
-eel.start('main.html')
+eel.spawn(use_radio)
+eel.spawn(check_email)
+eel.start('main.html', options=options)
 

@@ -3,22 +3,28 @@ import email
 
 from_email = None
 from_pwd = None
+smtp_server = None
 
-def set_variables(email, pwd):
+
+def set_variables(email, pwd, server):
     global from_email
     global from_pwd
+    global smtp_server
     from_email = email
     from_pwd = pwd
+    smtp_server = server
+
 
 def readmail():
     """Get the most recently received email with the subject spot.dj"""
 
     global from_email
     global from_pwd
+    global smtp_server
 
    # from_email = 'gcprogrammingclub@gmail.com'
    # from_pwd = 'YAYPYTHON'
-    smtp_server = 'imap.gmail.com'
+   # smtp_server = 'imap.gmail.com'
 
     mail = imaplib.IMAP4_SSL(smtp_server)
     mail.login(from_email, from_pwd)

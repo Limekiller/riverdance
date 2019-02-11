@@ -1,3 +1,4 @@
+var serverListening = false;
 $(document).ready(function() {
 
     setInterval(function() {
@@ -12,8 +13,14 @@ $(document).ready(function() {
     });
 
     $('#serverButton').on('click', function() {
-        $("#search_container").addClass('search_container_active');
-        $("#search_container").load("../pages/server.html");
+        if (!serverListening) {
+            $("#search_container").addClass('search_container_active');
+            $("#search_container").load("../pages/server.html");
+            serverListening = true;
+        } else {
+            eel.unset_email();
+            serverListening = false;
+        }
     });
 
     $('#radioButton').on('click', function() {

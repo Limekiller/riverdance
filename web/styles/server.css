@@ -23,6 +23,7 @@
 	margin:0 auto;
     opacity:0;
     animation:fade_in 0.4s ease 0.5s forwards;
+    color:white;
 }
 #form_container label {
 	font-size:40px;
@@ -44,15 +45,33 @@
     background-color:#1D00AD;
     color:white;
 }
+#server_prefix {
+    opacity:0;
+    transition:opacity 0.4s ease;
+}
+#form_container #smtp_server{
+    width:auto;
+    display:inline;
+    background:none;
+    border-radius:0px;
+    padding:0px;
+    font-size:15px;
+}
 #submit {
     margin: 0 auto;
     padding:20px;
     border-radius:20px 0px;
     background-color:#1D00AD;
     font-family:Maddac;
-    letter-spacing:5px;
+    letter-spacing:7px;
     color:white;
-    width:80px;
+    width:90px;
+    margin-bottom:20px;
     font-size:25px;
     font-weight:normal;
+    transition:border-radius 0.4s ease;
+}
+#submit:hover {
+    cursor:pointer;
+    border-radius:0px 20px;
 }
