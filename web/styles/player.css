@@ -1,5 +1,5 @@
 body {
-    background:linear-gradient(#389bfd, #001d6f);
+    background:#389bfd;
     overflow:hidden;
 }
 #playerContainer {
@@ -49,7 +49,6 @@ body {
     transform:translateY(-5px);
 }
 #player {
-    background-color:#1d00ad36;
     border-radius:20px 0px;
     height:fit-content;
     width:300px;
