@@ -55,7 +55,7 @@ def get_video_time(url):
     unrefined_time = string_to_search[slice_beginning:slice_end]
     refined_time = ''.join(c for c in unrefined_time if c.isdigit())
 
-    return int(refined_time)
+    return int(refined_time)*.001
 
 
 def scrape(search_title, search_artist, get_top_result=False):

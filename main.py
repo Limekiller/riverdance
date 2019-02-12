@@ -16,17 +16,23 @@ import artist_finder
 eel.init('web')
 
 
-def handle_song(artist, title):
+def handle_song(artist, title, queue_item=0):
     """Search YouTube for videos and download the best result"""
-    eel.artLoading(True)
-    video_url = "https://youtube.com"+play_queue[0][2]
+
+    if not queue_item:
+        eel.artLoading(True)
+        eel.getAlbumArt(title, artist)
+
+    video_url = "https://youtube.com" + play_queue[queue_item][2]
     duration = youtube_scrape.get_video_time(video_url)
+
+    if os.path.exists('./Music/temp/'+title+'.mp3'):
+        start_song(title)
+        return duration
 
     # If the function fails, return null
     if not duration:
         return duration
-
-    eel.getAlbumArt(title, artist)
 
     duration = duration / 1000
     options = {
@@ -146,6 +152,22 @@ def begin_playback():
     eel.spawn(play_music)
 
 
+def dl_songs_in_bg():
+    while True:
+        for i in play_queue:
+            if not os.path.exists("./Music/temp/"+i[0]+'.mp3'):
+                handle_song(i[1], i[0], play_queue.index(i))
+
+        # for file in os.scandir('./Music/temp/'):
+        #     print(file)
+        #     if file not in [i[0] for i in play_queue]:
+        #         try:
+        #             os.remove(file)
+        #         except PermissionError:
+        #             pass
+        eel.sleep(10)
+
+
 def check_email():
     global server_listening
     last_email = None
@@ -183,8 +205,6 @@ def play_music():
     global paused
     global time_to_end
 
-    last_artist = ''
-    last_song = ''
     time_start = time.time()
     while True:
 
@@ -205,12 +225,6 @@ def play_music():
             print(time_to_end)
             pygame.mixer.stop()
             pygame.mixer.quit()
-            # Attempt to delete all files in directory
-            for file in os.scandir('./Music/temp/'):
-                try:
-                    os.remove(file)
-                except PermissionError:
-                    pass
 
             play_queue.pop(0)
             print("Queue updated:")
@@ -244,5 +258,6 @@ time_to_end = math.inf
 
 eel.spawn(use_radio)
 eel.spawn(check_email)
+eel.spawn(dl_songs_in_bg)
 eel.start('main.html')
 
