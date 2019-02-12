@@ -70,6 +70,11 @@ def unset_email():
 
 
 @eel.expose
+def swap_queue(index1, index2):
+    play_queue.insert(int(index2)+1, play_queue.pop(int(index1)+1))
+
+
+@eel.expose
 def pause_music():
     global paused
     if not paused:

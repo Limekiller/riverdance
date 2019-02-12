@@ -106,7 +106,9 @@ function updateArray(array){
         $("#queue").sortable({
             axis: "y",
             activate: function() {hovering = true; },
-            deactivate: function() {hovering = false; findSwapped(); }
+            deactivate: function() {hovering = false; findSwapped(); },
+            animation: 200,
+            revert: true
         });
     }
 }
@@ -146,16 +148,14 @@ function artLoading(loading) {
 function findSwapped() {
     var old_index;
     var new_index;
-    var current_sum;
+    var current_sum = -99;
     $("#queue").children().each(function(index) {
         this_index = $(this).attr('id');
         if (this_index != index && Math.abs(this_index - index) > current_sum) {
             current_sum = Math.abs(this_index - index);
             old_index = $(this).attr('id');
             new_index = index;
-            return false;
         }
     });
-    console.log(old_index);
-    console.log(new_index);
+    eel.swap_queue(old_index, new_index);
 }
