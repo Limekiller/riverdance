@@ -1,4 +1,5 @@
 var serverListening = false;
+var hovering = false;
 $(document).ready(function() {
 
     setInterval(function() {
@@ -78,7 +79,6 @@ $(document).ready(function() {
             //});
         }
     });
-
 });
 
 function updateArray(array){
@@ -94,13 +94,19 @@ function updateArray(array){
                '<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
        }
     });
-    if ($("#queue").html() != queueData) {
+    if ($("#queue").html() != queueData && !hovering) {
         $("#queue").html(queueData);
         $('.queueDel').on('click', function() {
 		$(this).parent().addClass('queueSongDeleted');
 		$(".queueDel").css('display', 'none');
 		$(this).parent().css('animation', 'queueUnload 0.4s ease forwards');
 		    deleteIndex($(this).parent().attr('id'));
+        });
+
+        $("#queue").sortable({
+            axis: "y",
+            activate: function() {hovering = true; },
+            deactivate: function() {hovering = false; findSwapped(); }
         });
     }
 }
@@ -135,4 +141,21 @@ function artLoading(loading) {
     } else {
         $("#artLoading").addClass('artLoadingActive');
     }
+}
+
+function findSwapped() {
+    var old_index;
+    var new_index;
+    var current_sum;
+    $("#queue").children().each(function(index) {
+        this_index = $(this).attr('id');
+        if (this_index != index && Math.abs(this_index - index) > current_sum) {
+            current_sum = Math.abs(this_index - index);
+            old_index = $(this).attr('id');
+            new_index = index;
+            return false;
+        }
+    });
+    console.log(old_index);
+    console.log(new_index);
 }
