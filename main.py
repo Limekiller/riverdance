@@ -38,6 +38,7 @@ def handle_song(artist, title, queue_item=0):
     options = {
         'format': 'bestaudio/best',
         'outtmpl': './Music/temp/'+title+".%(ext)s",
+        'nocheckcertificate': True,
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
@@ -193,7 +194,7 @@ def use_radio():
                 song = artist_finder.get_artist_song(artist)
                 song, link = youtube_scrape.scrape(song, artist, True)
                 play_queue.append([song, artist, link])
-            except IndexError:
+            except:
                 pass
 
         eel.sleep(1)
@@ -208,6 +209,8 @@ def play_music():
     time_start = time.time()
     while True:
 
+        print(time_to_end)
+        print(time.time() - time_start)
         if time_to_end == math.inf and play_queue:
             last_artist, last_song = play_queue[0][1], play_queue[0][0]
             song = last_song
@@ -222,7 +225,6 @@ def play_music():
         # Check time, and if the duration of the song has passed, handle things
         time_end = time.time()
         if time_end - time_start >= time_to_end:
-            print(time_to_end)
             pygame.mixer.stop()
             pygame.mixer.quit()
 
@@ -230,6 +232,7 @@ def play_music():
             print("Queue updated:")
             print(play_queue)
 
+            eel.sleep(2);
             # If there's a song in the queue, play it; otherwise, do nothing
             if play_queue:
                 artist, song = play_queue[0][1], play_queue[0][0]
