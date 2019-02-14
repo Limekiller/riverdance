@@ -30,7 +30,7 @@ def readmail():
     mail.login(from_email, from_pwd)
     mail.select('inbox')
 
-    type, data = mail.search(None, '(SUBJECT "spot.dj")')
+    type, data = mail.search(None, '(SUBJECT "Riverdance")')
     id_list = data[0].split()
 
     typ, data = mail.fetch(id_list[-1], '(RFC822)')

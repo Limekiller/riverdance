@@ -55,7 +55,7 @@ def get_video_time(url):
     unrefined_time = string_to_search[slice_beginning:slice_end]
     refined_time = ''.join(c for c in unrefined_time if c.isdigit())
 
-    return int(refined_time)*.001
+    return int(refined_time)
 
 
 def scrape(search_title, search_artist, get_top_result=False):
@@ -64,7 +64,9 @@ def scrape(search_title, search_artist, get_top_result=False):
     search_title = search_title.replace(" ", "+").replace("&", "and")
 
     search_query = search_title + "+" + search_artist
-    youtube_url = "https://www.youtube.com/results?sp=EgIQAQ%253D%253D&search_query=" + search_query
+    print(search_query)
+    # youtube_url = "https://www.youtube.com/results?sp=EgIQAQ%253D%253D&search_query=" + search_query
+    youtube_url = "https://www.youtube.com/results?search_query=" + search_query
     header = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'}
 
     try:

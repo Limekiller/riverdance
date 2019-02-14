@@ -35,7 +35,7 @@
 #form_container p {
     margin-bottom:50px;
 }
-#form_container input[type=text] {
+#form_container input[type=text],#form_container input[type=password]  {
 	padding:25px;
 	border-radius:20px 0px;
 	display:block;
@@ -46,7 +46,7 @@
     color:white;
     transition:border-radius 0.4s ease;
 }
-#form_container input[type=text]:hover {
+#form_container input[type=text]:hover,#form_container input[type=password]:hover   {
     border-radius:0px 20px;
 }
 #server_prefix {

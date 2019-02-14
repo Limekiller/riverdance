@@ -26,17 +26,17 @@ def handle_song(artist, title, queue_item=0):
     video_url = "https://youtube.com" + play_queue[queue_item][2]
     duration = youtube_scrape.get_video_time(video_url)
 
+    # If the function fails, return null
+    if not duration:
+        return duration
+    duration = duration / 1000
+
     if os.path.exists('./Music/temp/'+title+'.mp3'):
         start_song(title)
         return duration
 
-    # If the function fails, return null
-    if not duration:
-        return duration
-
-    duration = duration / 1000
     options = {
-        'format': 'bestaudio/best',
+        'format': 'best',
         'outtmpl': './Music/temp/'+title+".%(ext)s",
         'nocheckcertificate': True,
         'postprocessors': [{
@@ -159,13 +159,12 @@ def dl_songs_in_bg():
             if not os.path.exists("./Music/temp/"+i[0]+'.mp3'):
                 handle_song(i[1], i[0], play_queue.index(i))
 
-        # for file in os.scandir('./Music/temp/'):
-        #     print(file)
-        #     if file not in [i[0] for i in play_queue]:
-        #         try:
-        #             os.remove(file)
-        #         except PermissionError:
-        #             pass
+        for file in os.listdir('./Music/temp/'):
+            if file.rsplit('.', 1)[0] not in [i[0] for i in play_queue]:
+                try:
+                    os.remove('./Music/temp/'+file)
+                except PermissionError:
+                    pass
         eel.sleep(10)
 
 
@@ -209,13 +208,12 @@ def play_music():
     time_start = time.time()
     while True:
 
-        print(time_to_end)
-        print(time.time() - time_start)
         if time_to_end == math.inf and play_queue:
             last_artist, last_song = play_queue[0][1], play_queue[0][0]
             song = last_song
             artist = last_artist
             time_to_end = handle_song(artist, song)
+            eel.sleep(2)
             start_song(song)
             time_start = time.time()
 
