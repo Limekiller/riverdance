@@ -67,8 +67,9 @@ $(document).ready(function() {
                     artist = value['artist']
                     HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+title+'\', \''+artist+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
                 });
-                $("#homeBody").css("overflow", "auto");
-                $("#homeBody").css("overflow-x", "hidden");
+                $('body').css("overflow", "auto");
+                $('body').css("overflow-x", "hidden");
+                $("#resultsh1").css('animation', 'fade_in 0.4s ease forwards');
                 $("#search_results").html(HTMLToAppend);
             });
 

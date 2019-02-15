@@ -45,6 +45,7 @@ $(document).ready(function() {
                 });
                 $("#homeBody").css("overflow", "auto");
                 $("#homeBody").css("overflow-x", "hidden");
+                $("#resultsh1").css('animation', 'fade_in 0.4s ease forwards');
                 $("#search_results").html(HTMLToAppend);
             });
 
@@ -69,7 +70,6 @@ $(document).ready(function() {
         $("#button_container").addClass('search_active_b');
         $("#logo_container").addClass('search_active_l');
         $("#search_container").addClass("search_active_sc");
-        $("#search_container").load("pages/search.html");
 	setTimeout(function() {window.location.replace('pages/player.html')},500);
     });
 });

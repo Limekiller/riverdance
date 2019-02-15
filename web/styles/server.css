@@ -17,6 +17,8 @@
 	letter-spacing:7px;
     margin-bottom:-15px;
     color:#1D00AD;
+    opacity:0;
+    animation:fade_in 0.4s 0.5s ease forwards;
 }
 #form_container {
 	width:600px;
