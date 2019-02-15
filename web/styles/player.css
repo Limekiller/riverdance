@@ -99,10 +99,11 @@ body {
     position:absolute;
     margin-top:100vh;
     transition:margin-top 0.4s ease;
-    width:100%;
+    width:auto;
+    min-height:100vh;
     height:3000px;
     z-index:99;
-    background:linear-gradient(#389bfd, #001d6f, #000000);
+    background:#389bfd;
     overflow-y:hidden;
     overflow-x:hidden;
 }
@@ -113,16 +114,17 @@ body {
     text-transform:capitalize;
 }
 .queueSong {
-    background-color:#1D00AD;
+    background-color:#0080ff;
     padding:15px;
     border-radius:20px 0px;
     margin-bottom:20px;
     min-height:32px;
     position:relative;
-    transition:border-radius 0.4s ease, margin-bottom 0.4s ease;
+    transition:border-radius 0.4s ease, margin-bottom 0.4s ease, background-color 0.4s ease;
 }
 .queueSong:hover {
     border-radius:0px 20px;
+    background-color:#1D00AD;
 }
 .queueSong:hover .queueDel {
     opacity:1;

@@ -55,17 +55,18 @@ h1.search_bar_active {
 .search_result {
     width:100%;
     margin:0 auto;
-    background-color:#1D00AD;
+    background-color:#0080ff;
     color:white;
     padding:15px;
     margin-top:35px;
     border-radius:20px 0px;
-    transition:border-radius 0.4s ease;
+    transition:border-radius 0.4s ease, background-color 0.4s ease;
     animation:fade_in 0.4s ease forwards;
 }
 .search_result:hover {
     cursor:pointer;
     border-radius:0px 20px;
+    background-color:#1D00AD;
 }
 .search_result:hover .resultPlus {
     opacity:1;
