@@ -99,9 +99,9 @@ body {
     position:absolute;
     margin-top:100vh;
     transition:margin-top 0.4s ease;
-    width:auto;
+    width:100%;
     min-height:100vh;
-    height:3000px;
+    height:100%;
     z-index:99;
     background:#389bfd;
     overflow-y:hidden;

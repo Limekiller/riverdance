@@ -3,9 +3,18 @@ var hovering = false;
 $(document).ready(function() {
 
     setInterval(function() {
-        eel.get_queue()(function(a){updateArray(a);});
+        if (!hovering) {
+            eel.get_queue()(function(a){updateArray(a);});
+        }
     }, 2000);
     eel.begin_playback();
+
+    $("#queue").hover(function() {
+        hovering = true;
+        console.log('ah');
+    }, function() {
+        hovering = false;
+    });
 
     $('#searchButton').on('click', function() {
         $('head').append('<link rel="stylesheet" type="text/css" href="styles/search.css">');
