@@ -1,20 +1,22 @@
 var serverListening = false;
-var hovering = false;
+var hovering = null;
+var sorting = false;
 $(document).ready(function() {
 
     setInterval(function() {
-        if (!hovering) {
+        console.log(hovering);
+        if (!sorting) {
             eel.get_queue()(function(a){updateArray(a);});
         }
     }, 2000);
     eel.begin_playback();
 
-    $("#queue").hover(function() {
-        hovering = true;
-        console.log('ah');
-    }, function() {
-        hovering = false;
-    });
+    //$("#queue").hover(function() {
+    //    hovering = true;
+    //    console.log('ah');
+    //}, function() {
+    //    hovering = false;
+    //});
 
     $('#searchButton').on('click', function() {
         $('head').append('<link rel="stylesheet" type="text/css" href="styles/search.css">');
@@ -80,6 +82,7 @@ $(document).ready(function() {
                 $('body').css("overflow-x", "hidden");
                 $("#resultsh1").css('animation', 'fade_in 0.4s ease forwards');
                 $("#search_results").html(HTMLToAppend);
+
             });
 
             //eel.get_search_results($("#search_bar_title").val(),$("#search_bar_artist").val()) (function(a) {
@@ -94,29 +97,41 @@ $(document).ready(function() {
 function updateArray(array){
     var queueData = '';
     array.forEach(function(item, index) {
-	if (index == 0) {
-		$("#songTitle").html(item[0]);
-		$("#songArtist").html(item[1]);
-	} else if ($('#'+(index-1)).length == 0) {
-           queueData += '<div style="animation:queueLoad 0.4s ease forwards;" class="queueSong" id="'+(index-1)+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
-       } else {
-           queueData += '<div class="queueSong" id="'+(index-1)+'">'+item[0]+
-               '<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
-       }
+        if (index == 0) {
+            $("#songTitle").html(item[0]);
+            $("#songArtist").html(item[1]);
+        } else if ($('#'+(index-1)).length == 0) {
+               queueData += '<div style="animation:fade_in 0.4s ease forwards;" class="queueSong" id="'+(index-1)+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
+        } else {
+            if (index-1 == hovering) {
+               queueData += '<div class="queueSong queueSongActive" id="'+(index-1)+'">'+item[0]+
+                   '<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
+            } else {
+               queueData += '<div class="queueSong" id="'+(index-1)+'">'+item[0]+
+                   '<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
+            }
+        }
     });
-    if ($("#queue").html() != queueData && !hovering) {
+    if ($("#queue").html() != queueData) {
         $("#queue").html(queueData);
         $('.queueDel').on('click', function() {
 		$(this).parent().addClass('queueSongDeleted');
 		$(".queueDel").css('display', 'none');
-		$(this).parent().css('animation', 'queueUnload 0.4s ease forwards');
+		$(this).parent().css('animation', 'fade_out 0.4s ease forwards');
 		    deleteIndex($(this).parent().attr('id'));
+        });
+
+        $(".queueSong").hover(function() {
+            hovering = $(this).attr('id');
+        }, function() {
+            $(this).removeClass('queueSongActive');
+            hovering = null;
         });
 
         $("#queue").sortable({
             axis: "y",
-            activate: function() {hovering = true; },
-            deactivate: function() {hovering = false; findSwapped(); },
+            activate: function() {sorting = true; },
+            deactivate: function() {sorting = false; findSwapped(); },
             animation: 200,
             revert: true
         });

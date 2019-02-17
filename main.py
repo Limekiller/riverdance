@@ -4,6 +4,7 @@ gevent.monkey.patch_all()
 import eel
 import time
 import math
+import sys
 import os
 import shutil
 import parse_emails
@@ -121,6 +122,7 @@ def get_search_results(search_title, search_artist):
 def add_to_queue(title, artist):
     global play_queue
     real_title, link = youtube_scrape.scrape(title, artist, True)
+    real_title = real_title.split(' - ')[-1]
     play_queue.append([real_title, artist, link])
 
 
@@ -192,6 +194,7 @@ def use_radio():
                 artist = artist_finder.find_similar_artist(play_queue[0][1])
                 song = artist_finder.get_artist_song(artist)
                 song, link = youtube_scrape.scrape(song, artist, True)
+                song = song.split(' - ')[-1]
                 play_queue.append([song, artist, link])
             except:
                 pass
@@ -208,6 +211,8 @@ def play_music():
     time_start = time.time()
     while True:
 
+        print(time.time() - time_start)
+        print(time_to_end)
         if time_to_end == math.inf and play_queue:
             last_artist, last_song = play_queue[0][1], play_queue[0][0]
             song = last_song
@@ -230,7 +235,7 @@ def play_music():
             print("Queue updated:")
             print(play_queue)
 
-            eel.sleep(2);
+            eel.sleep(2)
             # If there's a song in the queue, play it; otherwise, do nothing
             if play_queue:
                 artist, song = play_queue[0][1], play_queue[0][0]
@@ -256,6 +261,9 @@ paused = False
 radio = False
 server_listening = False
 time_to_end = math.inf
+
+if sys.platform == "darwin":
+    os.system("PATH=$PATH:.")
 
 eel.spawn(use_radio)
 eel.spawn(check_email)

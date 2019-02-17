@@ -122,7 +122,7 @@ body {
     position:relative;
     transition:border-radius 0.4s ease, margin-bottom 0.4s ease, background-color 0.4s ease;
 }
-.queueSong:hover {
+.queueSong:hover, .queueSongActive {
     border-radius:0px 20px;
     background-color:#1D00AD;
 }

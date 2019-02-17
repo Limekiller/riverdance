@@ -87,16 +87,16 @@ def scrape(search_title, search_artist, get_top_result=False):
         except TypeError:
             return None, None
 
-
-    # Return best matching link and its duration
-    # best_title = rank_results(title, search_title)#, search_artist)
-    # print("Best result is: '"+str(title[best_title])+"' at index "+str(best_title))
-    # final_url = 'https://www.youtube.com'+ref[best_title]
-    #
-    # video_length = get_video_time(final_url)
-    # print("Video length is "+str(video_length)+' ms long')
-    # return final_url, video_length
-
     if get_top_result:
-        return [title[0], ref[0]]
+        # Return best matching link and its duration
+        best_title = rank_results(title, search_title, search_artist)#, search_artist)
+        print("Best result is: '"+str(title[best_title])+"' at index "+str(best_title))
+        final_url = 'https://www.youtube.com'+ref[best_title]
+
+        video_length = get_video_time(final_url)
+        print("Video length is "+str(video_length)+' ms long')
+        return str(title[best_title]), ref[best_title]
+
+    # if get_top_result:
+    #     return [title[0], ref[0]]
     return title, ref
