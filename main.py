@@ -263,7 +263,7 @@ server_listening = False
 time_to_end = math.inf
 
 if sys.platform == "darwin":
-    os.system("PATH=$PATH:.")
+    os.environ['PATH'] += ':'+os.getcwd()
 
 eel.spawn(use_radio)
 eel.spawn(check_email)

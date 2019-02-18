@@ -133,7 +133,7 @@ function updateArray(array){
             },
             deactivate: function() {findSwapped();},
             change: function(event, ui) {
-                if ($(".ui-sortable-placeholder").prev().attr('id') < elemBefore.attr('id')) {
+                if ($(".ui-sortable-placeholder").prev().attr('id') < elemBefore.attr('id') || $(".ui-sortable-placeholder").prev().attr('id') == undefined) {
                     console.log("up");
                     $(".ui-sortable-placeholder").next().css('animation', 'slideDown 0.2s ease');
                 } else {
@@ -147,8 +147,6 @@ function updateArray(array){
                     elemBefore.css('animation', '');
                     elemAfter.css('animation', '');
                 }, 300);
-                console.log(elemBefore);
-                console.log(elemAfter);
             },
             animation: 200,
             revert: true
