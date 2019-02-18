@@ -1,22 +1,14 @@
 var serverListening = false;
-var hovering = null;
+var hovering = 'null';
 var sorting = false;
 $(document).ready(function() {
 
     setInterval(function() {
-        console.log(hovering);
         if (!sorting) {
             eel.get_queue()(function(a){updateArray(a);});
         }
     }, 2000);
     eel.begin_playback();
-
-    //$("#queue").hover(function() {
-    //    hovering = true;
-    //    console.log('ah');
-    //}, function() {
-    //    hovering = false;
-    //});
 
     $('#searchButton').on('click', function() {
         $('head').append('<link rel="stylesheet" type="text/css" href="styles/search.css">');
@@ -79,6 +71,7 @@ $(document).ready(function() {
                     HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+title+'\', \''+artist+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
                 });
                 $('body').css("overflow", "auto");
+                $('#search_container').css("overflow", "auto");
                 $('body').css("overflow-x", "hidden");
                 $("#resultsh1").css('animation', 'fade_in 0.4s ease forwards');
                 $("#search_results").html(HTMLToAppend);
@@ -103,7 +96,7 @@ function updateArray(array){
         } else if ($('#'+(index-1)).length == 0) {
                queueData += '<div style="animation:fade_in 0.4s ease forwards;" class="queueSong" id="'+(index-1)+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
         } else {
-            if (index-1 == hovering) {
+            if (hovering.includes(item[0]) && hovering.includes(item[1])) {
                queueData += '<div class="queueSong queueSongActive" id="'+(index-1)+'">'+item[0]+
                    '<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
             } else {
@@ -122,16 +115,17 @@ function updateArray(array){
         });
 
         $(".queueSong").hover(function() {
-            hovering = $(this).attr('id');
+            hovering = $(this).html();
+            $(this).addClass('queueSongActive');
         }, function() {
             $(this).removeClass('queueSongActive');
-            hovering = null;
+            hovering = 'null';
         });
 
         $("#queue").sortable({
             axis: "y",
-            activate: function() {sorting = true; },
-            deactivate: function() {sorting = false; findSwapped(); },
+            activate: function() {sorting = true;},
+            deactivate: function() {findSwapped();},
             animation: 200,
             revert: true
         });
@@ -182,5 +176,7 @@ function findSwapped() {
             new_index = index;
         }
     });
+    // hovering = 'null';
     eel.swap_queue(old_index, new_index);
+    setTimeout(function() {sorting = false}, 1000);
 }

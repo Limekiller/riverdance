@@ -120,7 +120,7 @@ body {
     margin-bottom:20px;
     min-height:32px;
     position:relative;
-    transition:border-radius 0.4s ease, margin-bottom 0.4s ease, background-color 0.4s ease;
+    transition:border-radius 0.4s ease, margin-bottom 0.4s ease, background-color 0.4s ease, transform 0.4s ease;
 }
 .queueSong:hover, .queueSongActive {
     border-radius:0px 20px;
@@ -131,6 +131,9 @@ body {
 }
 .queueSongDeleted {
     margin-bottom: -60px;
+}
+.ui-sortable-helper {
+    transform:translateX(30px);
 }
 .queueArtist {
     display:block;
