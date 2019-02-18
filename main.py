@@ -264,6 +264,9 @@ time_to_end = math.inf
 
 if sys.platform == "darwin":
     os.environ['PATH'] += ':'+os.getcwd()
+if not os.path.exists('./Music'):
+    os.makedirs('./Music/temp')
+    os.makedirs('./Music/saved')
 
 eel.spawn(use_radio)
 eel.spawn(check_email)
