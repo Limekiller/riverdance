@@ -65,6 +65,7 @@ $(document).ready(function() {
         $("#infArtist").html(current_song['track']['artist']['name']);
         $("#infSong").html(current_song['track']['name']);
         $("#infAlbum").html(current_song['track']['album']['title']);
+        $('#infoArt').css('background-image', 'url('+current_song['track']['album']['image'][data['track']['album']['image'].length-1]['#text']+')');
     });
 
     $("#search_container").on('keyup', function(e) {
@@ -182,7 +183,7 @@ function getAlbumArt(artist, title) {
     jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+title+'&track='+artist+'&format=json'
     $.getJSON(jsonURL, function(data) {
         current_song = data;
-        $('#art').css('background-image', 'url('+data['track']['album']['image'][2]['#text']+')');
+        $('#art').css('background-image', 'url('+data['track']['album']['image'][data['track']['album']['image'].length-1]['#text']+')');
     });
 }
 

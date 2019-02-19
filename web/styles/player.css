@@ -202,8 +202,18 @@ body {
 #infoContent h2 {
     text-transform:uppercase;
     font-size:40px;
+    line-height:10px;
+}
+#infoArt {
+    width:300px;
+    height:300px;
+    background-color:white;
+    margin-top:50px;
 }
 .iCColumn {
+    width:30%;
+}
+#contentColumn {
     width:50%;
 }
 #content {
@@ -214,7 +224,6 @@ body {
     position:absolute;
     width:120vw;
     margin-left:-10vw;
-    margin-top:45vh;
 }
 .cls-1 {
     stroke:#242bc3c2;
