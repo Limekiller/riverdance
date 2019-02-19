@@ -2,6 +2,7 @@ import gevent.monkey
 gevent.monkey.patch_all()
 
 import eel
+import requests
 import time
 import math
 import sys
@@ -12,6 +13,8 @@ import youtube_scrape
 import youtube_dl
 import pygame
 import mutagen.mp3
+from mutagen.id3 import ID3NoHeaderError
+from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, COMM, TCOM, TCON, TDRC, APIC
 import artist_finder
 
 eel.init('web')
@@ -100,13 +103,40 @@ def fast_forward():
 
 
 @eel.expose
-def download_song():
+def download_song(data):
     global play_queue
+    print(data)
     try:
-        os.makedirs("./Music/saved/"+play_queue[0][1].title())
+        os.makedirs("./Music/saved/"+data['track']['artist']['name']+'/'
+                    + data['track']['album']['title'].title())
     except FileExistsError:
         pass
-    shutil.copyfile("./Music/temp/"+play_queue[0][0]+".mp3", "./Music/saved/"+play_queue[0][1].title()+"/"+play_queue[0][0].title()+".mp3")
+
+    shutil.copyfile("./Music/temp/" + play_queue[0][0] + ".mp3", "./Music/saved/" + play_queue[0][1].title()
+                    + "/" + data['track']['album']['title'] + '/' + play_queue[0][0].title() + ".mp3")
+
+    try:
+        tags = ID3("./Music/saved/" + play_queue[0][1].title()
+                    + "/" + data['track']['album']['title'] + '/' + play_queue[0][0].title() + ".mp3")
+    except ID3NoHeaderError:
+        tags = ID3()
+
+    response = requests.get(data['track']['album']['image'][-1]['#text']).content
+    with open('img.png', 'wb') as handle:
+        handle.write(response)
+
+    tags["TIT2"] = TIT2(encoding=3, text=data['track']['name'])
+    tags["TALB"] = TALB(encoding=3, text=data['track']['album']['title'])
+    tags["TPE2"] = TPE2(encoding=3, text=data['track']['artist']['name'])
+    tags["TPE1"] = TPE1(encoding=3, text=data['track']['artist']['name'])
+    tags["TCOM"] = TCOM(encoding=3, text=data['track']['artist']['name'])
+    with open('img.png', 'rb') as albumart:
+        tags['APIC'] = APIC(encoding=3, data=albumart.read())
+
+    tags.save("./Music/saved/" + play_queue[0][1].title()
+                    + "/" + data['track']['album']['title'] + '/' + play_queue[0][0].title() + ".mp3")
+
+
 
 
 @eel.expose
@@ -243,7 +273,6 @@ def play_music():
                 time_to_end = handle_song(artist, song)
                 time_start = time.time()
                 if not time_to_end:
-                    last_artist, last_song = '', ''
                     continue
                 start_song(song)
             else:
@@ -257,6 +286,7 @@ options = {
     'args': ['C:\\Users\\bryod\\node_modules\electron\dist\electron.exe', '.']
 }
 play_queue = []
+current_song = {}
 paused = False
 radio = False
 server_listening = False
@@ -265,8 +295,9 @@ time_to_end = math.inf
 if sys.platform == "darwin":
     os.environ['PATH'] += ':'+os.getcwd()
 if not os.path.exists('./Music'):
-    os.makedirs('./Music/temp')
-    os.makedirs('./Music/saved')
+    os.makedirs('./Music/')
+    os.makedirs('./Music/temp/')
+    os.makedirs('./Music/saved/')
 
 eel.spawn(use_radio)
 eel.spawn(check_email)

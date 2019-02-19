@@ -1,6 +1,7 @@
 var serverListening = false;
 var hovering = 'null';
 var sorting = false;
+var current_song;
 $(document).ready(function() {
 
     setInterval(function() {
@@ -44,7 +45,7 @@ $(document).ready(function() {
     });
 
     $('#dl').on('click', function() {
-        eel.download_song();
+        eel.download_song(current_song);
     });
 
     $('#ff').on('click', function() {
@@ -171,6 +172,7 @@ eel.expose(getAlbumArt);
 function getAlbumArt(artist, title) {
     jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+title+'&track='+artist+'&format=json'
     $.getJSON(jsonURL, function(data) {
+        current_song = data;
         $('#art').css('background-image', 'url('+data['track']['album']['image'][2]['#text']+')');
     });
 }
