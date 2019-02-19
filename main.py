@@ -15,6 +15,7 @@ import pygame
 import mutagen.mp3
 from mutagen.id3 import ID3NoHeaderError
 from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, COMM, TCOM, TCON, TDRC, APIC
+from bs4 import BeautifulSoup
 import artist_finder
 
 eel.init('web')
@@ -65,6 +66,23 @@ def start_song(song):
     pygame.mixer.music.load("./Music/temp/" + song + ".mp3")
     eel.artLoading(False)
     pygame.mixer.music.play()
+
+
+@eel.expose
+def get_lyrics(artist, title):
+    header = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'}
+    try:
+        print('https://www.last.fm/music/'+artist.replace(' ','+')+'/_/'+title.replace(' ','+')+'/+lyrics')
+        response = requests.get('https://www.last.fm/music/'+artist.replace(' ','+')+'/_/'+title.replace(' ','+')+'/+lyrics', headers=header)
+    except requests.exceptions.ConnectionError:
+        return None, None
+
+    content = response.content
+    soup = BeautifulSoup(content, "html.parser")
+
+    all_title_tags = soup.find_all("span", attrs={"itemprop": "text"})
+
+    return str(all_title_tags[0])
 
 
 @eel.expose
@@ -130,11 +148,11 @@ def download_song(data):
     tags["TPE2"] = TPE2(encoding=3, text=data['track']['artist']['name'])
     tags["TPE1"] = TPE1(encoding=3, text=data['track']['artist']['name'])
     tags["TCOM"] = TCOM(encoding=3, text=data['track']['artist']['name'])
-    with open('./Music/temp/img.png', 'rb') as albumart:
-        tags.add(APIC(encoding=3, mime='image/png', type=3, data=albumart.read()))
+    albumart = open('./Music/temp/img.png', 'rb').read()
+    tags.add(APIC(encoding=3, mime='image/png', type=3, data=albumart))
 
     tags.save("./Music/saved/" + play_queue[0][1].title()
-                    + "/" + data['track']['album']['title'] + '/' + play_queue[0][0].title() + ".mp3")
+                    + "/" + data['track']['album']['title'] + '/' + play_queue[0][0].title() + ".mp3", v2_version=3)
 
 
 

@@ -58,14 +58,30 @@ $(document).ready(function() {
         $("#search_container").css('overflow-y', 'hidden');
     });
 
+    $('#infoBack').on('click', function() {
+        $("#infoContainer").css('margin-top', '-220vh');
+    });
+
+    var infotog = 0;
+    $('#infoTog').on('click', function() {
+        if (!infotog) {
+            infotog = 1;
+            $('#infoContent h1').html('LYRICS');
+            $('#infoTog').attr('src','/assets/info.svg');
+            eel.get_lyrics(current_song['track']['artist']['name'], current_song['track']['name'])(function(a){
+                $('#content').html(a);
+            });
+        } else {
+            infotog = 0;
+            infoToPage();
+            $('#infoContent h1').html('ABOUT');
+            $('#infoTog').attr('src','/assets/lyrics.svg');
+        }
+    });
+
     $('#art').on('click', function() {
-        console.log(current_song);
+        infoToPage();
         $("#infoContainer").css('margin-top', '-100vh');
-        $("#content").html(current_song['track']['wiki']['content']);
-        $("#infArtist").html(current_song['track']['artist']['name']);
-        $("#infSong").html(current_song['track']['name']);
-        $("#infAlbum").html(current_song['track']['album']['title']);
-        $('#infoArt').css('background-image', 'url('+current_song['track']['album']['image'][data['track']['album']['image'].length-1]['#text']+')');
     });
 
     $("#search_container").on('keyup', function(e) {
@@ -211,4 +227,16 @@ function findSwapped() {
     // hovering = 'null';
     eel.swap_queue(old_index, new_index);
     setTimeout(function() {sorting = false}, 1000);
+}
+
+function infoToPage(){
+    try {
+        $("#content").html(current_song['track']['wiki']['content'].split('Read more on Last.fm')[0]);
+    } catch(err) {
+        $("#content").html('No description could be found for this track');
+    }
+    $("#infArtist").html(current_song['track']['artist']['name']);
+    $("#infSong").html(current_song['track']['name']);
+    $("#infAlbum").html(current_song['track']['album']['title']);
+    $('#infoArt').css('background-image', 'url('+current_song['track']['album']['image'][current_song['track']['album']['image'].length-1]['#text']+')');
 }
