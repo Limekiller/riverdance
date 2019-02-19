@@ -58,6 +58,15 @@ $(document).ready(function() {
         $("#search_container").css('overflow-y', 'hidden');
     });
 
+    $('#art').on('click', function() {
+        console.log(current_song);
+        $("#infoContainer").css('margin-top', '-100vh');
+        $("#content").html(current_song['track']['wiki']['content']);
+        $("#infArtist").html(current_song['track']['artist']['name']);
+        $("#infSong").html(current_song['track']['name']);
+        $("#infAlbum").html(current_song['track']['album']['title']);
+    });
+
     $("#search_container").on('keyup', function(e) {
         if (e.keyCode == 13) {
             $("#search_bar").addClass("search_bar_active");
