@@ -122,7 +122,7 @@ def download_song(data):
         tags = ID3()
 
     response = requests.get(data['track']['album']['image'][-1]['#text']).content
-    with open('img.png', 'wb') as handle:
+    with open('./Music/temp/img.png', 'wb') as handle:
         handle.write(response)
 
     tags["TIT2"] = TIT2(encoding=3, text=data['track']['name'])
@@ -130,8 +130,8 @@ def download_song(data):
     tags["TPE2"] = TPE2(encoding=3, text=data['track']['artist']['name'])
     tags["TPE1"] = TPE1(encoding=3, text=data['track']['artist']['name'])
     tags["TCOM"] = TCOM(encoding=3, text=data['track']['artist']['name'])
-    with open('img.png', 'rb') as albumart:
-        tags['APIC'] = APIC(encoding=3, data=albumart.read())
+    with open('./Music/temp/img.png', 'rb') as albumart:
+        tags.add(APIC(encoding=3, mime='image/png', type=3, data=albumart.read()))
 
     tags.save("./Music/saved/" + play_queue[0][1].title()
                     + "/" + data['track']['album']['title'] + '/' + play_queue[0][0].title() + ".mp3")
