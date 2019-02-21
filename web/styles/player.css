@@ -245,7 +245,7 @@ h2#infArtist{
 }
 #content {
     font-size:12px;
-    line-height:22px;
+    line-height:15px;
     width:fit-content;
     max-height:500px;
     overflow:auto;

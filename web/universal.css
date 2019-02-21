@@ -30,6 +30,17 @@ h4 {
 h5 {
     font-family: 'Archivo Narrow', sans-serif;
 }
+::-webkit-scrollbar {
+    width:10px;
+}
+::-webkit-scrollbar-track {
+    background:#0080ff;
+}
+::-webkit-scrollbar-thumb {
+    background:#1D00AD;
+    border-radius:50px;
+    width:200px;
+}
 @keyframes fade_in {
     from{opacity:0;}
     to {opacity:1;}

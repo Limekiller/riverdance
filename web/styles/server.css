@@ -35,7 +35,7 @@
     color:#1D00AD;
 }
 #form_container p {
-    margin-bottom:50px;
+    margin-bottom:25px;
 }
 #form_container input[type=text],#form_container input[type=password]  {
 	padding:25px;
@@ -60,7 +60,7 @@
     width:auto;
     display:inline;
     background:none;
-    border-radius:0px;
+    margin-bottom:5px;
     padding:10px;
     font-size:15px;
     border-radius:10px 0px;

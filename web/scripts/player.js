@@ -80,6 +80,9 @@ $(document).ready(function() {
     });
 
     $('#art').on('click', function() {
+        infotog = 0;
+        $('#infoTog').attr('src','/assets/lyrics.svg');
+        $('#infoContent h1').html('ABOUT');
         infoToPage();
         $("#infoContainer").css('margin-top', '-100vh');
     });
