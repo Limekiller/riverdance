@@ -97,8 +97,8 @@ $(document).ready(function() {
             $.getJSON(jsonURL, function(data) {
                 $.each(data['results']['trackmatches']['track'], function(index, value) {
                     title = value['name'];
-                    artist = value['artist']
-                    HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+title+'\', \''+artist+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+                    artist = value['artist'];
+                    HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
                 });
                 $('body').css("overflow", "auto");
                 $('#search_container').css("overflow", "auto");
@@ -184,7 +184,7 @@ function updateArray(array){
 
 function addToQueue(title, artist) {
     $('body').css('overflow-y', 'hidden');
-    eel.add_to_queue(title, artist);
+    eel.add_to_queue(unescape(title), unescape(artist));
    // setTimeout(function () {
    //     $("#queue").append('<div style="animation:queueLoad 0.4s ease forwards;" class="queueSong">'+title+'<span class="queueArtist">'+artist+'</span></div>');
    // }, 1000);

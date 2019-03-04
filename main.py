@@ -63,7 +63,13 @@ def start_song(song):
     """Play song with PyGame at correct sample rate"""
     song_file = mutagen.mp3.MP3("./Music/temp/" + song + ".mp3")
     pygame.mixer.init(frequency=song_file.info.sample_rate)
-    pygame.mixer.music.load("./Music/temp/" + song + ".mp3")
+    song_loaded = False
+    while not song_loaded:
+        try:
+            pygame.mixer.music.load("./Music/temp/" + song + ".mp3")
+            song_loaded = True
+        except pygame.error:
+            pass
     eel.artLoading(False)
     pygame.mixer.music.play()
 
@@ -169,6 +175,7 @@ def get_search_results(search_title, search_artist):
 @eel.expose
 def add_to_queue(title, artist):
     global play_queue
+    print(title, artist)
     real_title, link = youtube_scrape.scrape(title, artist, True)
     real_title = real_title.split(' - ')[-1]
     play_queue.append([real_title, artist, link])
@@ -259,8 +266,6 @@ def play_music():
     time_start = time.time()
     while True:
 
-        print(time.time() - time_start)
-        print(time_to_end)
         if time_to_end == math.inf and play_queue:
             last_artist, last_song = play_queue[0][1], play_queue[0][0]
             song = last_song

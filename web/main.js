@@ -41,7 +41,7 @@ $(document).ready(function() {
                 $.each(data['results']['trackmatches']['track'], function(index, value) {
                     title = value['name'];
                     artist = value['artist']
-                    HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+title+'\', \''+artist+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+                    HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
                 });
                 $("#homeBody").css("overflow", "auto");
                 $("#homeBody").css("overflow-x", "hidden");
@@ -75,6 +75,6 @@ $(document).ready(function() {
 });
 
 function addToQueue(title, artist) {
-    eel.add_to_queue(title, artist);
+    eel.add_to_queue(unescape(title), unescape(artist));
     window.location.replace('pages/player.html');
 }
