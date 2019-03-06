@@ -45,10 +45,23 @@ $(document).ready(function() {
     });
 
     $('#dl').on('click', function() {
+        $(this).animate({backgroundPositionY: '30px'}, 400,
+            function() {
+                window.setTimeout(function() {
+                    $("#ff").css("background-position-y", "0px");
+                }, 500);
+            });
         eel.download_song(current_song);
     });
 
     $('#ff').on('click', function() {
+        $(this).css('pointer-events', 'none');
+        $(this).animate({backgroundPositionX: '30px'}, 400,
+            function() {
+                window.setTimeout(function() {
+                    $("#ff").css("background-position-x", "0px");
+                }, 500);
+            });
         eel.fast_forward();
     });
 
@@ -161,7 +174,7 @@ function updateArray(array){
                 elemAfter = $(".ui-sortable-placeholder").next();
                 sorting = true;
             },
-            deactivate: function() {findSwapped();},
+            deactivate: function() {findSwapped(); $(".queueSong").css('pointer-events', 'none');},
             change: function(event, ui) {
                 if ($(".ui-sortable-placeholder").prev().attr('id') < elemBefore.attr('id') || $(".ui-sortable-placeholder").prev().attr('id') == undefined) {
                     $(".ui-sortable-placeholder").next().css('animation', 'slideDown 0.2s ease');
@@ -210,6 +223,7 @@ eel.expose(artLoading);
 function artLoading(loading) {
     if (!loading) {
         $("#artLoading").removeClass('artLoadingActive');
+        $("#ff").css('pointer-events', 'all');
     } else {
         $("#artLoading").addClass('artLoadingActive');
     }

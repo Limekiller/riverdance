@@ -51,9 +51,18 @@ body {
     cursor:pointer;
     transition:transform 0.4s ease;
     width:30px;
+    background-size:30px;
+    background-repeat-y:no-repeat;
+    background-position:center;
 }
 .playerItem:hover {
     transform:translateY(-5px);
+}
+#dl {
+    background-image:url('../assets/dl.svg');
+}
+#ff {
+    background-image:url('../assets/ffrw.svg');
 }
 #player {
     border-radius:20px 0px;
@@ -63,6 +72,8 @@ body {
 #play {
     width:60px;
     height:60px;
+    background-size:60px;
+    background-image:url('../assets/play.svg');
 }
 #songList {
     border-radius:20px 0px;
