@@ -45,11 +45,10 @@ $(document).ready(function() {
     });
 
     $('#dl').on('click', function() {
-        $(this).animate({backgroundPositionY: '30px'}, 400,
+        $(this).animate({backgroundPositionY: '60px'}, 400,
             function() {
-                window.setTimeout(function() {
-                    $("#ff").css("background-position-y", "0px");
-                }, 500);
+                $('#dl').css('background-position-y', '-60px');
+                $('#dl').animate({backgroundPositionY: '15px'}, 400);
             });
         eel.download_song(current_song);
     });

@@ -136,6 +136,10 @@ def download_song(data):
     except FileExistsError:
         pass
 
+    if os.path.isfile('./Music/saved/'+play_queue[0][1].title()+'/'+data['track']['album']['title']+'/'+play_queue[0][0].title()+'.mp3'):
+        os.remove('./Music/saved/'+play_queue[0][1].title()+'/'+data['track']['album']['title']+'/'+play_queue[0][0].title()+'.mp3');
+        return
+
     shutil.copyfile("./Music/temp/" + play_queue[0][0] + ".mp3", "./Music/saved/" + play_queue[0][1].title()
                     + "/" + data['track']['album']['title'] + '/' + play_queue[0][0].title() + ".mp3")
 

@@ -60,9 +60,11 @@ body {
 }
 #dl {
     background-image:url('../assets/dl.svg');
+    background-position-y:15px;
 }
 #ff {
     background-image:url('../assets/ffrw.svg');
+    background-position-x:0px;
 }
 #player {
     border-radius:20px 0px;
