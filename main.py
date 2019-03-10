@@ -112,6 +112,7 @@ def swap_queue(index1, index2):
 @eel.expose
 def pause_music():
     global paused
+    eel.togglePlayButton(paused)
     if not paused:
         pygame.mixer.music.pause()
         paused = True

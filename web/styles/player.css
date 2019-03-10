@@ -42,6 +42,7 @@ body {
 #playerControls {
 	display:flex;
 	justify-content:space-around;
+    align-items:center;
 	padding-top:25px;
 	width:300px;
 	height:50px;
@@ -51,6 +52,7 @@ body {
     cursor:pointer;
     transition:transform 0.4s ease;
     width:30px;
+    height:30px;
     background-size:30px;
     background-repeat-y:no-repeat;
     background-position:center;
@@ -60,7 +62,8 @@ body {
 }
 #dl {
     background-image:url('../assets/dl.svg');
-    background-position-y:15px;
+    background-position-y:-30px;
+    transition:background-position-y 0.4s ease, transform 0.4s ease;
 }
 #ff {
     background-image:url('../assets/ffrw.svg');
@@ -74,8 +77,10 @@ body {
 #play {
     width:60px;
     height:60px;
-    background-size:60px;
+    background-size:150px;
+    background-position-x:65px;
     background-image:url('../assets/play.svg');
+    transition:transform 0.4s ease, background-position-x 0.4s ease;
 }
 #songList {
     border-radius:20px 0px;

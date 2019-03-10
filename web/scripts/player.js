@@ -45,16 +45,16 @@ $(document).ready(function() {
     });
 
     $('#dl').on('click', function() {
-        $(this).animate({backgroundPositionY: '60px'}, 400,
-            function() {
-                $('#dl').css('background-position-y', '-60px');
-                $('#dl').animate({backgroundPositionY: '15px'}, 400);
-            });
+        if ($(this).css('background-position-y') == '0px') {
+                $('#dl').css('background-position-y', '-30px');
+        } else {
+                $('#dl').css('background-position-y', '0px');
+        }
         eel.download_song(current_song);
     });
 
     $('#ff').on('click', function() {
-        $(this).css('pointer-events', 'none');
+        $("#playerControls").css('pointer-events', 'none');
         $(this).animate({backgroundPositionX: '30px'}, 400,
             function() {
                 window.setTimeout(function() {
@@ -222,9 +222,13 @@ eel.expose(artLoading);
 function artLoading(loading) {
     if (!loading) {
         $("#artLoading").removeClass('artLoadingActive');
+        $("#dl").css('background-position-y', '-30px');
+        $("#playerControls").css('pointer-events', 'all');
         $("#ff").css('pointer-events', 'all');
+        $("#play").css('background-position-x', '155px');
     } else {
         $("#artLoading").addClass('artLoadingActive');
+        $("#playerControls").css('pointer-events', 'none');
     }
 }
 
@@ -255,4 +259,13 @@ function infoToPage(){
     $("#infSong").html(current_song['track']['name']);
     $("#infAlbum").html(current_song['track']['album']['title']);
     $('#infoArt').css('background-image', 'url('+current_song['track']['album']['image'][current_song['track']['album']['image'].length-1]['#text']+')');
+}
+
+eel.expose(togglePlayButton);
+function togglePlayButton(paused) {
+    if (paused) {
+        $("#play").css('background-position-x', '155px');
+    } else {
+        $("#play").css('background-position-x', '65px');
+    }
 }
