@@ -68,7 +68,7 @@ def start_song(song):
         try:
             pygame.mixer.music.load("./Music/temp/" + song + ".mp3")
             song_loaded = True
-        except pygame.error:
+        except:
             pass
     eel.artLoading(False)
     pygame.mixer.music.play()
