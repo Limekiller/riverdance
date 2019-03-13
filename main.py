@@ -105,6 +105,12 @@ def unset_email():
 
 
 @eel.expose
+def get_email():
+    global server_listening
+    return server_listening
+
+
+@eel.expose
 def swap_queue(index1, index2):
     play_queue.insert(int(index2)+1, play_queue.pop(int(index1)+1))
 

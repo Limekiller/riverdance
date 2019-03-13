@@ -2,6 +2,7 @@ var serverListening = false;
 var hovering = 'null';
 var sorting = false;
 var current_song;
+var radio = false;
 $(document).ready(function() {
 
     setInterval(function() {
@@ -9,6 +10,15 @@ $(document).ready(function() {
             eel.get_queue()(function(a){updateArray(a);});
         }
     }, 2000);
+    eel.get_email()(function (a) {
+        if (a) {
+            $('#serverButton').addClass('buttonActive');
+            serverListening = true;
+        } else {
+            $('#serverButton').removeClass('buttonActive');
+            serverListening = false;
+        }
+    });
     eel.begin_playback();
 
     $('#searchButton').on('click', function() {
@@ -20,7 +30,12 @@ $(document).ready(function() {
     $('#serverButton').on('click', function() {
         if (!serverListening) {
             $("#search_container").addClass('search_container_active');
-            $("#search_container").load("../pages/server.html");
+            $("#search_container").load("../pages/server.html", function() {
+                $("#searchBack").on('click', function() {
+                    $('#serverButton').removeClass('buttonActive');
+                    serverListening = false;
+                });
+            });
             $('#serverButton').addClass('buttonActive');
             serverListening = true;
         } else {
@@ -31,6 +46,11 @@ $(document).ready(function() {
     });
 
     $('#radioButton').on('click', function() {
+        if (radio) {
+            $('#radioButton').addClass('buttonActive');
+        } else {
+            $('#radioButton').removeClass('buttonActive');
+        }
         eel.toggle_radio()(function (a) {
             if (a) {
                 $('#radioButton').addClass('buttonActive');
