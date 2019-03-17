@@ -7,6 +7,7 @@ import time
 import math
 import sys
 import os
+import subprocess
 import shutil
 import parse_emails
 import youtube_scrape
@@ -19,7 +20,6 @@ from bs4 import BeautifulSoup
 import artist_finder
 
 eel.init('web')
-
 
 def handle_song(artist, title, queue_item=0):
     """Search YouTube for videos and download the best result"""
@@ -44,16 +44,27 @@ def handle_song(artist, title, queue_item=0):
         'format': 'best',
         'outtmpl': './Music/temp/'+title+".%(ext)s",
         'nocheckcertificate': True,
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-        }]
+        'quiet': True,
+        # 'external_downloader_args': [{
+        #     'hide_banner': True,
+        #     'loglevel': 'quiet, -8',
+        #     'nostats': True,
+        #     'nostdin': True
+        # }],
+        # 'postprocessors': [{
+        #     'key': 'FFmpegExtractAudio',
+        #     'preferredcodec': 'mp3',
+        # }]
     }
     with youtube_dl.YoutubeDL(options) as ydl:
         try:
             ydl.download([video_url])
         except youtube_dl.DownloadError:
             fast_forward()
+
+    CREATE_NO_WINDOW = 0x08000000
+    #subprocess.Popen(['ffmpeg.exe', '-i', '".\Music\\temp\\'+title+'.mp4"', '-acodec libmp3lame ".\Music\\temp\\'+title+'.mp3']) #creationflags=CREATE_NO_WINDOW)
+    subprocess.Popen('ffmpeg.exe -i ".\Music\\temp\\'+title+'.mp4" -acodec libmp3lame ".\Music\\temp\\'+title+'.mp3', creationflags=CREATE_NO_WINDOW) #creationflags=CREATE_NO_WINDOW)
 
     # Return the song length
     return duration
@@ -336,5 +347,5 @@ if not os.path.exists('./Music'):
 eel.spawn(use_radio)
 eel.spawn(check_email)
 eel.spawn(dl_songs_in_bg)
-eel.start('main.html')
+eel.start('main.html', options=options)
 
