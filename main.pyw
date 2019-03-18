@@ -328,7 +328,7 @@ def play_music():
 
 options = {
     'mode': 'custom',
-    'args': ['C:\\Users\\bryod\\node_modules\electron\dist\electron.exe', '.']
+    'args': ['../../electron.exe', '.']
 }
 play_queue = []
 current_song = {}
