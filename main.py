@@ -72,11 +72,11 @@ def handle_song(artist, title, queue_item=0):
 
 def start_song(song):
     """Play song with PyGame at correct sample rate"""
-    song_file = mutagen.mp3.MP3("./Music/temp/" + song + ".mp3")
-    pygame.mixer.init(frequency=song_file.info.sample_rate)
     song_loaded = False
     while not song_loaded:
         try:
+            song_file = mutagen.mp3.MP3("./Music/temp/" + song + ".mp3")
+            pygame.mixer.init(frequency=song_file.info.sample_rate)
             pygame.mixer.music.load("./Music/temp/" + song + ".mp3")
             song_loaded = True
         except:
