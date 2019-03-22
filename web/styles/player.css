@@ -149,7 +149,7 @@ body {
     border-radius:0px 20px;
     background-color:#1D00AD;
 }
-.queueSong:hover .queueDel {
+.queueSong:hover .queueDel, .queueSong:hover .source {
     opacity:1;
 }
 .queueSongDeleted {
@@ -171,6 +171,26 @@ body {
     opacity:0;
     transition:all 0.4s ease;
     cursor:pointer;
+}
+.source {
+    transition:all 0.4s ease;
+    position:absolute;
+    right:0;
+    margin-right:50px;
+    margin-top:-25px;
+    background-repeat:no-repeat;
+    opacity:0;
+    width:30px;
+    height:20px;
+}
+.radio {
+    background-image:url('../assets/radio.svg');
+}
+.user {
+    background-image:url('../assets/search.svg');
+}
+.email {
+    background-image:url('../assets/collab.svg');
 }
 #artLoading {
     width:100%;

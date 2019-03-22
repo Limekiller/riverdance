@@ -200,7 +200,7 @@ def add_to_queue(title, artist):
     print(title, artist)
     real_title, link = youtube_scrape.scrape(title, artist, True)
     real_title = real_title.split(' - ')[-1]
-    play_queue.append([real_title, artist, link])
+    play_queue.append([real_title, artist, link, "user"])
 
 
 @eel.expose
@@ -258,7 +258,7 @@ def check_email():
                 song = last_email[0]
                 artist = last_email[1]
                 song, link = youtube_scrape.scrape(song, artist, True)
-                play_queue.append([song, artist, link])
+                play_queue.append([song, artist, link, "email"])
         eel.sleep(5)
 
 
@@ -272,7 +272,7 @@ def use_radio():
                 song = artist_finder.get_artist_song(artist)
                 song, link = youtube_scrape.scrape(song, artist, True)
                 song = song.split(' - ')[-1]
-                play_queue.append([song, artist, link])
+                play_queue.append([song, artist, link, "radio"])
             except:
                 pass
 
@@ -347,5 +347,5 @@ if not os.path.exists('./Music'):
 eel.spawn(use_radio)
 eel.spawn(check_email)
 eel.spawn(dl_songs_in_bg)
-eel.start('main.html', options=options)
+eel.start('main.html')
 

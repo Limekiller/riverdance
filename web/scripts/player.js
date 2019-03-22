@@ -156,14 +156,14 @@ function updateArray(array){
             $("#songTitle").html(item[0]);
             $("#songArtist").html(item[1]);
         } else if ($('#'+(index-1)).length == 0) {
-               queueData += '<div style="animation:fade_in 0.4s ease forwards;" class="queueSong" id="'+(index-1)+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
+               queueData += '<div style="animation:fade_in 0.4s ease forwards;" class="queueSong" id="'+(index-1)+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel">X</span></div>';
         } else {
             if (hovering.includes(item[0]) && hovering.includes(item[1])) {
                queueData += '<div class="queueSong queueSongActive" id="'+(index-1)+'">'+item[0]+
-                   '<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
+                   '<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel">X</span></div>';
             } else {
                queueData += '<div class="queueSong" id="'+(index-1)+'">'+item[0]+
-                   '<span class="queueArtist">'+item[1]+'</span><span class="queueDel">X</span></div>';
+                   '<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel">X</span></div>';
             }
         }
     });
