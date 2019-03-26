@@ -28,7 +28,6 @@ body {
 }
 .playerColumn h1 {
     font-size:55px;
-    letter-spacing:7px;
     margin-top:0px;
     margin-bottom:10px;
     color:#1D00AD;
@@ -208,18 +207,23 @@ body {
 }
 #songInfo {
     margin:0 auto;
-    font-family:Maddac;
+    font-family:Rubik;
     width:300px;
-    letter-spacing:5px;
     text-transform:uppercase;
-    font-weight:normal;
+    font-weight:900;
     font-size:25px;
-	margin-top:15px;
+	margin-top:10px;
 	color:white;
+    line-height:30px;
 }
 #songTitle {
 	display:block;
 	font-size:35px;
+    margin-bottom:0px;
+    font-weight:900;
+}
+#songArtist {
+    font-weight:700;
 }
 #infoBack, #infoTog {
     width:50px;
@@ -256,17 +260,20 @@ body {
     font-size:70px;
     margin-top:80px;
     margin-bottom:20px;
-    letter-spacing:7px;
 }
 #infoContent h2 {
     text-transform:uppercase;
     font-size:30px;
     line-height:35px;
-    letter-spacing:7px;
     margin-bottom:-20px;
 }
 h2#infArtist{
     font-size:40px;
+    font-weight:900;
+    margin-bottom:-20px;
+}
+h2#infSong { 
+    margin-bottom:-25px;
 }
 #infoArt {
     width:300px;

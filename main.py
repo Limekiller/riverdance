@@ -43,8 +43,7 @@ def handle_song(artist, title, queue_item=0):
     options = {
         'format': 'best',
         'outtmpl': './Music/temp/'+title+".%(ext)s",
-        'nocheckcertificate': True,
-        'quiet': True,
+        'nocheckcertificate': True
         # 'external_downloader_args': [{
         #     'hide_banner': True,
         #     'loglevel': 'quiet, -8',
@@ -63,8 +62,10 @@ def handle_song(artist, title, queue_item=0):
             fast_forward()
 
     CREATE_NO_WINDOW = 0x08000000
+    file_title = title.translate ({ord(c): "#" for c in "!@#$%^&*[]{};:,./<>?\|`~=_+"})
+    print(file_title)
     #subprocess.Popen(['ffmpeg.exe', '-i', '".\Music\\temp\\'+title+'.mp4"', '-acodec libmp3lame ".\Music\\temp\\'+title+'.mp3']) #creationflags=CREATE_NO_WINDOW)
-    subprocess.Popen('ffmpeg.exe -i ".\Music\\temp\\'+title+'.mp4" -acodec libmp3lame ".\Music\\temp\\'+title+'.mp3', creationflags=CREATE_NO_WINDOW) #creationflags=CREATE_NO_WINDOW)
+    subprocess.Popen('ffmpeg.exe -i ".\Music\\temp\\'+file_title+'.mp4" -acodec libmp3lame ".\Music\\temp\\'+file_title+'.mp3', creationflags=CREATE_NO_WINDOW) #creationflags=CREATE_NO_WINDOW)
 
     # Return the song length
     return duration
@@ -73,11 +74,13 @@ def handle_song(artist, title, queue_item=0):
 def start_song(song):
     """Play song with PyGame at correct sample rate"""
     song_loaded = False
+    file_title = song.translate({ord(c): "#" for c in "!@#$%^&*[]{};:,./<>?\|`~=_+"})
+    print(file_title)
     while not song_loaded:
         try:
-            song_file = mutagen.mp3.MP3("./Music/temp/" + song + ".mp3")
+            song_file = mutagen.mp3.MP3("./Music/temp/" + file_title + ".mp3")
             pygame.mixer.init(frequency=song_file.info.sample_rate)
-            pygame.mixer.music.load("./Music/temp/" + song + ".mp3")
+            pygame.mixer.music.load("./Music/temp/" + file_title + ".mp3")
             song_loaded = True
         except:
             pass

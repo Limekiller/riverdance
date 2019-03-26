@@ -230,8 +230,17 @@ function deleteIndex(index) {
 }
 
 eel.expose(getAlbumArt);
-function getAlbumArt(artist, title) {
-    jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+title+'&track='+artist+'&format=json'
+function getAlbumArt(artist, track) {
+    searchJSONURL = 'http://ws.audioscrobbler.com/2.0/?method=track.search&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+encodeURIComponent(artist)+'&track='+encodeURIComponent(title)+'&format=json';
+    console.log(searchJSONURL);
+    var realTitle;
+    var realArtist;
+    $.getJSON(searchJSONURL, function(data) {
+        realTitle = data['results']['trackmatches']['track'][0]['name'];
+        realTitle = data['results']['trackmatches']['track'][0]['artist'];
+    });
+
+    jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+realArtist+'&track='+realTitle+'&format=json'
     $.getJSON(jsonURL, function(data) {
         current_song = data;
         $('#art').css('background-image', 'url('+data['track']['album']['image'][data['track']['album']['image'].length-1]['#text']+')');

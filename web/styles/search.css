@@ -11,8 +11,7 @@
     transition:top 0.4s ease;
 }
 #search_bar h1 {
-    font-size: 60px;
-    letter-spacing:5px;
+    font-size: 80px;
     margin-bottom:0;
     color:#1D00AD;
     transition:opacity 0.2s ease;
