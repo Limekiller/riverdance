@@ -3,6 +3,8 @@ var hovering = 'null';
 var sorting = false;
 var current_song;
 var radio = false;
+var realTitle;
+var realArtist;
 $(document).ready(function() {
 
     setInterval(function() {
@@ -153,7 +155,9 @@ function updateArray(array){
     var queueData = '';
     array.forEach(function(item, index) {
         if (index == 0) {
-            $("#songTitle").html(item[0]);
+            if ($("#songTitle").html() != realTitle) {
+                $("#songTitle").html(item[0]);
+            }
             $("#songArtist").html(item[1]);
         } else if ($('#'+(index-1)).length == 0) {
                queueData += '<div style="animation:fade_in 0.4s ease forwards;" class="queueSong" id="'+(index-1)+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel">X</span></div>';
@@ -230,20 +234,23 @@ function deleteIndex(index) {
 }
 
 eel.expose(getAlbumArt);
-function getAlbumArt(artist, track) {
+function getAlbumArt(title, artist) {
+
+    title = title.replace('official audio','');
+    title = title.replace('official video','');
+    title = title.replace('official music video','');
+
     searchJSONURL = 'http://ws.audioscrobbler.com/2.0/?method=track.search&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+encodeURIComponent(artist)+'&track='+encodeURIComponent(title)+'&format=json';
-    console.log(searchJSONURL);
-    var realTitle;
-    var realArtist;
+
     $.getJSON(searchJSONURL, function(data) {
         realTitle = data['results']['trackmatches']['track'][0]['name'];
-        realTitle = data['results']['trackmatches']['track'][0]['artist'];
-    });
+        realArtist = data['results']['trackmatches']['track'][0]['artist'];
+        jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+realArtist+'&track='+realTitle+'&format=json'
 
-    jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+realArtist+'&track='+realTitle+'&format=json'
-    $.getJSON(jsonURL, function(data) {
-        current_song = data;
-        $('#art').css('background-image', 'url('+data['track']['album']['image'][data['track']['album']['image'].length-1]['#text']+')');
+        $.getJSON(jsonURL, function(dat2) {
+            current_song = dat2;
+            $('#art').css('background-image', 'url('+dat2['track']['album']['image'][dat2['track']['album']['image'].length-1]['#text']+')');
+        });
     });
 }
 
@@ -255,6 +262,8 @@ function artLoading(loading) {
         $("#playerControls").css('pointer-events', 'all');
         $("#ff").css('pointer-events', 'all');
         $("#play").css('background-position-x', '155px');
+        console.log(realTitle);
+        $('#songTitle').html(realTitle);
     } else {
         $("#artLoading").addClass('artLoadingActive');
         $("#playerControls").css('pointer-events', 'none');

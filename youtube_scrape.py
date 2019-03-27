@@ -27,8 +27,6 @@ def rank_results(result_list, search_title, search_artist):
             score += 2
         if search_title in title and search_artist in title:
             score += 4
-        if search_title == title:
-            score += 4
 
         scores.append(score)
 

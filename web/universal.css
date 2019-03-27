@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Rubik:400,700,900');
 body {
     margin:0;
     font-family: 'Rubik', sans-serif;
@@ -50,30 +51,8 @@ h5 {
     from{opacity:1;}
     to {opacity:0;}
 }
-@import url('https://fonts.googleapis.com/css?family=Archivo+Narrow:700');
 @font-face {
     font-family: Maddac;
     src: url('assets/Maddac.ttf') format('truetype'),
     url('assets/Maddac.woff') format('woff');
-}
-@font-face {
-    font-family: 'Rubik';
-    font-style: normal;
-    font-weight: 400;
-    src: url('assets/Rubik.ttf') format('truetype'),
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-    font-family: 'Rubik';
-    font-style: normal;
-    font-weight: 900;
-    src: url('assets/Rubik_black.ttf') format('truetype'),
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-    font-family: 'Rubik';
-    font-style: normal;
-    font-weight: 700;
-    src: url('assets/Rubik_bold.ttf') format('truetype'),
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
