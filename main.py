@@ -43,17 +43,17 @@ def handle_song(artist, title, queue_item=0):
     options = {
         'format': 'best',
         'outtmpl': './Music/temp/'+title+".%(ext)s",
-        'nocheckcertificate': True
-        # 'external_downloader_args': [{
-        #     'hide_banner': True,
-        #     'loglevel': 'quiet, -8',
-        #     'nostats': True,
-        #     'nostdin': True
-        # }],
-        # 'postprocessors': [{
-        #     'key': 'FFmpegExtractAudio',
-        #     'preferredcodec': 'mp3',
-        # }]
+        'nocheckcertificate': True,
+         'external_downloader_args': [{
+             'hide_banner': True,
+             'loglevel': 'quiet, -8',
+             'nostats': True,
+             'nostdin': True
+         }],
+         'postprocessors': [{
+             'key': 'FFmpegExtractAudio',
+             'preferredcodec': 'mp3',
+         }]
     }
     with youtube_dl.YoutubeDL(options) as ydl:
         try:
@@ -65,7 +65,7 @@ def handle_song(artist, title, queue_item=0):
     file_title = title.translate ({ord(c): "#" for c in "!@#$%^&\"*{};:/<>?\|`~=_"})
     print(file_title)
     #subprocess.Popen(['ffmpeg.exe', '-i', '".\Music\\temp\\'+title+'.mp4"', '-acodec libmp3lame ".\Music\\temp\\'+title+'.mp3']) #creationflags=CREATE_NO_WINDOW)
-    subprocess.Popen('ffmpeg.exe -i ".\Music\\temp\\'+file_title+'.mp4" -acodec libmp3lame ".\Music\\temp\\'+file_title+'.mp3', creationflags=CREATE_NO_WINDOW) #creationflags=CREATE_NO_WINDOW)
+    #subprocess.Popen('ffmpeg.exe -i ".\Music\\temp\\'+file_title+'.mp4" -acodec libmp3lame ".\Music\\temp\\'+file_title+'.mp3', creationflags=CREATE_NO_WINDOW) #creationflags=CREATE_NO_WINDOW)
 
     # Return the song length
     return duration
@@ -300,12 +300,15 @@ def play_music():
             start_song(song)
             time_start = time.time()
 
-        if paused:
-            time_to_end += time.time() - time_end
+        try:
+            print(pygame.mixer.music.get_pos())
+            print(time_to_end)
+        except:
+            pass
 
         # Check time, and if the duration of the song has passed, handle things
         time_end = time.time()
-        if time_end - time_start >= time_to_end:
+        if pygame.mixer.get_init() and time_to_end - pygame.mixer.music.get_pos()*.001 <= 1:
             pygame.mixer.stop()
             pygame.mixer.quit()
 
