@@ -44,16 +44,16 @@ def handle_song(artist, title, queue_item=0):
         'format': 'best',
         'outtmpl': './Music/temp/'+title+".%(ext)s",
         'nocheckcertificate': True,
-         'external_downloader_args': [{
-             'hide_banner': True,
-             'loglevel': 'quiet, -8',
-             'nostats': True,
-             'nostdin': True
-         }],
-         'postprocessors': [{
-             'key': 'FFmpegExtractAudio',
-             'preferredcodec': 'mp3',
-         }]
+         # 'external_downloader_args': [{
+         #     'hide_banner': True,
+         #     'loglevel': 'quiet, -8',
+         #     'nostats': True,
+         #     'nostdin': True
+         # }],
+         # 'postprocessors': [{
+         #     'key': 'FFmpegExtractAudio',
+         #     'preferredcodec': 'mp3',
+         # }]
     }
     with youtube_dl.YoutubeDL(options) as ydl:
         try:
@@ -65,7 +65,7 @@ def handle_song(artist, title, queue_item=0):
     file_title = title.translate ({ord(c): "#" for c in "!@#$%^&\"*{};:/<>?\|`~=_"})
     print(file_title)
     #subprocess.Popen(['ffmpeg.exe', '-i', '".\Music\\temp\\'+title+'.mp4"', '-acodec libmp3lame ".\Music\\temp\\'+title+'.mp3']) #creationflags=CREATE_NO_WINDOW)
-    #subprocess.Popen('ffmpeg.exe -i ".\Music\\temp\\'+file_title+'.mp4" -acodec libmp3lame ".\Music\\temp\\'+file_title+'.mp3', creationflags=CREATE_NO_WINDOW) #creationflags=CREATE_NO_WINDOW)
+    subprocess.Popen('ffmpeg.exe -i ".\Music\\temp\\'+file_title+'.mp4" -acodec libmp3lame ".\Music\\temp\\'+file_title+'.mp3', creationflags=CREATE_NO_WINDOW) #creationflags=CREATE_NO_WINDOW)
 
     # Return the song length
     return duration
@@ -143,8 +143,8 @@ def pause_music():
 
 @eel.expose
 def fast_forward():
-    global time_to_end
-    time_to_end = 0
+    pygame.mixer.music.set_pos(9999)
+    print(pygame.mixer.music.get_pos())
 
 
 @eel.expose
@@ -238,6 +238,7 @@ def begin_playback():
 def dl_songs_in_bg():
     while True:
         for i in play_queue:
+            # song_title = i[0].translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"})
             if not os.path.exists("./Music/temp/"+i[0]+'.mp3'):
                 handle_song(i[1], i[0], play_queue.index(i))
 
@@ -288,7 +289,6 @@ def play_music():
     global paused
     global time_to_end
 
-    time_start = time.time()
     while True:
 
         if time_to_end == math.inf and play_queue:
@@ -298,17 +298,9 @@ def play_music():
             time_to_end = handle_song(artist, song)
             eel.sleep(2)
             start_song(song)
-            time_start = time.time()
-
-        try:
-            print(pygame.mixer.music.get_pos())
-            print(time_to_end)
-        except:
-            pass
 
         # Check time, and if the duration of the song has passed, handle things
-        time_end = time.time()
-        if pygame.mixer.get_init() and time_to_end - pygame.mixer.music.get_pos()*.001 <= 1:
+        if pygame.mixer.get_init() and pygame.mixer.music.get_pos() == -1:
             pygame.mixer.stop()
             pygame.mixer.quit()
 
@@ -322,7 +314,6 @@ def play_music():
                 artist, song = play_queue[0][1], play_queue[0][0]
                 print("Now playing: " + artist + " - " + song)
                 time_to_end = handle_song(artist, song)
-                time_start = time.time()
                 if not time_to_end:
                     continue
                 start_song(song)

@@ -155,8 +155,10 @@ function updateArray(array){
     var queueData = '';
     array.forEach(function(item, index) {
         if (index == 0) {
-            if ($("#songTitle").html() != realTitle) {
+            if (!item[0].includes(realTitle) && $("#songTitle").html() != realTitle) {
                 $("#songTitle").html(item[0]);
+            } else {
+                $("#songArtist").html(realTitle);
             }
             $("#songArtist").html(item[1]);
         } else if ($('#'+(index-1)).length == 0) {
