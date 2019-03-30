@@ -252,6 +252,10 @@ function getAlbumArt(title, artist) {
         $.getJSON(jsonURL, function(dat2) {
             current_song = dat2;
             $('#art').css('background-image', 'url('+dat2['track']['album']['image'][dat2['track']['album']['image'].length-1]['#text']+')');
+
+            $("#splashSongArtist").html(current_song['track']['artist']['name']);
+            $("#splashSongTitle").html(current_song['track']['name']);
+            $('#artistSplash').css('background-image', 'url('+current_song['track']['album']['image'][current_song['track']['album']['image'].length-1]['#text']+')');
         });
     });
 }
@@ -299,6 +303,7 @@ function infoToPage(){
     $("#infSong").html(current_song['track']['name']);
     $("#infAlbum").html(current_song['track']['album']['title']);
     $('#infoArt').css('background-image', 'url('+current_song['track']['album']['image'][current_song['track']['album']['image'].length-1]['#text']+')');
+
 }
 
 eel.expose(togglePlayButton);

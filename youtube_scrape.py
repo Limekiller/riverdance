@@ -30,9 +30,10 @@ def rank_results(result_list, search_title, search_artist, uploader_list):
             score += 2
         if search_title in title and search_artist in title:
             score += 4
-        if search_title == title and (uploader_list[index] == search_artist+" - topic" or uploader_list[index] == search_artist or uploader_list[index] == search_artist+'\\xa0'):
+        if search_title == title and (uploader_list[index] == search_artist+" - topic" or uploader_list[index] == 'various artists - topic' or uploader_list[index] == search_artist or uploader_list[index] == search_artist+'\\xa0'):
             score += 100
-            print("wow")
+        if 'karaoke' in title:
+            score-=1000
 
         scores.append(score)
 

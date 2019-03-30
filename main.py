@@ -237,6 +237,7 @@ def begin_playback():
 
 def dl_songs_in_bg():
     while True:
+        print("still working")
         for i in play_queue:
             # song_title = i[0].translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"})
             if not os.path.exists("./Music/temp/"+i[0]+'.mp3'):
@@ -248,6 +249,8 @@ def dl_songs_in_bg():
                     os.remove('./Music/temp/'+file)
                 except PermissionError:
                     pass
+                except IsADirectoryError:
+                    shutil.rmtree('./Music/temp/'+file)
         eel.sleep(10)
 
 
