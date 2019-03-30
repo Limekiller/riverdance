@@ -23,6 +23,18 @@ $(document).ready(function() {
     });
     eel.begin_playback();
 
+    splashTimeout = setTimeout(function() {
+        $("#artistSplash").addClass('showSplash');
+    }, 10000);
+
+    $(document).mousemove(function(event) {
+        $("#artistSplash").removeClass('showSplash');
+        clearTimeout(splashTimeout);
+        splashTimeout = setTimeout(function() {
+            $("#artistSplash").addClass('showSplash');
+        }, 10000);
+    });
+
     $('#searchButton').on('click', function() {
         $('head').append('<link rel="stylesheet" type="text/css" href="styles/search.css">');
         $("#search_container").addClass('search_container_active');
