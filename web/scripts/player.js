@@ -7,15 +7,17 @@ var realTitle;
 var realArtist;
 $(document).ready(function() {
 
+    // Continually query the back-end for queue information
     setInterval(function() {
         if (!sorting) {
             eel.get_queue()(function(a){updateArray(a);});
         }
     }, 2000);
-    setInterval(function() {
-        getPercent();
-    }, 50);
+   // setInterval(function() {
+   //     getPercent();
+   // }, 50);
 
+    // If the player was opened through the create server page, let the UI reflect that
     eel.get_email()(function (a) {
         if (a) {
             $('#serverButton').addClass('buttonActive');
@@ -28,10 +30,11 @@ $(document).ready(function() {
 
     eel.begin_playback();
 
+    // Show the splash every 10s,
     splashTimeout = setTimeout(function() {
         $("#artistSplash").addClass('showSplash');
     }, 10000);
-
+    // But fade it out/cancel the timer every time the mouse moves
     $(document).mousemove(function(event) {
         $("#artistSplash").removeClass('showSplash');
         clearTimeout(splashTimeout);
@@ -40,12 +43,14 @@ $(document).ready(function() {
         }, 10000);
     });
 
+    // Show search on button click
     $('#searchButton').on('click', function() {
         $('head').append('<link rel="stylesheet" type="text/css" href="styles/search.css">');
         $("#search_container").addClass('search_container_active');
         $("#search_container").load("../pages/search.html");
     });
 
+    // Show server page on button click
     $('#serverButton').on('click', function() {
         if (!serverListening) {
             $("#search_container").addClass('search_container_active');
@@ -64,6 +69,7 @@ $(document).ready(function() {
         }
     });
 
+    // Enable radio on button press
     $('#radioButton').on('click', function() {
         if (radio) {
             $('#radioButton').addClass('buttonActive');
@@ -79,10 +85,12 @@ $(document).ready(function() {
         });
     });
 
+    // Pause and unpause
     $('#play').on('click', function() {
         eel.pause_music();
     });
 
+    // Download song
     $('#dl').on('click', function() {
         if ($(this).css('background-position-y') == '0px') {
                 $('#dl').css('background-position-y', '-30px');
@@ -92,8 +100,12 @@ $(document).ready(function() {
         eel.download_song(current_song);
     });
 
+    // Fast forward
     $('#ff').on('click', function() {
         $("#playerControls").css('pointer-events', 'none');
+        $("#playBarActive").css("transition", "");
+        $("#playBarActive").css("width", "0");
+       // just animation stuff
         $(this).animate({backgroundPositionX: '30px'}, 400,
             function() {
                 window.setTimeout(function() {
@@ -103,12 +115,12 @@ $(document).ready(function() {
         eel.fast_forward();
     });
 
+    // Close search, info tab on click
     $(document.body).on('click', "#searchBack", function() {
         $("#search_container").removeClass('search_container_active');
         $('body').css('overflow-y', 'hidden');
         $("#search_container").css('overflow-y', 'hidden');
     });
-
     $('#infoBack').on('click', function() {
         $("#infoContainer").css('margin-top', '-220vh');
     });
@@ -136,6 +148,27 @@ $(document).ready(function() {
         $('#infoContent h1').html('ABOUT');
         infoToPage();
         $("#infoContainer").css('margin-top', '-100vh');
+    });
+
+    $("#playBar").on('click', function(e) {
+        var eVar = e.pageX;
+        var percent = ((e.pageX) / $(this).width())*100;
+        $("#playBarActive").css('transition', 'width 0.5s ease');
+        eel.set_time(percent)(function(a){
+            console.log(eVar);
+            console.log(a);
+            $("#playBarActive").css("width", eVar);
+            setTimeout(function() {
+                $("#playBarActive").css('transition', 'width '+a+'s linear');
+                $("#playBarActive").css("width", '100%');
+            }, 500);
+        });
+    });
+    $("#playBar").mousemove( function(e) {
+        var eVar = e.pageX;
+        var percent = ((e.pageX) / $(this).width())*100;
+        console.log(percent);
+        $("#playBarHelper").css('width', percent+'%');
     });
 
     $("#search_container").on('keyup', function(e) {
@@ -294,10 +327,13 @@ function artLoading(loading) {
     }
 }
 
-function getPercent() {
-    eel.get_percent()(function(a){
-        $("#playBar").css("width", a*100+'%');
-    });
+eel.expose(getPercent);
+function getPercent(totalLength) {
+   $("#playBarActive").css("transition", "");
+   $("#playBarActive").css("width", "0%");
+   console.log(totalLength);
+   $("#playBarActive").css("transition", "width "+totalLength*.001+"s linear");
+   $("#playBarActive").css("width", "100%");
 }
 
 function findSwapped() {
@@ -334,7 +370,9 @@ eel.expose(togglePlayButton);
 function togglePlayButton(paused) {
     if (paused) {
         $("#play").css('background-position-x', '155px');
+        $("#playBarActive").css("width", "100%");
     } else {
+        $("#playBarActive").css("width", $("#playBarActive").width());
         $("#play").css('background-position-x', '65px');
     }
 }

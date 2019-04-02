@@ -87,6 +87,7 @@ def start_song(song):
         except:
             pass
     eel.artLoading(False)
+    eel.getPercent(curr_song_length)
     pygame.mixer.music.play()
 
 
@@ -115,6 +116,15 @@ def set_email(email, pwd, server):
 
 
 @eel.expose
+def set_time(percent):
+    global curr_song_length
+    time_to_set = ((curr_song_length/1000) * percent) / 100
+    print(time_to_set)
+    pygame.mixer.music.rewind()
+    pygame.mixer.music.set_pos(time_to_set)
+    return (curr_song_length/1000)-time_to_set
+
+@eel.expose
 def unset_email():
     global server_listening
     server_listening = False
@@ -125,11 +135,11 @@ def get_email():
     global server_listening
     return server_listening
 
-@eel.expose
-def get_percent():
-    global curr_song_length
-    if pygame.mixer.get_init():
-        return pygame.mixer.music.get_pos() / curr_song_length
+
+# @eel.expose
+# def get_percent():
+#     global curr_song_length
+#     return curr_song_length
 
 @eel.expose
 def swap_queue(index1, index2):
