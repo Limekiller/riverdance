@@ -11,9 +11,6 @@ def rank_results(result_list, search_title, search_artist, uploader_list):
     search_terms = search_title.split() + search_artist.split()
 
     # Give score to each result
-    for i in uploader_list:
-        print(i)
-
     for index, title in enumerate(result_list):
         title = title.lower()
         score = 0
@@ -37,7 +34,8 @@ def rank_results(result_list, search_title, search_artist, uploader_list):
 
         scores.append(score)
 
-    return scores.index(max(scores))
+    # return scores.index(max(scores))
+    return 0
 
 
 def get_video_time(url):
@@ -102,11 +100,11 @@ def scrape(search_title, search_artist, get_top_result=False):
     if get_top_result:
         # Return best matching link and its duration
         best_title = rank_results(title, search_title, search_artist, uploader)#, search_artist)
-        print("Best result is: '"+str(title[best_title])+"' at index "+str(best_title))
+        # print("Best result is: '"+str(title[best_title])+"' at index "+str(best_title))
         final_url = 'https://www.youtube.com'+ref[best_title]
 
         video_length = get_video_time(final_url)
-        print("Video length is "+str(video_length)+' ms long')
+        # print("Video length is "+str(video_length)+' ms long')
         return str(title[best_title]), ref[best_title]
 
     # if get_top_result:

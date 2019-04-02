@@ -13,7 +13,7 @@ import parse_emails
 import youtube_scrape
 import youtube_dl
 import pygame
-import mutagen.mp3
+from mutagen.mp3 import MP3
 from mutagen.id3 import ID3NoHeaderError
 from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, COMM, TCOM, TCON, TDRC, APIC
 from bs4 import BeautifulSoup
@@ -73,12 +73,14 @@ def handle_song(artist, title, queue_item=0):
 
 def start_song(song):
     """Play song with PyGame at correct sample rate"""
+    global curr_song_length;
     song_loaded = False
     file_title = song.translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"})
     print(file_title)
     while not song_loaded:
         try:
-            song_file = mutagen.mp3.MP3("./Music/temp/" + file_title + ".mp3")
+            song_file = MP3("./Music/temp/" + file_title + ".mp3")
+            curr_song_length = song_file.info.length * 1000
             pygame.mixer.init(frequency=song_file.info.sample_rate)
             pygame.mixer.music.load("./Music/temp/" + file_title + ".mp3")
             song_loaded = True
@@ -123,6 +125,11 @@ def get_email():
     global server_listening
     return server_listening
 
+@eel.expose
+def get_percent():
+    global curr_song_length
+    if pygame.mixer.get_init():
+        return pygame.mixer.music.get_pos() / curr_song_length
 
 @eel.expose
 def swap_queue(index1, index2):
@@ -325,7 +332,7 @@ def play_music():
             else:
                 time_to_end = math.inf
 
-        time.sleep(2)
+        eel.sleep(2)
 
 
 options = {
@@ -339,6 +346,7 @@ radio = False
 server_listening = False
 time_to_end = math.inf
 skip = False
+curr_song_length = float('inf');
 
 if sys.platform == "darwin":
     os.environ['PATH'] += ':'+os.getcwd()

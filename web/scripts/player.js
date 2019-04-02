@@ -12,6 +12,10 @@ $(document).ready(function() {
             eel.get_queue()(function(a){updateArray(a);});
         }
     }, 2000);
+    setInterval(function() {
+        getPercent();
+    }, 50);
+
     eel.get_email()(function (a) {
         if (a) {
             $('#serverButton').addClass('buttonActive');
@@ -21,6 +25,7 @@ $(document).ready(function() {
             serverListening = false;
         }
     });
+
     eel.begin_playback();
 
     splashTimeout = setTimeout(function() {
@@ -167,11 +172,12 @@ function updateArray(array){
     var queueData = '';
     array.forEach(function(item, index) {
         if (index == 0) {
-            if (!item[0].includes(realTitle) && $("#songTitle").html() != realTitle) {
-                $("#songTitle").html(item[0]);
-            } else {
-                $("#songArtist").html(realTitle);
-            }
+           // if (!item[0].includes(realTitle) && $("#songTitle").html() != realTitle) {
+           //     $("#songTitle").html(item[0]);
+           // } else {
+           //     $("#songArtist").html(realTitle);
+           // }
+            $("#songTitle").html(item[0]);
             $("#songArtist").html(item[1]);
         } else if ($('#'+(index-1)).length == 0) {
                queueData += '<div style="animation:fade_in 0.4s ease forwards;" class="queueSong" id="'+(index-1)+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel">X</span></div>';
@@ -281,11 +287,17 @@ function artLoading(loading) {
         $("#ff").css('pointer-events', 'all');
         $("#play").css('background-position-x', '155px');
         console.log(realTitle);
-        $('#songTitle').html(realTitle);
+        //$('#songTitle').html(realTitle);
     } else {
         $("#artLoading").addClass('artLoadingActive');
         $("#playerControls").css('pointer-events', 'none');
     }
+}
+
+function getPercent() {
+    eel.get_percent()(function(a){
+        $("#playBar").css("width", a*100+'%');
+    });
 }
 
 function findSwapped() {
