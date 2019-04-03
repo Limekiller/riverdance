@@ -322,6 +322,8 @@ function artLoading(loading) {
         console.log(realTitle);
         //$('#songTitle').html(realTitle);
     } else {
+        $("#playBarActive").css("transition", "");
+        $("#playBarActive").css("width", "0");
         $("#artLoading").addClass('artLoadingActive');
         $("#playerControls").css('pointer-events', 'none');
     }
@@ -333,7 +335,9 @@ function getPercent(totalLength) {
    $("#playBarActive").css("width", "0%");
    console.log(totalLength);
    $("#playBarActive").css("transition", "width "+totalLength*.001+"s linear");
-   $("#playBarActive").css("width", "100%");
+   setTimeout(function(){
+       $("#playBarActive").css("width", "100%");
+   }, 500);
 }
 
 function findSwapped() {
