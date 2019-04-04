@@ -13,7 +13,7 @@ import parse_emails
 import youtube_scrape
 import youtube_dl
 import pygame
-from mutagen.mp3 import MP3
+from mutagen.oggvorbis import OggVorbis
 from mutagen.id3 import ID3NoHeaderError
 from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, COMM, TCOM, TCON, TDRC, APIC
 from bs4 import BeautifulSoup
@@ -36,7 +36,7 @@ def handle_song(artist, title, queue_item=0):
         return duration
     duration = duration / 1000
 
-    if os.path.exists('./Music/temp/'+title+'.mp3'):
+    if os.path.exists('./Music/temp/'+title+'.ogg'):
         start_song(title)
         return duration
 
@@ -52,7 +52,7 @@ def handle_song(artist, title, queue_item=0):
           }],
           'postprocessors': [{
               'key': 'FFmpegExtractAudio',
-              'preferredcodec': 'mp3',
+              'preferredcodec': 'vorbis',
           }]
     }
     with youtube_dl.YoutubeDL(options) as ydl:
@@ -79,10 +79,10 @@ def start_song(song):
     print(file_title)
     while not song_loaded:
         try:
-            song_file = MP3("./Music/temp/" + file_title + ".mp3")
+            song_file = OggVorbis("./Music/temp/" + file_title + ".ogg")
             curr_song_length = song_file.info.length * 1000
             pygame.mixer.init(frequency=song_file.info.sample_rate)
-            pygame.mixer.music.load("./Music/temp/" + file_title + ".mp3")
+            pygame.mixer.music.load("./Music/temp/" + file_title + ".ogg")
             song_loaded = True
         except:
             pass
@@ -257,7 +257,7 @@ def dl_songs_in_bg():
         print("still working")
         for i in play_queue:
             # song_title = i[0].translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"})
-            if not os.path.exists("./Music/temp/"+i[0]+'.mp3'):
+            if not os.path.exists("./Music/temp/"+i[0]+'.ogg'):
                 handle_song(i[1], i[0], play_queue.index(i))
 
         for file in os.listdir('./Music/temp/'):
