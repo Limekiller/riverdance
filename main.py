@@ -356,7 +356,7 @@ radio = False
 server_listening = False
 time_to_end = math.inf
 skip = False
-curr_song_length = float('inf');
+curr_song_length = float('inf')
 
 if sys.platform == "darwin":
     os.environ['PATH'] += ':'+os.getcwd()
