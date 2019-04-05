@@ -167,18 +167,22 @@ def fast_forward():
 @eel.expose
 def download_song(data):
     global play_queue
+    global p
     try:
         os.makedirs("./Music/saved/"+data['track']['artist']['name']+'/'
                     + data['track']['album']['title'].title())
     except FileExistsError:
         pass
 
+
     if os.path.isfile('./Music/saved/'+play_queue[0][1].title()+'/'+data['track']['album']['title']+'/'+play_queue[0][0].title()+'.mp3'):
         os.remove('./Music/saved/'+play_queue[0][1].title()+'/'+data['track']['album']['title']+'/'+play_queue[0][0].title()+'.mp3');
         return
 
-    # subprocess.Popen('ffmpeg -i "./Music/temp/'+play_queue[0][0].title()+'.ogg" -acodec libmp3lame "./Music/temp/'+play_queue[0][0].title()+'.mp3')
-    p = subprocess.Popen(['./ffmpeg', '-i', "./Music/temp/"+play_queue[0][0].title()+'.ogg', '-acodec', 'libmp3lame', "./Music/temp/"+play_queue[0][0].title()+'.mp3'])
+    if sys.platform == 'win32':
+        p = subprocess.Popen('ffmpeg -i "./Music/temp/'+play_queue[0][0].title()+'.ogg" -acodec libmp3lame "./Music/temp/'+play_queue[0][0].title()+'.mp3')
+    else:
+        p = subprocess.Popen(['./ffmpeg', '-i', "./Music/temp/"+play_queue[0][0].title()+'.ogg', '-acodec', 'libmp3lame', "./Music/temp/"+play_queue[0][0].title()+'.mp3'])
     # os.system('ffmpeg -i "./Music/temp/'+play_queue[0][0].title()+'.ogg" -acodec libmp3lame "./Music/temp/'+play_queue[0][0].title()+'.mp3"')
     p.communicate()
 
@@ -206,8 +210,6 @@ def download_song(data):
 
     tags.save("./Music/saved/" + play_queue[0][1].title()
                     + "/" + data['track']['album']['title'] + '/' + play_queue[0][0].title() + ".mp3", v2_version=3)
-
-
 
 
 @eel.expose
@@ -347,7 +349,7 @@ def play_music():
             else:
                 time_to_end = math.inf
 
-        eel.sleep(2)
+        eel.sleep(0.5)
 
 
 options = {
@@ -362,6 +364,7 @@ server_listening = False
 time_to_end = math.inf
 skip = False
 curr_song_length = float('inf')
+p = None
 
 if sys.platform == "darwin":
     os.environ['PATH'] += ':'+os.getcwd()

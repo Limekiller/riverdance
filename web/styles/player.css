@@ -165,6 +165,12 @@ body {
 }
 #queue {
     text-transform:capitalize;
+    height:70%;
+    overflow:auto;
+    -webkit-mask-image: linear-gradient(rgba(0,0,0,1) 60%, rgba(0,0,0,0));
+}
+#queue::-webkit-scrollbar {
+    display:none;
 }
 .queueSong {
     background-color:#0080ff;

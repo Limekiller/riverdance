@@ -317,7 +317,6 @@ function artLoading(loading) {
         $("#artLoading").removeClass('artLoadingActive');
         $("#dl").css('background-position-y', '-30px');
         $("#playerControls").css('pointer-events', 'all');
-        $("#ff").css('pointer-events', 'all');
         $("#play").css('background-position-x', '155px');
         console.log(realTitle);
         //$('#songTitle').html(realTitle);
