@@ -51,6 +51,7 @@ body {
     left:0;
     right:0;
     bottom:50px;
+    transition:opacity 0.4s ease;
 }
 #playBar {
     width:100%;
@@ -93,7 +94,7 @@ body {
 #dl {
     background-image:url('../assets/dl.svg');
     background-position-y:-30px;
-    transition:background-position-y 0.4s ease, transform 0.4s ease;
+    transition:background-position-y 0.4s ease, transform 0.4s ease, opacity 0.4s ease;
 }
 #ff {
     background-image:url('../assets/ffrw.svg');
@@ -190,9 +191,6 @@ body {
 }
 .queueSongDeleted {
     margin-bottom: -60px;
-}
-.ui-sortable-helper {
-    transform:translateX(30px);
 }
 .queueArtist {
     display:block;

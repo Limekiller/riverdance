@@ -73,7 +73,8 @@ def handle_song(artist, title, queue_item=0):
 
 def start_song(song):
     """Play song with PyGame at correct sample rate"""
-    global curr_song_length;
+    global curr_song_length
+    global has_started
     song_loaded = False
     file_title = song.translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"})
     print(file_title)
@@ -89,6 +90,7 @@ def start_song(song):
     eel.artLoading(False)
     eel.getPercent(curr_song_length)
     pygame.mixer.music.play()
+    has_started = True
 
 
 @eel.expose
@@ -210,6 +212,9 @@ def download_song(data):
 
     tags.save("./Music/saved/" + play_queue[0][1].title()
                     + "/" + data['track']['album']['title'] + '/' + play_queue[0][0].title() + ".mp3", v2_version=3)
+    os.remove("./Music/temp/" + play_queue[0][0] + ".mp3")
+
+    eel.toggleEnabled("#dl", True)
 
 
 @eel.expose
@@ -316,6 +321,7 @@ def play_music():
     global paused
     global time_to_end
     global skip
+    global has_started
 
     while True:
 
@@ -328,8 +334,9 @@ def play_music():
             start_song(song)
 
         # Check time, and if the duration of the song has passed, handle things
-        if (pygame.mixer.get_init() and pygame.mixer.music.get_pos() == -1) or skip:
+        if (has_started and not pygame.mixer.music.get_busy()) or skip:
             skip = False
+            has_started = False
             pygame.mixer.stop()
             pygame.mixer.quit()
 
@@ -364,6 +371,7 @@ server_listening = False
 time_to_end = math.inf
 skip = False
 curr_song_length = float('inf')
+has_started = False
 p = None
 
 if sys.platform == "darwin":

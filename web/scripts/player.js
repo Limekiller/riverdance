@@ -5,10 +5,11 @@ var current_song;
 var radio = false;
 var realTitle;
 var realArtist;
+var queueInterval;
 $(document).ready(function() {
 
     // Continually query the back-end for queue information
-    setInterval(function() {
+    queueInterval = setInterval(function() {
         if (!sorting) {
             eel.get_queue()(function(a){updateArray(a);});
         }
@@ -94,15 +95,17 @@ $(document).ready(function() {
     $('#dl').on('click', function() {
         if ($(this).css('background-position-y') == '0px') {
                 $('#dl').css('background-position-y', '-30px');
+                toggleEnabled('#dl', true);
         } else {
                 $('#dl').css('background-position-y', '0px');
+                toggleEnabled('#dl', false);
         }
         eel.download_song(current_song);
     });
 
     // Fast forward
     $('#ff').on('click', function() {
-        $("#playerControls").css('pointer-events', 'none');
+        toggleEnabled('#playerControls', false);
         $("#playBarActive").css("transition", "");
         $("#playBarActive").css("width", "0");
        // just animation stuff
@@ -227,10 +230,20 @@ function updateArray(array){
     if ($("#queue").html() != queueData) {
         $("#queue").html(queueData);
         $('.queueDel').on('click', function() {
-		$(this).parent().addClass('queueSongDeleted');
-		$(".queueDel").css('display', 'none');
-		$(this).parent().css('animation', 'fade_out 0.4s ease forwards');
+            clearTimeout(queueInterval);
+            $(this).parent().addClass('queueSongDeleted');
+            $(".queueDel").css('display', 'none');
+            $(this).parent().css('animation', 'fade_out 0.4s ease forwards');
 		    deleteIndex($(this).parent().attr('id'));
+
+            setTimeout(function() {
+                eel.get_queue()(function(a){updateArray(a);});
+            }, 250);
+            queueInterval = setInterval(function() {
+                if (!sorting) {
+                    eel.get_queue()(function(a){updateArray(a);});
+                }
+            }, 2000);
         });
 
         $(".queueSong").hover(function() {
@@ -311,20 +324,32 @@ function getAlbumArt(title, artist) {
     });
 }
 
+eel.expose(toggleEnabled);
+function toggleEnabled(elemString, toggleBool) {
+    if (toggleBool) {
+        $(elemString).css('opacity', '1');
+        $(elemString).css('pointer-events', 'all');
+    } else {
+        $(elemString).css('opacity', '0.5');
+        $(elemString).css('pointer-events', 'none');
+    }
+}
+
 eel.expose(artLoading);
 function artLoading(loading) {
     if (!loading) {
         $("#artLoading").removeClass('artLoadingActive');
         $("#dl").css('background-position-y', '-30px');
-        $("#playerControls").css('pointer-events', 'all');
         $("#play").css('background-position-x', '155px');
+        toggleEnabled("#playerControls", true);
+        toggleEnabled("#dl", true);
         console.log(realTitle);
         //$('#songTitle').html(realTitle);
     } else {
         $("#playBarActive").css("transition", "");
         $("#playBarActive").css("width", "0");
         $("#artLoading").addClass('artLoadingActive');
-        $("#playerControls").css('pointer-events', 'none');
+        toggleEnabled("#playerControls", false);
     }
 }
 
