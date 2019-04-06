@@ -22,12 +22,17 @@ import artist_finder
 eel.init('web')
 
 def handle_song(artist, title, queue_item=0):
-    """Search YouTube for videos and download the best result"""
+    """This function prepares the song for playing before calling start_song"""
 
+    # This function is called both when there are no songs currently playing, in which case we want to call getAlbumArt,
+    # but also when we are downloading songs currently in the queue to play for later. In this case we don't want to get
+    # the album art at this time
     if not queue_item:
         eel.artLoading(True)
         eel.getAlbumArt(title, artist)
 
+    # This gets the duration of the song from the youtube page itself. This is no longer needed, as we find the actual
+    # length of the song file once it's downloaded
     video_url = "https://youtube.com" + play_queue[queue_item][2]
     duration = youtube_scrape.get_video_time(video_url)
 
@@ -76,10 +81,15 @@ def start_song(song):
     global curr_song_length
     global has_started
     song_loaded = False
+
+    # youtube_dl replaces some characters with #, so we replace any of those with # here to get the correct filename.
     file_title = song.translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"})
-    print(file_title)
+
+    # Keep trying to load the song until we do
     while not song_loaded:
         try:
+            # Get song length and set global var, and get frequency and play with pygame at that freq. (stupid that pygame wouldn't
+            # do this automatically)
             song_file = OggVorbis("./Music/temp/" + file_title + ".ogg")
             curr_song_length = song_file.info.length * 1000
             pygame.mixer.init(frequency=song_file.info.sample_rate)
@@ -87,6 +97,8 @@ def start_song(song):
             song_loaded = True
         except:
             pass
+
+    # Remove the specified classes on the webpage, and setup the seekbar's animation
     eel.artLoading(False)
     eel.getPercent(curr_song_length)
     pygame.mixer.music.play()
@@ -95,9 +107,10 @@ def start_song(song):
 
 @eel.expose
 def get_lyrics(artist, title):
+    # Although last.fm does not have an API call for lyrics, they do store them.
+    # Here, we scrape the page for them.
     header = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'}
     try:
-        print('https://www.last.fm/music/'+artist.replace(' ','+')+'/_/'+title.replace(' ','+')+'/+lyrics')
         response = requests.get('https://www.last.fm/music/'+artist.replace(' ','+')+'/_/'+title.replace(' ','+')+'/+lyrics', headers=header)
     except requests.exceptions.ConnectionError:
         return None, None
@@ -112,6 +125,7 @@ def get_lyrics(artist, title):
 
 @eel.expose
 def set_email(email, pwd, server):
+    """This function sets up the email service to begin searching for incoming requests"""
     global server_listening
     parse_emails.set_variables(email, pwd, server)
     server_listening = True
@@ -119,32 +133,35 @@ def set_email(email, pwd, server):
 
 @eel.expose
 def set_time(percent):
+    """This sets the music time to a certain percent of the way through the song, called when the user
+    clicks somewhere on the playbar"""
     global curr_song_length
     time_to_set = ((curr_song_length/1000) * percent) / 100
-    print(time_to_set)
     pygame.mixer.music.rewind()
     pygame.mixer.music.set_pos(time_to_set)
+
+    # We return the time left in the song after setting this so that the playbar can resume movement
+    # and knows over how much time to animate
     return (curr_song_length/1000)-time_to_set
 
 @eel.expose
 def unset_email():
+    """This function disables the email service"""
     global server_listening
     server_listening = False
 
 
 @eel.expose
 def get_email():
+    """This function returns whether or not the email service is playing"""
     global server_listening
     return server_listening
 
 
-# @eel.expose
-# def get_percent():
-#     global curr_song_length
-#     return curr_song_length
-
 @eel.expose
 def swap_queue(index1, index2):
+    """This function facilitates in changing the queue. Javascript determines which songs have been switched when the user
+    switches them, and then passes them here to actually complete the process"""
     play_queue.insert(int(index2)+1, play_queue.pop(int(index1)+1))
 
 
