@@ -149,15 +149,20 @@ def swap_queue(index1, index2):
 
 
 @eel.expose
-def pause_music():
+def pause_music(curr_percent):
     global paused
+    global curr_song_length
+
     eel.togglePlayButton(paused)
     if not paused:
         pygame.mixer.music.pause()
         paused = True
+        return 'pausing'
     else:
+        time_left = curr_song_length - ((curr_percent * curr_song_length) / 100)
         pygame.mixer.music.unpause()
         paused = False
+        return time_left/1000
 
 
 @eel.expose

@@ -88,7 +88,14 @@ $(document).ready(function() {
 
     // Pause and unpause
     $('#play').on('click', function() {
-        eel.pause_music();
+        var percent = (parseInt($("#playBarActive").css('width'))/window.innerWidth)*100
+        console.log(percent);
+        eel.pause_music(percent)(function(a) {
+            if (a != 'pausing') {
+                $("#playBarActive").css('transition', 'width '+a+'s linear');
+                $("#playBarActive").css('width', '100%');
+            }
+        });
     });
 
     // Download song
