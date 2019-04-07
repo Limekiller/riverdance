@@ -366,6 +366,7 @@ function getPercent(totalLength) {
    $("#playBarActive").css("width", "0%");
    console.log(totalLength);
    $("#playBarActive").css("transition", "width "+totalLength*.001+"s linear");
+    console.log("here")
    setTimeout(function(){
        $("#playBarActive").css("width", "100%");
    }, 500);

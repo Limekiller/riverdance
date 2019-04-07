@@ -34,16 +34,16 @@ def handle_song(artist, title, queue_item=0):
     # This gets the duration of the song from the youtube page itself. This is no longer needed, as we find the actual
     # length of the song file once it's downloaded
     video_url = "https://youtube.com" + play_queue[queue_item][2]
-    duration = youtube_scrape.get_video_time(video_url)
+    # duration = youtube_scrape.get_video_time(video_url)
 
     # If the function fails, return null
-    if not duration:
-        return duration
-    duration = duration / 1000
+   # if not duration:
+   #     return duration
+   # duration = duration / 1000
 
     if os.path.exists('./Music/temp/'+title+'.ogg'):
         start_song(title)
-        return duration
+        return
 
     options = {
         'format': 'best',
@@ -73,7 +73,7 @@ def handle_song(artist, title, queue_item=0):
     #subprocess.Popen('ffmpeg.exe -i ".\Music\\temp\\'+file_title+'.mp4" -acodec libmp3lame ".\Music\\temp\\'+file_title+'.mp3', creationflags=CREATE_NO_WINDOW) #creationflags=CREATE_NO_WINDOW)
 
     # Return the song length
-    return duration
+    # return duration
 
 
 def start_song(song):
@@ -102,6 +102,7 @@ def start_song(song):
     eel.artLoading(False)
     eel.getPercent(curr_song_length)
     pygame.mixer.music.play()
+    time.sleep(2)
     has_started = True
 
 
@@ -288,7 +289,6 @@ def begin_playback():
 
 def dl_songs_in_bg():
     while True:
-        print("still working")
         for i in play_queue:
             # song_title = i[0].translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"})
             if not os.path.exists("./Music/temp/"+i[0]+'.ogg'):
@@ -341,18 +341,16 @@ def play_music():
     global radio
     global play_queue
     global paused
-    global time_to_end
     global skip
     global has_started
+    global curr_song_length
 
     while True:
 
-        if time_to_end == math.inf and play_queue:
-            last_artist, last_song = play_queue[0][1], play_queue[0][0]
-            song = last_song
-            artist = last_artist
-            time_to_end = handle_song(artist, song)
+        if curr_song_length == float('inf') and play_queue:
+            artist, song = play_queue[0][1], play_queue[0][0]
             eel.sleep(2)
+            handle_song(artist, song)
             start_song(song)
 
         # Check time, and if the duration of the song has passed, handle things
@@ -370,13 +368,11 @@ def play_music():
             # If there's a song in the queue, play it; otherwise, do nothing
             if play_queue:
                 artist, song = play_queue[0][1], play_queue[0][0]
+                handle_song(artist, song)
                 print("Now playing: " + artist + " - " + song)
-                time_to_end = handle_song(artist, song)
-                if not time_to_end:
-                    continue
-                start_song(song)
+                # start_song(song)
             else:
-                time_to_end = math.inf
+                curr_song_length = float('inf')
 
         eel.sleep(0.5)
 
@@ -390,7 +386,6 @@ current_song = {}
 paused = False
 radio = False
 server_listening = False
-time_to_end = math.inf
 skip = False
 curr_song_length = float('inf')
 has_started = False
