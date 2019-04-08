@@ -19,21 +19,35 @@ from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, COMM, TCOM, TCON, TDRC, API
 from bs4 import BeautifulSoup
 import artist_finder
 
+play_queue = []
+current_song = {}
+paused = False
+radio = False
+server_listening = False
+skip = False
+curr_song_length = float('inf')
+has_started = False
+p = None
 eel.init('web')
 
-def handle_song(artist, title, queue_item=0):
+
+def handle_song(artist, title, queue_item=None):
+    global play_queue
     """This function prepares the song for playing before calling start_song"""
 
     # This function is called both when there are no songs currently playing, in which case we want to call getAlbumArt,
     # but also when we are downloading songs currently in the queue to play for later. In this case we don't want to get
     # the album art at this time
     if not queue_item:
+        queue_item = play_queue[0]
         eel.artLoading(True)
         eel.getAlbumArt(title, artist)
 
     # This gets the duration of the song from the youtube page itself. This is no longer needed, as we find the actual
     # length of the song file once it's downloaded
-    video_url = "https://youtube.com" + play_queue[queue_item][2]
+    video_url = "https://youtube.com" + queue_item[2]
+    while queue_item[4] == 'downloading':
+        eel.sleep(1)
     # duration = youtube_scrape.get_video_time(video_url)
 
     # If the function fails, return null
@@ -42,9 +56,10 @@ def handle_song(artist, title, queue_item=0):
    # duration = duration / 1000
 
     if os.path.exists('./Music/temp/'+title+'.ogg'):
-        start_song(title)
+        #start_song(title)
         return
 
+    queue_item[4] = 'downloading'
     options = {
         'format': 'best',
         'outtmpl': './Music/temp/'+title+".%(ext)s",
@@ -67,8 +82,9 @@ def handle_song(artist, title, queue_item=0):
             fast_forward()
 
     CREATE_NO_WINDOW = 0x08000000
-    file_title = title.translate ({ord(c): "#" for c in "!@#$%^&\"*{};:/<>?\|`~=_"})
+    file_title = title.translate ({ord(c): "#" for c in "!@#$%^\"*{};:/<>?\|`~=_"})
     print(file_title)
+    queue_item[4] = 'ready'
     #subprocess.Popen(['ffmpeg.exe', '-i', '".\Music\\temp\\'+title+'.mp4"', '-acodec libmp3lame ".\Music\\temp\\'+title+'.mp3']) #creationflags=CREATE_NO_WINDOW)
     #subprocess.Popen('ffmpeg.exe -i ".\Music\\temp\\'+file_title+'.mp4" -acodec libmp3lame ".\Music\\temp\\'+file_title+'.mp3', creationflags=CREATE_NO_WINDOW) #creationflags=CREATE_NO_WINDOW)
 
@@ -83,7 +99,7 @@ def start_song(song):
     song_loaded = False
 
     # youtube_dl replaces some characters with #, so we replace any of those with # here to get the correct filename.
-    file_title = song.translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"})
+    file_title = song.translate({ord(c): "#" for c in "!@#$%^\"*{};:/<>?\|`~=_"})
 
     # Keep trying to load the song until we do
     while not song_loaded:
@@ -255,7 +271,7 @@ def add_to_queue(title, artist):
     print(title, artist)
     real_title, link = youtube_scrape.scrape(title, artist, True)
     real_title = real_title.split(' - ')[-1]
-    play_queue.append([real_title, artist, link, "user"])
+    play_queue.append([real_title, artist, link, "user", 'waiting'])
 
 
 @eel.expose
@@ -292,7 +308,7 @@ def dl_songs_in_bg():
         for i in play_queue:
             # song_title = i[0].translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"})
             if not os.path.exists("./Music/temp/"+i[0]+'.ogg'):
-                handle_song(i[1], i[0], play_queue.index(i))
+                handle_song(i[1], i[0], play_queue[play_queue.index(i)])
 
         for file in os.listdir('./Music/temp/'):
             if file.rsplit('.', 1)[0] not in [i[0] for i in play_queue]:
@@ -302,7 +318,7 @@ def dl_songs_in_bg():
                     pass
                 except IsADirectoryError:
                     shutil.rmtree('./Music/temp/'+file)
-        eel.sleep(10)
+        eel.sleep(0.5)
 
 
 def check_email():
@@ -316,8 +332,8 @@ def check_email():
                 song = last_email[0]
                 artist = last_email[1]
                 song, link = youtube_scrape.scrape(song, artist, True)
-                play_queue.append([song, artist, link, "email"])
-        eel.sleep(5)
+                play_queue.append([song, artist, link, "email", 'waiting'])
+        eel.sleep(0.5)
 
 
 def use_radio():
@@ -330,11 +346,11 @@ def use_radio():
                 song = artist_finder.get_artist_song(artist)
                 song, link = youtube_scrape.scrape(song, artist, True)
                 song = song.split(' - ')[-1]
-                play_queue.append([song, artist, link, "radio"])
+                play_queue.append([song, artist, link, "radio", 'waiting'])
             except:
                 pass
 
-        eel.sleep(1)
+        eel.sleep(0.5)
 
 
 def play_music():
@@ -349,7 +365,7 @@ def play_music():
 
         if curr_song_length == float('inf') and play_queue:
             artist, song = play_queue[0][1], play_queue[0][0]
-            eel.sleep(2)
+            #eel.sleep(2)
             handle_song(artist, song)
             start_song(song)
 
@@ -364,13 +380,13 @@ def play_music():
             print("Queue updated:")
             print(play_queue)
 
-            eel.sleep(2)
+            #eel.sleep(2)
             # If there's a song in the queue, play it; otherwise, do nothing
             if play_queue:
                 artist, song = play_queue[0][1], play_queue[0][0]
                 handle_song(artist, song)
                 print("Now playing: " + artist + " - " + song)
-                # start_song(song)
+                start_song(song)
             else:
                 curr_song_length = float('inf')
 
@@ -381,15 +397,6 @@ options = {
     'mode': 'custom',
     'args': ['../../electron.exe', '.']
 }
-play_queue = []
-current_song = {}
-paused = False
-radio = False
-server_listening = False
-skip = False
-curr_song_length = float('inf')
-has_started = False
-p = None
 
 if sys.platform == "darwin":
     os.environ['PATH'] += ':'+os.getcwd()
