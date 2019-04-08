@@ -60,6 +60,15 @@ body {
     bottom:0;
     transition:height 0.4s ease;
 }
+#timeHolder {
+    position:absolute;
+    width:97%;
+    bottom:50px;
+    display:flex;
+    justify-content:space-between;
+    color:white;
+    padding-left:20px;
+}
 #playBar:hover {
     height:25px;
 }

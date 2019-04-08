@@ -3,9 +3,15 @@ var hovering = 'null';
 var sorting = false;
 var current_song;
 var radio = false;
+
 var realTitle;
 var realArtist;
 var queueInterval;
+
+var timerVar = setInterval(updateTimers, 1000);
+var totalSeconds = 0;
+var paused = true;
+
 $(document).ready(function() {
 
     // Continually query the back-end for queue information
@@ -342,6 +348,16 @@ function toggleEnabled(elemString, toggleBool) {
     }
 }
 
+function updateTimers() {
+    if (!paused) {
+        ++totalSeconds;
+        var minute = Math.floor(totalSeconds / 60);
+        var seconds = Math.floor(totalSeconds - (minute*60)) > 9 ? "" +Math.floor(totalSeconds-(minute*60)): "0" + Math.floor(totalSeconds-(minute*60));
+        console.log(minute+":"+seconds);
+        $('#from').html(minute+':'+seconds);
+    }
+}
+
 eel.expose(artLoading);
 function artLoading(loading) {
     if (!loading) {
@@ -403,12 +419,14 @@ function infoToPage(){
 }
 
 eel.expose(togglePlayButton);
-function togglePlayButton(paused) {
-    if (paused) {
+function togglePlayButton(isPaused) {
+    if (isPaused) {
         $("#play").css('background-position-x', '155px');
         $("#playBarActive").css("width", "100%");
+        paused = false;
     } else {
         $("#playBarActive").css("width", $("#playBarActive").width());
         $("#play").css('background-position-x', '65px');
+        paused = true;
     }
 }
