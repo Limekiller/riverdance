@@ -366,13 +366,15 @@ function artLoading(loading) {
         $("#play").css('background-position-x', '155px');
         toggleEnabled("#playerControls", true);
         toggleEnabled("#dl", true);
-        console.log(realTitle);
+        paused = false;
         //$('#songTitle').html(realTitle);
     } else {
         $("#playBarActive").css("transition", "");
         $("#playBarActive").css("width", "0");
         $("#artLoading").addClass('artLoadingActive');
         toggleEnabled("#playerControls", false);
+        paused = true;
+        totalSeconds = 0;
     }
 }
 
