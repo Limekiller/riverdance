@@ -117,6 +117,8 @@ def start_song(song):
     # Remove the specified classes on the webpage, and setup the seekbar's animation
     eel.artLoading(False)
     eel.getPercent(curr_song_length)
+    eel.setCurrSongLength(curr_song_length);
+
     pygame.mixer.music.play()
     time.sleep(2)
     has_started = True

@@ -11,6 +11,7 @@ var queueInterval;
 var timerVar = setInterval(updateTimers, 1000);
 var totalSeconds = 0;
 var paused = true;
+var currSongLength = null;
 
 $(document).ready(function() {
 
@@ -171,12 +172,11 @@ $(document).ready(function() {
         var percent = ((e.pageX) / $(this).width())*100;
         $("#playBarActive").css('transition', 'width 0.5s ease');
         eel.set_time(percent)(function(a){
-            console.log(eVar);
-            console.log(a);
             $("#playBarActive").css("width", eVar);
             setTimeout(function() {
                 $("#playBarActive").css('transition', 'width '+a+'s linear');
                 $("#playBarActive").css("width", '100%');
+                totalSeconds = currSongLength - a
             }, 500);
         });
     });
@@ -349,7 +349,7 @@ function toggleEnabled(elemString, toggleBool) {
 }
 
 function updateTimers() {
-    if (!paused) {
+    if (!paused && totalSeconds < currSongLength) {
         ++totalSeconds;
         var minute = Math.floor(totalSeconds / 60);
         var seconds = Math.floor(totalSeconds - (minute*60)) > 9 ? "" +Math.floor(totalSeconds-(minute*60)): "0" + Math.floor(totalSeconds-(minute*60));
@@ -357,6 +357,13 @@ function updateTimers() {
         $('#from').html(minute+':'+seconds);
     }
 }
+
+
+eel.expose(setCurrSongLength);
+function setCurrSongLength(length) {
+        currSongLength = length*.001;
+}
+
 
 eel.expose(artLoading);
 function artLoading(loading) {
