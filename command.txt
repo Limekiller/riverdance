@@ -1,0 +1,2 @@
+python3 -m eel main.py web/ --add-data /Users/bdyoder/Downloads/electron-v4.1.4-darwin-x64/Electron.app/:Electron.app --add-binary /System/Library/Frameworks/Tk.framework/Tk:tk --add-binary /System/Library/Frameworks/Tcl.framework/Tcl:tcl --add-data /Users/bdyoder/Downloads/electron-v4.1.4-darwin-x64/Electron.app/Contents/Frameworks/Electron\ Framework.framework/Versions/A:Electron.app/Contents/Frameworks/Electron\ Framework.framework
+

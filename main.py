@@ -31,6 +31,11 @@ p = None
 eel.init('web')
 
 
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
+
 def handle_song(artist, title, queue_item=None):
     global play_queue
     """This function prepares the song for playing before calling start_song"""
@@ -392,7 +397,7 @@ def play_music():
 
 options = {
     'mode': 'custom',
-    'args': ['../../electron.exe', '.']
+    'args': [resource_path('Electron.app/Contents/MacOS/Electron'), '.']
 }
 
 if sys.platform == "darwin":
@@ -405,5 +410,5 @@ if not os.path.exists('./Music'):
 eel.spawn(use_radio)
 eel.spawn(check_email)
 eel.spawn(dl_songs_in_bg)
-eel.start('main.html')
+eel.start('main.html', options=options)
 
