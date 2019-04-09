@@ -21,9 +21,6 @@ $(document).ready(function() {
             eel.get_queue()(function(a){updateArray(a);});
         }
     }, 2000);
-   // setInterval(function() {
-   //     getPercent();
-   // }, 50);
 
     // If the player was opened through the create server page, let the UI reflect that
     eel.get_email()(function (a) {
@@ -142,6 +139,7 @@ $(document).ready(function() {
         $("#infoContainer").css('margin-top', '-220vh');
     });
 
+    // Switch between about and lyrics pages
     var infotog = 0;
     $('#infoTog').on('click', function() {
         if (!infotog) {
@@ -159,6 +157,7 @@ $(document).ready(function() {
         }
     });
 
+    // Show song info when clicking album art
     $('#art').on('click', function() {
         infotog = 0;
         $('#infoTog').attr('src','/assets/lyrics.svg');
@@ -167,19 +166,28 @@ $(document).ready(function() {
         $("#infoContainer").css('margin-top', '-100vh');
     });
 
+    // Move playbar to time on click
+    // Works by finding the percent of width from the left that the user clicked, passing that to the Python
+    // and calculating that percentage of the actual song to know where to play from. Then we figure out, given that starting point,
+    // how much time is left in order to keep the playbar animation and timers consistent
     $("#playBar").on('click', function(e) {
+        $("#timeHolder").css('animation', 'none');
         var eVar = e.pageX;
         var percent = ((e.pageX) / $(this).width())*100;
+        paused = true;
+        $("#timeHolder").css('animation', 'changeTime 1.25s ease');
         $("#playBarActive").css('transition', 'width 0.5s ease');
         eel.set_time(percent)(function(a){
             $("#playBarActive").css("width", eVar);
             totalSeconds = currSongLength - a;
+            paused = false;
             setTimeout(function() {
                 $("#playBarActive").css('transition', 'width '+a+'s linear');
                 $("#playBarActive").css("width", '100%');
             }, 500);
         });
     });
+    // Show the playbar ghost on hover
     $("#playBar").mousemove( function(e) {
         var eVar = e.pageX;
         var percent = ((e.pageX) / $(this).width())*100;
@@ -187,6 +195,7 @@ $(document).ready(function() {
         $("#playBarHelper").css('width', percent+'%');
     });
 
+    // Get Last.fm search results on hitting enter on search
     $("#search_container").on('keyup', function(e) {
         if (e.keyCode == 13) {
             $("#search_bar").addClass("search_bar_active");
@@ -208,29 +217,37 @@ $(document).ready(function() {
 
             });
 
-            //eel.get_search_results($("#search_bar_title").val(),$("#search_bar_artist").val()) (function(a) {
-            //    $("#homeBody").css("overflow", "auto");
-            //    $("#homeBody").css("overflow-x", "hidden");
-            //    $("#search_results").html(a);
-            //});
         }
     });
 });
 
+// This function runs ever few seconds and updates the song array. Most of the code here is to handle animations
+// and such, trying to keep the UI as smooth as possible
 function updateArray(array){
     var queueData = '';
+    var nextSong = false;
     array.forEach(function(item, index) {
+        // If the first song is different, that means we're actually moving to a new song.
+        // Play queue and title animations as we transition
         if (index == 0) {
-           // if (!item[0].includes(realTitle) && $("#songTitle").html() != realTitle) {
-           //     $("#songTitle").html(item[0]);
-           // } else {
-           //     $("#songArtist").html(realTitle);
-           // }
-            $("#songTitle").html(item[0]);
-            $("#songArtist").html(item[1]);
+            if ($("#songTitle").html() != item[0]) {
+                $("#songInfo").css('animation', 'changeTime 1s ease');
+                nextSong = true;
+                setTimeout(function() {
+                    $("#songTitle").html(item[0]);
+                    $("#songArtist").html(item[1]);
+                }, 500);
+                setTimeout(function() {
+                    $("#songInfo").css('animation', '');
+                }, 1000);
+            }
+        // Otherwise, if the item is not already in the list (it's a new item), add a fade-in animation to it.
         } else if ($('#'+(index-1)).length == 0) {
                queueData += '<div style="animation:fade_in 0.4s ease forwards;" class="queueSong" id="'+(index-1)+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel">X</span></div>';
+        // Else, just add the song without adding animations
         } else {
+            // However, again, to make it a smoother experience, check if the item is currently being hovered,
+            // and if so, add the hovering classes right away so there is no unwanted animation
             if (hovering.includes(item[0]) && hovering.includes(item[1])) {
                queueData += '<div class="queueSong queueSongActive" id="'+(index-1)+'">'+item[0]+
                    '<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel">X</span></div>';
@@ -240,8 +257,19 @@ function updateArray(array){
             }
         }
     });
+    // Only update the queue if it has changed
     if ($("#queue").html() != queueData) {
-        $("#queue").html(queueData);
+        // Play the queue animation if we are moving to the next song
+        if (nextSong) {
+            $("#0").css('opacity', '0');
+            $("#0").css('margin-top', '-80px');
+            setTimeout(function() {
+                $("#queue").html(queueData);
+            }, 500);
+        } else {
+            $("#queue").html(queueData);
+        }
+        // Delete queue items on click
         $('.queueDel').on('click', function() {
             clearTimeout(queueInterval);
             $(this).parent().addClass('queueSongDeleted');
@@ -259,6 +287,7 @@ function updateArray(array){
             }, 2000);
         });
 
+        // Add or remove classes based on hover
         $(".queueSong").hover(function() {
             hovering = $(this).html();
             $(this).addClass('queueSongActive');
@@ -267,6 +296,7 @@ function updateArray(array){
             hovering = 'null';
         });
 
+        // Allow queue items to be draggable and sortable
         var elemBefore;
         var elemAfter;
         $("#queue").sortable({
@@ -300,9 +330,7 @@ function updateArray(array){
 function addToQueue(title, artist) {
     $('body').css('overflow-y', 'hidden');
     eel.add_to_queue(unescape(title), unescape(artist));
-   // setTimeout(function () {
-   //     $("#queue").append('<div style="animation:queueLoad 0.4s ease forwards;" class="queueSong">'+title+'<span class="queueArtist">'+artist+'</span></div>');
-   // }, 1000);
+
     $("#search_container").removeClass('search_container_active');
     $("#search_container").css('overflow-y', 'hidden');
 	$(".queueDel").css('display', 'none');
@@ -322,18 +350,23 @@ function getAlbumArt(title, artist) {
     searchJSONURL = 'http://ws.audioscrobbler.com/2.0/?method=track.search&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+encodeURIComponent(artist)+'&track='+encodeURIComponent(title)+'&format=json';
 
     $.getJSON(searchJSONURL, function(data) {
-        realTitle = data['results']['trackmatches']['track'][0]['name'];
-        realArtist = data['results']['trackmatches']['track'][0]['artist'];
-        jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+realArtist+'&track='+realTitle+'&format=json'
+        try {
+            realTitle = data['results']['trackmatches']['track'][0]['name'];
+            realArtist = data['results']['trackmatches']['track'][0]['artist'];
+            jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+realArtist+'&track='+realTitle+'&format=json'
 
-        $.getJSON(jsonURL, function(dat2) {
-            current_song = dat2;
-            $('#art').css('background-image', 'url('+dat2['track']['album']['image'][dat2['track']['album']['image'].length-1]['#text']+')');
+            $.getJSON(jsonURL, function(dat2) {
+                current_song = dat2;
+                $('#art').css('background-image', 'url('+dat2['track']['album']['image'][dat2['track']['album']['image'].length-1]['#text']+')');
 
-            $("#splashSongArtist").html(current_song['track']['artist']['name']);
-            $("#splashSongTitle").html(current_song['track']['name']);
-            $('#artistSplash').css('background-image', 'url('+current_song['track']['album']['image'][current_song['track']['album']['image'].length-1]['#text']+')');
-        });
+                $("#splashSongArtist").html(current_song['track']['artist']['name']);
+                $("#splashSongTitle").html(current_song['track']['name']);
+                $('#artistSplash').css('background-image', 'url('+current_song['track']['album']['image'][current_song['track']['album']['image'].length-1]['#text']+')');
+            });
+        } catch(err) {
+            $("#splashSongArtist").html(title);
+            $("#splashSongTitle").html(artist);
+        }
     });
 }
 
@@ -355,7 +388,7 @@ function updateTimers() {
         var seconds = Math.floor(totalSeconds - (minute*60)) > 9 ? "" +Math.floor(totalSeconds-(minute*60)): "0" + Math.floor(totalSeconds-(minute*60));
         $('#from').html(minute+':'+seconds);
         minute = Math.floor((currSongLength - totalSeconds) / 60)
-        seconds = Math.floor((currSongLength - totalSeconds) - (minute*60));
+        seconds = Math.floor((currSongLength - totalSeconds) - (minute*60)) > 9 ? ""+Math.floor((currSongLength - totalSeconds) - (minute*60)): "0" + Math.floor((currSongLength - totalSeconds) - (minute*60));
         $('#to').html(minute+':'+seconds);
         console.log(minute+":"+seconds)
     }

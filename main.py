@@ -50,11 +50,6 @@ def handle_song(artist, title, queue_item=None):
         eel.sleep(1)
     # duration = youtube_scrape.get_video_time(video_url)
 
-    # If the function fails, return null
-   # if not duration:
-   #     return duration
-   # duration = duration / 1000
-
     if os.path.exists('./Music/temp/'+title+'.ogg'):
         #start_song(title)
         return
@@ -79,7 +74,7 @@ def handle_song(artist, title, queue_item=None):
         try:
             ydl.download([video_url])
         except youtube_dl.DownloadError:
-            fast_forward()
+            pass
 
     CREATE_NO_WINDOW = 0x08000000
     file_title = title.translate ({ord(c): "#" for c in "!@#$%^\"*{};:/<>?\|`~=_"})

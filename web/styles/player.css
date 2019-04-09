@@ -67,7 +67,11 @@ body {
     display:flex;
     justify-content:space-between;
     color:white;
-    padding-left:20px;
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
+    pointer-events:none;
 }
 #playBar:hover {
     height:25px;
@@ -189,7 +193,7 @@ body {
     margin-bottom:20px;
     min-height:32px;
     position:relative;
-    transition:border-radius 0.4s ease, margin 0.4s ease, background-color 0.4s ease, transform 0.4s ease;
+    transition:border-radius 0.4s ease, margin 0.4s ease, background-color 0.4s ease, transform 0.4s ease, opacity 0.4s ease;
 }
 .queueSong:hover, .queueSongActive {
     border-radius:0px 20px;
@@ -259,6 +263,7 @@ body {
 	margin-top:10px;
 	color:white;
     line-height:10px;
+    transition:opacity 0.4s ease;
 }
 #songTitle {
 	display:block;
@@ -387,10 +392,12 @@ span#splashSongTitle {
     font-size:60px;
     display:block;
     line-height:55px;
+    text-transform:capitalize;
 }
 span#splashSongArtist {
     font-weight:700;
     font-size:40px;
+    text-transform:capitalize;
 }
 @keyframes slideUp {
     from {transform:translateY(75px);}
@@ -415,4 +422,10 @@ span#splashSongArtist {
 @keyframes playBar {
     from {width:0%;}
     to {width:100%;}
+}
+@keyframes changeTime {
+    0%{transform:translateY(0px);opacity:1;}
+    25%{transform:translateY(10px);opacity:0;}
+    75%{transform:translateY(-10px);opacity:0;}
+    100%{transform:translateY(0px);opacity:1;}
 }
