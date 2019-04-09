@@ -173,10 +173,10 @@ $(document).ready(function() {
         $("#playBarActive").css('transition', 'width 0.5s ease');
         eel.set_time(percent)(function(a){
             $("#playBarActive").css("width", eVar);
+            totalSeconds = currSongLength - a;
             setTimeout(function() {
                 $("#playBarActive").css('transition', 'width '+a+'s linear');
                 $("#playBarActive").css("width", '100%');
-                totalSeconds = currSongLength - a
             }, 500);
         });
     });
@@ -349,12 +349,15 @@ function toggleEnabled(elemString, toggleBool) {
 }
 
 function updateTimers() {
-    if (!paused && totalSeconds < currSongLength) {
+    if (!paused && totalSeconds < currSongLength-1) {
         ++totalSeconds;
         var minute = Math.floor(totalSeconds / 60);
         var seconds = Math.floor(totalSeconds - (minute*60)) > 9 ? "" +Math.floor(totalSeconds-(minute*60)): "0" + Math.floor(totalSeconds-(minute*60));
-        console.log(minute+":"+seconds);
         $('#from').html(minute+':'+seconds);
+        minute = Math.floor((currSongLength - totalSeconds) / 60)
+        seconds = Math.floor((currSongLength - totalSeconds) - (minute*60));
+        $('#to').html(minute+':'+seconds);
+        console.log(minute+":"+seconds)
     }
 }
 
