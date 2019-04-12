@@ -74,6 +74,7 @@ h1.search_bar_active {
     width:800px;
     margin:0 auto;
     margin-top:-10px;
+    animation:fade_in 0.4s 2s ease;
 }
 .search_result {
     width:100%;

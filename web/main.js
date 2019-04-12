@@ -32,6 +32,7 @@ $(document).ready(function() {
     // Get search results
     $("#search_container").on('keyup', function(e) {
         if (e.keyCode == 13) {
+            $("#genres").fadeOut();
             $("#search_bar").addClass("search_bar_active");
             $("#search_bar h1").addClass("search_bar_active");
             jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.search&track='+$("#search_bar_field").val()+"&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json";
