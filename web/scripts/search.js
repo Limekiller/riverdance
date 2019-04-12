@@ -1,5 +1,10 @@
 var scrollDist = 0;
 lastScrollTop = 0;
+$(document).ready(function() {
+    $(".genre_button").on('click', function() {
+        console.log("wow dude");
+    });
+});
 $("#search_container").on('scroll',function() {
     var st = $(this).scrollTop();
     if (st > lastScrollTop) {

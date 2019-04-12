@@ -15,6 +15,7 @@ $(document).ready(function() {
         $("#logo_container").addClass('search_active_l');
         $("#search_container").addClass("search_active_sc");
         $("#search_container").load("pages/search.html");
+        $.getScript("scripts/search.js");
     });
 
     $("#server").on('click', function() {
@@ -46,8 +47,9 @@ $(document).ready(function() {
                 });
                 $("#homeBody").css("overflow", "auto");
                 $("#homeBody").css("overflow-x", "hidden");
-                $("#resultsh1").css('animation', 'fade_in 0.4s ease forwards');
+                $("#resultsh1").css('animation', 'fade_in 0.4s ease 0.5s forwards');
                 $("#search_results").html(HTMLToAppend);
+                $("#search_results").css('animation', 'fade_in 0.4s ease 0.5s forwards');
             });
 
             //eel.get_search_results($("#search_bar_title").val(),$("#search_bar_artist").val()) (function(a) {

@@ -53,6 +53,7 @@ h1.search_bar_active {
     position:relative;
     flex-wrap:wrap;
     justify-content:space-around;
+    z-index:99;
     top:15vh;
 }
 .genre {
@@ -69,12 +70,28 @@ h1.search_bar_active {
     margin:0 auto;
     background-color:#1D00AD;
     border-radius:100px;
+    transition:transform 0.4s ease;
+}
+.genre_button:hover {
+    transform:translateY(-10px);
+    cursor:pointer;
+}
+.genre p {
+    margin:0 auto;
+    color:white;
+    margin-top:15px;
+    opacity:0;
+    text-align:center;
+    transition:opacity 0.4s ease;
+}
+.genre:hover p {
+    opacity:1;
 }
 #search_results {
     width:800px;
     margin:0 auto;
     margin-top:-10px;
-    animation:fade_in 0.4s 2s ease;
+    opacity:0;
 }
 .search_result {
     width:100%;
@@ -85,7 +102,7 @@ h1.search_bar_active {
     margin-top:35px;
     border-radius:20px 0px;
     transition:border-radius 0.4s ease, background-color 0.4s ease;
-    animation:fade_in 0.4s ease forwards;
+    /*animation:fade_in 0.4s ease forwards;*/
 }
 .search_result:hover {
     cursor:pointer;

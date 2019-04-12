@@ -213,8 +213,9 @@ $(document).ready(function() {
                 $('body').css("overflow", "auto");
                 $('#search_container').css("overflow", "auto");
                 $('body').css("overflow-x", "hidden");
-                $("#resultsh1").css('animation', 'fade_in 0.4s ease forwards');
+                $("#resultsh1").css('animation', 'fade_in 0.4s ease 0.5s forwards');
                 $("#search_results").html(HTMLToAppend);
+                $("#search_results").css('animation', 'fade_in 0.4s ease 0.5s forwards');
 
             });
 
