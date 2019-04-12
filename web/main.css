@@ -74,28 +74,23 @@ body {
     animation:fade_in 0.4s ease 2s forwards;
 }
 .homepage_button {
-   animation:bubble_move 20s ease infinite, blorb_in 0.4s ease forwards; 
    background-color:#389bfd;
    width:100px;
    height:100px;
    text-align:center;
    cursor:pointer;
    border-radius:100px;
-   transition:padding 0.4s ease;
+   padding:20px;
+   transition:transform 0.4s ease;
+   /*animation:blorb_in 0.4s ease forwards; */
 }
 .homepage_button img {
     width:70px;
     margin-top:12px;
 }
 .homepage_button:hover {
-   animation:bubble_move 20s ease infinite,blorb_out 0.4s ease forwards; 
-   transition:padding 0.4s ease;
-}
-#search {
-   animation:bubble_move 15s ease 10s infinite, blorb_in 0.4s ease forwards; 
-}
-#search:hover {
-   animation:bubble_move 15s ease 10s infinite, blorb_out 0.4s ease forwards; 
+    transform:translateY(-10px);
+   /*animation:blorb_out 0.4s ease forwards; */
 }
 #search_container {
     background:#389bfd;
@@ -130,15 +125,15 @@ body {
     100% {transform:translate(0);}
 }
 @keyframes blorb_out {
-    0% {padding:0px;}
-    95% {padding:20px;}
-    100% {padding:19px;}
+    0% {transform:scale(1);}
+    65% {transform:scale(1.5);}
+    100% {transform:scale(1.3);}
 }
 
 @keyframes blorb_in {
-    0% {padding:19px;}
-    5% {padding:20px;}
-    100% {padding:0px;}
+    0% {transform:scale(1.3);}
+    5% {transform:scale(1.5);}
+    100% {transform:scale(1);}
 }
 @keyframes wave {
     0% {d: path("M94,136.24s330.74,281.35,1025.74,113.2c682-165,1090.14,107.44,1090.14,107.44");margin-left:-80vw;}

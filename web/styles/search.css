@@ -2,7 +2,7 @@
     position:relative;
     margin:0 auto;
     width:800px;
-    top:40vh;
+    top:20vh;
     transform:translateY(-50%);
     opacity:0;
     animation:fade_in 0.4s ease 0.5s forwards;
@@ -45,6 +45,30 @@ h1.search_bar_active {
 }
 #search_bar input[type=text]:hover {
     border-radius:0px 20px;
+}
+#genres {
+    display:flex;
+    width:800px;
+    margin:0 auto;
+    position:relative;
+    flex-wrap:wrap;
+    justify-content:space-around;
+    top:15vh;
+}
+.genre {
+   background-color:#389bfd;
+   padding:20px;
+   flex-basis:21%;
+   /*animation:blorb_in 0.4s ease forwards; */
+}
+.genre_button {
+    width:100px;
+    opacity:0;
+    height:100px;
+    padding:20px;
+    margin:0 auto;
+    background-color:#1D00AD;
+    border-radius:100px;
 }
 #search_results {
     width:800px;
