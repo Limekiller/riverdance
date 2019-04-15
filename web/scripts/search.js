@@ -9,9 +9,14 @@ $(document).ready(function() {
             song = data['tracks']['track'][index]['name'];
             artist = data['tracks']['track'][index]['artist']['name'];
             eel.add_to_queue(unescape(song), unescape(artist));
-            if (!eel.toggle_radio(true)){
-                eel.toggle_radio();
-            }
+
+            eel.toggle_radio(true)(function(a){
+                if (!a) {
+                    eel.toggle_radio();
+                    $("#radioButton").addClass('buttonActive');
+                }
+            });
+
             if (window.location.pathname == '/main.html') {
                 window.location.replace('pages/player.html');
             } else {
