@@ -15,9 +15,12 @@ var currSongLength = null;
 
 $(document).ready(function() {
 
-    if (eel.toggle_radio(true)){
-            $('#radioButton').addClass('buttonActive');
-    }
+    eel.toggle_radio(true)(function(a){
+        if (a){
+            console.log(a);
+           $('#radioButton').addClass('buttonActive');
+        }
+    });
 
     // Continually query the back-end for queue information
     queueInterval = setInterval(function() {

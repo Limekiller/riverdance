@@ -6,9 +6,13 @@ $(document).ready(function() {
         index = Math.floor((Math.random() * 10) + 1);
         eel.get_charts(tag, index)(function(a){
             eel.add_to_queue(unescape(a[0]), unescape(a[1]));
-            if (!eel.toggle_radio(true)){
-                eel.toggle_radio();
-            }
+            eel.toggle_radio(true)(function(a){
+                if (!a) {
+                    eel.toggle_radio();
+                    $("#radioButton").addClass('buttonActive');
+                }
+            });
+
             if (window.location.pathname == '/main.html') {
                 window.location.replace('pages/player.html');
             } else {
