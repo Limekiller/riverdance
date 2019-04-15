@@ -290,6 +290,18 @@ def toggle_radio(no_set=False):
 
 
 @eel.expose
+def get_charts(genre, choice):
+    song_data = artist_finder.get_top_charts_by_genre(genre)
+    titles = song_data[0]
+    artists = song_data[1]
+
+    title = titles[choice].replace("\n", "")
+    artist = artists[choice].replace("\n", "")
+
+    return [title, artist]
+
+
+@eel.expose
 def get_queue():
     global play_queue
     return play_queue
