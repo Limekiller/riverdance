@@ -84,6 +84,14 @@ body {
    transition:transform 0.4s ease;
    /*animation:blorb_in 0.4s ease forwards; */
 }
+.homepage_button p {
+   opacity:0;
+   text-align:center;
+   margin:0 auto;
+   color:#389bfd;
+   margin-top:40px;
+   transition:opacity 0.4s ease;
+}
 .homepage_button img {
     width:70px;
     margin-top:12px;
@@ -91,6 +99,9 @@ body {
 .homepage_button:hover {
     transform:translateY(-10px);
    /*animation:blorb_out 0.4s ease forwards; */
+}
+.homepage_button:hover p {
+    opacity:1;
 }
 #search_container {
     background:#389bfd;

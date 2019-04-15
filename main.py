@@ -279,13 +279,13 @@ def delete_from_queue(index):
 
 
 @eel.expose
-def toggle_radio():
+def toggle_radio(no_set=False):
     global radio
-    if radio:
-        radio = False
-    else:
-        radio = True
-    print(radio)
+    if not no_set:
+        if radio:
+            radio = False
+        else:
+            radio = True
     return radio
 
 
