@@ -78,8 +78,9 @@ h1.search_bar_active {
     cursor:pointer;
 }
 .genre_button img {
-    height:80px;
-    margin-top:10px;
+    height:60px;
+    margin-top:20px;
+    transform:rotate(15deg);
 }
 .genre p {
     margin:0 auto;

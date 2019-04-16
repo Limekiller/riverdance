@@ -54,10 +54,11 @@ def handle_song(artist, title, queue_item=None):
         #start_song(title)
         return
 
+    file_title = title.translate ({ord(c): "#" for c in "!@#$%^\"*{};:/<>?\|`~=_"})
     queue_item[4] = 'downloading'
     options = {
         'format': 'best',
-        'outtmpl': './Music/temp/'+title+".%(ext)s",
+        'outtmpl': './Music/temp/'+file_title+".%(ext)s",
         'nocheckcertificate': True,
           'external_downloader_args': [{
               'hide_banner': True,
@@ -77,8 +78,6 @@ def handle_song(artist, title, queue_item=None):
             pass
 
     CREATE_NO_WINDOW = 0x08000000
-    file_title = title.translate ({ord(c): "#" for c in "!@#$%^\"*{};:/<>?\|`~=_"})
-    print(file_title)
     queue_item[4] = 'ready'
     #subprocess.Popen(['ffmpeg.exe', '-i', '".\Music\\temp\\'+title+'.mp4"', '-acodec libmp3lame ".\Music\\temp\\'+title+'.mp3']) #creationflags=CREATE_NO_WINDOW)
     #subprocess.Popen('ffmpeg.exe -i ".\Music\\temp\\'+file_title+'.mp4" -acodec libmp3lame ".\Music\\temp\\'+file_title+'.mp3', creationflags=CREATE_NO_WINDOW) #creationflags=CREATE_NO_WINDOW)
@@ -315,7 +314,7 @@ def begin_playback():
 def dl_songs_in_bg():
     while True:
         for i in play_queue:
-            # song_title = i[0].translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"})
+            song_title = i[0].translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"})
             if not os.path.exists("./Music/temp/"+i[0]+'.ogg'):
                 handle_song(i[1], i[0], play_queue[play_queue.index(i)])
 
