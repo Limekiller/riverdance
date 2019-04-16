@@ -24,7 +24,7 @@ def get_top_charts_by_genre(genre):
     else:
         genre +='-songs'
 
-    genre = genre.replace("&", "-")
+    genre = genre.replace("&amp;", "-")
     genre = genre.replace("/", "-")
     r = requests.get("https://www.billboard.com/charts/"+genre)
     soup = BeautifulSoup(r.content, 'html.parser')

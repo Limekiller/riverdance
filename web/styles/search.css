@@ -71,10 +71,15 @@ h1.search_bar_active {
     background-color:#1D00AD;
     border-radius:100px;
     transition:transform 0.4s ease;
+    text-align:center;
 }
 .genre_button:hover {
     transform:translateY(-10px);
     cursor:pointer;
+}
+.genre_button img {
+    height:80px;
+    margin-top:10px;
 }
 .genre p {
     margin:0 auto;
