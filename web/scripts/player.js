@@ -239,7 +239,7 @@ function updateArray(array){
         // If the first song is different, that means we're actually moving to a new song.
         // Play queue and title animations as we transition
         if (index == 0) {
-            if ($("#songTitle").html() != item[0]) {
+            if ($("#songTitle").text() != item[0]) {
                 $("#songInfo").css('animation', 'changeTime 1s ease');
                 nextSong = true;
                 setTimeout(function() {

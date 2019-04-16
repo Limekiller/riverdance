@@ -54,7 +54,7 @@ def handle_song(artist, title, queue_item=None):
         #start_song(title)
         return
 
-    file_title = title.translate ({ord(c): "#" for c in "!@#$%^\"*{};:/<>?\|`~=_"})
+    file_title = title.translate ({ord(c): "#" for c in "!@#$%^\"*{};&:/<>?\|`~=_"})
     queue_item[4] = 'downloading'
     options = {
         'format': 'best',
@@ -93,7 +93,7 @@ def start_song(song):
     song_loaded = False
 
     # youtube_dl replaces some characters with #, so we replace any of those with # here to get the correct filename.
-    file_title = song.translate({ord(c): "#" for c in "!@#$%^\"*{};:/<>?\|`~=_"})
+    file_title = song.translate({ord(c): "#" for c in "!@#$%^\"*{}&;:/<>?\|`~=_"})
 
     # Keep trying to load the song until we do
     while not song_loaded:
@@ -315,7 +315,7 @@ def dl_songs_in_bg():
     while True:
         for i in play_queue:
             song_title = i[0].translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"})
-            if not os.path.exists("./Music/temp/"+i[0]+'.ogg'):
+            if not os.path.exists("./Music/temp/"+song_title+'.ogg'):
                 handle_song(i[1], i[0], play_queue[play_queue.index(i)])
 
         for file in os.listdir('./Music/temp/'):
