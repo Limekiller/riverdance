@@ -242,6 +242,8 @@ function updateArray(array){
             if ($("#songTitle").text() != item[0]) {
                 $("#songInfo").css('animation', 'changeTime 1s ease');
                 nextSong = true;
+
+
                 setTimeout(function() {
                     $("#songTitle").html(item[0]);
                     $("#songArtist").html(item[1]);
@@ -365,12 +367,19 @@ function getAlbumArt(title, artist) {
             jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+realArtist+'&track='+realTitle+'&format=json'
 
             $.getJSON(jsonURL, function(dat2) {
-                current_song = dat2;
-                $('#art').css('background-image', 'url('+dat2['track']['album']['image'][dat2['track']['album']['image'].length-1]['#text']+')');
+                try {
+                    current_song = dat2;
+                    $('#art').css('background-image', 'url('+dat2['track']['album']['image'][dat2['track']['album']['image'].length-1]['#text']+')');
 
-                $("#splashSongArtist").html(current_song['track']['artist']['name']);
-                $("#splashSongTitle").html(current_song['track']['name']);
-                $('#artistSplash').css('background-image', 'url('+current_song['track']['album']['image'][current_song['track']['album']['image'].length-1]['#text']+')');
+                    $("#splashSongArtist").html(current_song['track']['artist']['name']);
+                    $("#splashSongTitle").html(current_song['track']['name']);
+                    $('#artistSplash').css('background-image', 'url('+current_song['track']['album']['image'][current_song['track']['album']['image'].length-1]['#text']+')');
+                } catch(err) {
+                    $("#splashSongTitle").html(title);
+                    $("#splashSongArtist").html(artist);
+                    $("#artistSplash").css('background-image', 'none');
+                    $("#art").css('background-image', 'url(/assets/no_art.svg');
+                }
             });
         } catch(err) {
             $("#splashSongArtist").html(title);

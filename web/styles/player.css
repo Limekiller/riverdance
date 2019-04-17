@@ -11,7 +11,9 @@ body {
 #art {
 	width:300px;
 	height:300px;
-	background-color:white;
+	background-color:#0080ff;
+    background-repeat:no-repeat;
+    background-image:url("/assets/no_art.svg");
 	margin:0 auto;
     background-size:contain;
     transition:transform 0.4s ease;

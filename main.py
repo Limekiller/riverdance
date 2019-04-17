@@ -217,15 +217,15 @@ def download_song(data):
         return
 
     if sys.platform == 'win32':
-        p = subprocess.Popen('ffmpeg -i "./Music/temp/'+play_queue[0][0].title()+'.ogg" -acodec libmp3lame "./Music/temp/'+play_queue[0][0].title()+'.mp3')
+        p = subprocess.Popen('ffmpeg -i "./Music/temp/'+play_queue[0][0].title()+'.ogg" -acodec libmp3lame "./Music/saved/'+data['track']['artist']['name']+'/'+data['track']['album']['title']+'/'+play_queue[0][0].title()+'.mp3')
     else:
-        p = subprocess.Popen(['./ffmpeg', '-i', "./Music/temp/"+play_queue[0][0].title()+'.ogg', '-acodec', 'libmp3lame', "./Music/temp/"+play_queue[0][0].title()+'.mp3'])
+        p = subprocess.Popen(['./ffmpeg', '-i', "./Music/temp/"+play_queue[0][0].title()+'.ogg', '-acodec', 'libmp3lame', "./Music/saved/"+data['track']['artist']['name']+'/'+data['track']['album']['title']+'/'+play_queue[0][0].title()+'.mp3'])
     # os.system('ffmpeg -i "./Music/temp/'+play_queue[0][0].title()+'.ogg" -acodec libmp3lame "./Music/temp/'+play_queue[0][0].title()+'.mp3"')
     p.communicate()
 
 
-    shutil.copyfile("./Music/temp/" + play_queue[0][0] + ".mp3", "./Music/saved/" + play_queue[0][1].title()
-                    + "/" + data['track']['album']['title'] + '/' + play_queue[0][0].title() + ".mp3")
+   # shutil.copyfile("./Music/temp/" + play_queue[0][0] + ".mp3", "./Music/saved/" + play_queue[0][1].title()
+   #                 + "/" + data['track']['album']['title'] + '/' + play_queue[0][0].title() + ".mp3")
 
     try:
         tags = ID3("./Music/saved/" + play_queue[0][1].title()
@@ -247,7 +247,6 @@ def download_song(data):
 
     tags.save("./Music/saved/" + play_queue[0][1].title()
                     + "/" + data['track']['album']['title'] + '/' + play_queue[0][0].title() + ".mp3", v2_version=3)
-    os.remove("./Music/temp/" + play_queue[0][0] + ".mp3")
 
     eel.toggleEnabled("#dl", True)
 
