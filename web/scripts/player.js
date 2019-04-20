@@ -55,6 +55,14 @@ $(document).ready(function() {
         }, 10000);
     });
 
+    // Audio
+    $("#audioBar").on('click', function(e) {
+        var eVar = e.pageX;
+        var percent = ((e.pageX) / $(this).width())*100;
+        $("#audioBarUI").css('width', (percent-400)+"%");
+        console.log(percent-400);
+    });
+
     // Show search on button click
     $('#searchButton').on('click', function() {
         $('head').append('<link rel="stylesheet" type="text/css" href="styles/search.css">');
@@ -180,12 +188,13 @@ $(document).ready(function() {
     $("#playBar").on('click', function(e) {
         $("#timeHolder").css('animation', 'none');
         var eVar = e.pageX;
-        var percent = ((e.pageX) / $(this).width())*100;
+        var percent = (((e.pageX) / $(this).width())*100)-3;
+        console.log(percent)
         paused = true;
         $("#timeHolder").css('animation', 'changeTime 1.25s ease');
         $("#playBarActive").css('transition', 'width 0.5s ease');
         eel.set_time(percent)(function(a){
-            $("#playBarActive").css("width", eVar);
+            $("#playBarActive").css("width", eVar-30);
             totalSeconds = currSongLength - a;
             paused = false;
             setTimeout(function() {
@@ -194,10 +203,11 @@ $(document).ready(function() {
             }, 500);
         });
     });
+
     // Show the playbar ghost on hover
     $("#playBar").mousemove( function(e) {
         var eVar = e.pageX;
-        var percent = ((e.pageX) / $(this).width())*100;
+        var percent = (((e.pageX) / $(this).width())*100)-3;
         console.log(percent);
         $("#playBarHelper").css('width', percent+'%');
     });

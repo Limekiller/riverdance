@@ -52,13 +52,13 @@ def get_video_time(url):
 
     # YouTube has this in a JS variable for each song, but you can't just pull that out with BeautifulSoup
     # So get it as a string and slice from there to the next variable, then only keep numbers
-    string_to_search = soup(text=re.compile('approxDurationMs'))[0]
-    slice_beginning = string_to_search.index('approxDurationMs')+len("approxDurationMs")
-    slice_end = string_to_search.index('audioSampleRate')
-    unrefined_time = string_to_search[slice_beginning:slice_end]
-    refined_time = ''.join(c for c in unrefined_time if c.isdigit())
+   # string_to_search = soup(text=re.compile('approxDurationMs'))[0]
+   # slice_beginning = string_to_search.index('approxDurationMs')+len("approxDurationMs")
+   # slice_end = string_to_search.index('audioSampleRate')
+   # unrefined_time = string_to_search[slice_beginning:slice_end]
+   # refined_time = ''.join(c for c in unrefined_time if c.isdigit())
 
-    return int(refined_time)
+   # return int(refined_time)
 
 
 def scrape(search_title, search_artist, get_top_result=False):
@@ -103,7 +103,7 @@ def scrape(search_title, search_artist, get_top_result=False):
         # print("Best result is: '"+str(title[best_title])+"' at index "+str(best_title))
         final_url = 'https://www.youtube.com'+ref[best_title]
 
-        video_length = get_video_time(final_url)
+        # video_length = get_video_time(final_url)
         # print("Video length is "+str(video_length)+' ms long')
         return str(title[best_title]), ref[best_title]
 

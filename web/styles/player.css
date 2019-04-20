@@ -56,11 +56,16 @@ body {
     transition:opacity 0.4s ease;
 }
 #playBar {
-    width:100%;
+    width:95%;
     position:absolute;
     height:10px;
-    bottom:0;
+    bottom:10px;
+    border-radius:100px;
+    background-color:#0080ff;
     transition:height 0.4s ease;
+    left:0;
+    right:0;
+    margin:0 auto;
 }
 #timeHolder {
     position:absolute;
@@ -84,11 +89,14 @@ body {
 #playBarActive {
     width:0%;
     height:100%;
+    border-radius:100px;
     background-color:#1D00AD;
 }
 #playBarHelper {
     height:100%;
     opacity:0;
+    border-radius:100px;
+    background-color:#1D00AD;
     position:absolute;
     width:0%;
     background-color:#1D00AD;
@@ -132,6 +140,50 @@ body {
     border-radius:20px 0px;
     color:white;
     width:50%;
+}
+#audioContainer {
+    width:25px;
+    height:25px;
+    position:absolute;
+    right:25px;
+    top:25px;
+}
+#audioButton {
+    background-color:white;
+    width:25px;
+    height:25px;
+    position:absolute;
+    top:0px;
+    right:0px;
+}
+#audioBar {
+    width:200px;
+    height:15px;
+    opacity:0;
+    margin-left:-220px;
+    border-radius:100px;
+    margin-top:5px;
+    background-color:#0080ff;
+    transition:opacity 0.4s ease;
+    position:relative;
+    z-index:99;
+    pointer-events:none;
+    transition:background 0.4s ease, opacity 0.4s ease;
+}
+#audioBarUI {
+    height:100%;
+    background-color:#1D00AD;
+    border-radius:100px;
+    width:0%;
+    transition:width 0.4s ease;
+}
+#audioContainer:hover {
+    width: 300px;
+    height:50px;
+}
+#audioContainer:hover #audioBar {
+    opacity:1; 
+    pointer-events:all;
 }
 #buttonBar {
     padding:20px;
@@ -270,7 +322,7 @@ body {
 #songTitle {
 	display:block;
 	font-size:35px;
-    margin-bottom:5px;
+    margin-bottom:10px;
     font-weight:900;
     line-height:30px;
 }
