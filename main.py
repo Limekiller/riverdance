@@ -19,6 +19,7 @@ from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, COMM, TCOM, TCON, TDRC, API
 from bs4 import BeautifulSoup
 import artist_finder
 
+# Because of eel, we must use global variables. RIP
 play_queue = []
 current_song = {}
 paused = False
@@ -27,6 +28,7 @@ server_listening = False
 skip = False
 curr_song_length = float('inf')
 has_started = False
+volume = 0.5
 p = None
 eel.init('web')
 
@@ -59,17 +61,17 @@ def handle_song(artist, title, queue_item=None):
     options = {
         'format': 'best',
         'outtmpl': './Music/temp/'+file_title+".%(ext)s",
-        'nocheckcertificate': True,
-          'external_downloader_args': [{
-              'hide_banner': True,
-              'loglevel': 'quiet, -8',
-              'nostats': True,
-              'nostdin': True
-          }],
-          'postprocessors': [{
-              'key': 'FFmpegExtractAudio',
-              'preferredcodec': 'vorbis',
-          }]
+        'nocheckcertificate': True
+          # 'external_downloader_args': [{
+          #     'hide_banner': True,
+          #     'loglevel': 'quiet, -8',
+          #     'nostats': True,
+          #     'nostdin': True
+          # }],
+          # 'postprocessors': [{
+          #     'key': 'FFmpegExtractAudio',
+          #     'preferredcodec': 'vorbis',
+          # }]
     }
     with youtube_dl.YoutubeDL(options) as ydl:
         try:
@@ -80,7 +82,7 @@ def handle_song(artist, title, queue_item=None):
     CREATE_NO_WINDOW = 0x08000000
     queue_item[4] = 'ready'
     #subprocess.Popen(['ffmpeg.exe', '-i', '".\Music\\temp\\'+title+'.mp4"', '-acodec libmp3lame ".\Music\\temp\\'+title+'.mp3']) #creationflags=CREATE_NO_WINDOW)
-    #subprocess.Popen('ffmpeg.exe -i ".\Music\\temp\\'+file_title+'.mp4" -acodec libmp3lame ".\Music\\temp\\'+file_title+'.mp3', creationflags=CREATE_NO_WINDOW) #creationflags=CREATE_NO_WINDOW)
+    subprocess.Popen('ffmpeg.exe -i ".\Music\\temp\\'+file_title+'.mp4" -map 0:a:0 -b:a 96k ".\Music\\temp\\'+file_title+'.ogg', creationflags=CREATE_NO_WINDOW) #creationflags=CREATE_NO_WINDOW)
 
     # Return the song length
     # return duration
@@ -90,6 +92,7 @@ def start_song(song):
     """Play song with PyGame at correct sample rate"""
     global curr_song_length
     global has_started
+    global volume
     song_loaded = False
 
     # youtube_dl replaces some characters with #, so we replace any of those with # here to get the correct filename.
@@ -107,6 +110,8 @@ def start_song(song):
             song_loaded = True
         except:
             pass
+
+    pygame.mixer.music.set_volume(volume)
 
     # Remove the specified classes on the webpage, and setup the seekbar's animation
     eel.artLoading(False)
@@ -134,6 +139,13 @@ def get_lyrics(artist, title):
     all_title_tags = soup.find_all("span", attrs={"itemprop": "text"})
 
     return str(all_title_tags[0])
+
+
+@eel.expose
+def set_audio(percent):
+    global volume
+    volume = percent*.01
+    pygame.mixer.music.set_volume(volume)
 
 
 @eel.expose

@@ -57,10 +57,10 @@ $(document).ready(function() {
 
     // Audio
     $("#audioBar").on('click', function(e) {
-        var eVar = e.pageX;
-        var percent = ((e.pageX) / $(this).width())*100;
-        $("#audioBarUI").css('width', (percent-400)+"%");
-        console.log(percent-400);
+        var eVar =  e.pageX - $(this).offset().left;
+        var percent = ((eVar) / $(this).width())*100;
+        $("#audioBarUI").css('width', (percent)+"%");
+        eel.set_audio(percent);
     });
 
     // Show search on button click
@@ -187,14 +187,16 @@ $(document).ready(function() {
     // how much time is left in order to keep the playbar animation and timers consistent
     $("#playBar").on('click', function(e) {
         $("#timeHolder").css('animation', 'none');
-        var eVar = e.pageX;
-        var percent = (((e.pageX) / $(this).width())*100)-3;
+        //var eVar = e.pageX;
+        var eVar =  e.pageX - $(this).offset().left;
+        var percent = ((eVar) / $(this).width())*100;
+        //var percent = (((e.pageX) / $(this).width())*100)-3;
         console.log(percent)
         paused = true;
         $("#timeHolder").css('animation', 'changeTime 1.25s ease');
         $("#playBarActive").css('transition', 'width 0.5s ease');
         eel.set_time(percent)(function(a){
-            $("#playBarActive").css("width", eVar-30);
+            $("#playBarActive").css("width", eVar);
             totalSeconds = currSongLength - a;
             paused = false;
             setTimeout(function() {

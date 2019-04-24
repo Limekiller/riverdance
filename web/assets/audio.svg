@@ -1,0 +1,12 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248.92 249.9">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <title>audio</title>
+  <path class="cls-1" d="M26.42,78.87H87.73L196.52.1V228.38A21.59,21.59,0,0,1,164,247L89.58,188.65H1.08V97.26C1.08,87.1,12.43,78.87,26.42,78.87Z" transform="translate(-1.08 -0.1)"/>
+  <path class="cls-1" d="M218.82,43.6h10a20.12,20.12,0,0,1,20.12,20.12V176.5a21.7,21.7,0,0,1-21.7,21.7h-8.4a0,0,0,0,1,0,0V43.6A0,0,0,0,1,218.82,43.6Z"/>
+</svg>
