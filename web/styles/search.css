@@ -105,7 +105,7 @@ h1.search_bar_active {
     background-color:#0080ff;
     color:white;
     padding:15px;
-    margin-top:35px;
+    margin-top:15px;
     border-radius:20px 0px;
     transition:border-radius 0.4s ease, background-color 0.4s ease;
     /*animation:fade_in 0.4s ease forwards;*/
@@ -137,6 +137,7 @@ h1.search_bar_active {
     color:white;
     font-size:80px;
     opacity:0;
+    margin-top:-85px;
 }
 #searchBack {
     width:50px;

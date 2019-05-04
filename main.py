@@ -61,17 +61,17 @@ def handle_song(artist, title, queue_item=None):
     options = {
         'format': 'best',
         'outtmpl': './Music/temp/'+file_title+".%(ext)s",
-        'nocheckcertificate': True
-          # 'external_downloader_args': [{
-          #     'hide_banner': True,
-          #     'loglevel': 'quiet, -8',
-          #     'nostats': True,
-          #     'nostdin': True
-          # }],
-          # 'postprocessors': [{
-          #     'key': 'FFmpegExtractAudio',
-          #     'preferredcodec': 'vorbis',
-          # }]
+        'nocheckcertificate': True,
+           'external_downloader_args': [{
+               'hide_banner': True,
+               'loglevel': 'quiet, -8',
+               'nostats': True,
+               'nostdin': True
+           }],
+           'postprocessors': [{
+               'key': 'FFmpegExtractAudio',
+               'preferredcodec': 'vorbis',
+           }]
     }
     with youtube_dl.YoutubeDL(options) as ydl:
         try:
@@ -82,7 +82,7 @@ def handle_song(artist, title, queue_item=None):
     CREATE_NO_WINDOW = 0x08000000
     queue_item[4] = 'ready'
     #subprocess.Popen(['ffmpeg.exe', '-i', '".\Music\\temp\\'+title+'.mp4"', '-acodec libmp3lame ".\Music\\temp\\'+title+'.mp3']) #creationflags=CREATE_NO_WINDOW)
-    subprocess.Popen('ffmpeg.exe -i ".\Music\\temp\\'+file_title+'.mp4" -map 0:a:0 -b:a 96k ".\Music\\temp\\'+file_title+'.ogg', creationflags=CREATE_NO_WINDOW) #creationflags=CREATE_NO_WINDOW)
+    # subprocess.Popen('ffmpeg.exe -i ".\Music\\temp\\'+file_title+'.mp4" -map 0:a:0 -b:a 96k ".\Music\\temp\\'+file_title+'.ogg', creationflags=CREATE_NO_WINDOW) #creationflags=CREATE_NO_WINDOW)
 
     # Return the song length
     # return duration

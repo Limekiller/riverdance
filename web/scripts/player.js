@@ -220,24 +220,12 @@ $(document).ready(function() {
             $("#genres").fadeOut();
             $("#search_bar").addClass("search_bar_active");
             $("#search_bar h1").addClass("search_bar_active");
-            jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.search&track='+$("#search_bar_field").val()+"&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json";
-
-            HTMLToAppend = ''
-            $.getJSON(jsonURL, function(data) {
-                $.each(data['results']['trackmatches']['track'], function(index, value) {
-                    title = value['name'];
-                    artist = value['artist'];
-                    HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
-                });
-                $('body').css("overflow", "auto");
-                $('#search_container').css("overflow", "auto");
-                $('body').css("overflow-x", "hidden");
-                $("#resultsh1").css('animation', 'fade_in 0.4s ease 0.5s forwards');
-                $("#search_results").html(HTMLToAppend);
-                $("#search_results").css('animation', 'fade_in 0.4s ease 0.5s forwards');
-
-            });
-
+            var script = document.createElement('script');
+            script.onload = function() {
+                search();
+            };
+            script.src = '/scripts/search.js';
+            document.head.appendChild(script);
         }
     });
 });
