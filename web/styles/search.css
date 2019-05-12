@@ -34,6 +34,16 @@ h1.search_bar_active {
 .search_bar_container label {
     color:#1D00AD;
 }
+#add_all {
+    color:white;
+    position:relative;
+    left:93%;
+    transition:text-decoration 0.4s ease;
+}
+#add_all:hover {
+    text-decoration:underline;
+    cursor:pointer;
+}
 #search_bar input[type=text] {
     width:100%;
     border:none;
@@ -118,9 +128,48 @@ h1.search_bar_active {
 .search_result:hover .resultPlus {
     opacity:1;
 }
+.search_result.album:hover .resultPlus {
+    opacity:0;
+}
+.album_holder {
+    display:flex;
+    justify-content:space-between;
+    width:830px;
+    margin-top:20px;
+}
+.search_result.album {
+    width:150px;
+    height:150px;
+    margin:0;
+    background-size:contain;
+    color:rgba(0,0,0,0);
+    background-color:white;
+    background-blend-mode:darken;
+    transition:color 0.4s ease, border-radius 0.4s ease, background-color 0.4s ease;
+}
+.search_result.album span {
+    color:rgba(0,0,0,0);
+    transition:color 0.4s ease;
+}
+.search_result.album:hover {
+    color:white;
+    background-color:#1D00AD;
+}
+.search_result.album:hover span {
+    color:white;
+}
 .search_result span {
     display:block;
     font-size:12px;
+}
+#search_results h4 {
+    color:white;
+    margin-bottom:-5px;
+    margin-top:30px;
+}
+#search_results h2 {
+    color:white;
+    margin-top:-10px;
 }
 .resultPlus {
     position:absolute;

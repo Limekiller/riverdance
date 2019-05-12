@@ -15,6 +15,10 @@ $(document).ready(function() {
         $("#logo_container").addClass('search_active_l');
         $("#search_container").addClass("search_active_sc");
         $("#search_container").load("pages/search.html");
+
+        setTimeout(function() {
+            $("#search_container").prepend("<div id='search_background'></div>");
+        }, 1000);
         $.getScript("scripts/search.js");
     });
 
@@ -61,6 +65,15 @@ $(document).ready(function() {
 	setTimeout(function() {window.location.replace('pages/player.html')},500);
     });
 });
+
+function addAll(data) {
+    console.log(data);
+    $.each(data, function(index, value) {
+        console.log(value['artist']);
+        eel.add_to_queue(unescape(value['name'].replace(/~/g, "'")), unescape(value['artist']['name'].replace(/~/g,"'")));
+    });
+    window.location.replace('pages/player.html');
+}
 
 function addToQueue(title, artist) {
     eel.add_to_queue(unescape(title), unescape(artist));
