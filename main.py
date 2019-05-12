@@ -129,16 +129,16 @@ def get_lyrics(artist, title):
     # Here, we scrape the page for them.
     header = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'}
     try:
-        response = requests.get('https://www.last.fm/music/'+artist.replace(' ','+')+'/_/'+title.replace(' ','+')+'/+lyrics', headers=header)
+        response = requests.get('https://genius.com/'+artist.replace(' ','-')+'-'+title.replace(' ','-')+'-lyrics', headers=header)
     except requests.exceptions.ConnectionError:
         return None, None
 
     content = response.content
     soup = BeautifulSoup(content, "html.parser")
 
-    all_title_tags = soup.find_all("span", attrs={"itemprop": "text"})
+    all_title_tags = soup.find_all("div", attrs={"class": "lyrics"})
 
-    return str(all_title_tags[0])
+    return str(all_title_tags[0].getText())
 
 
 @eel.expose

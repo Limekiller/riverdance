@@ -404,6 +404,10 @@ h2#infAlbum {
     max-height:500px;
     overflow:auto;
     padding-right:30px;
+    padding-bottom:75px;
+    -webkit-mask-image:linear-gradient(rgba(0,0,0,1) 60%, rgba(0,0,0,0));
+    font-family:Rubik;
+    letter-spacing:2px;
 }
 #infoWave {
     position:absolute;
