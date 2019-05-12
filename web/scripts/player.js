@@ -68,6 +68,11 @@ $(document).ready(function() {
         $('head').append('<link rel="stylesheet" type="text/css" href="styles/search.css">');
         $("#search_container").addClass('search_container_active');
         $("#search_container").load("../pages/search.html");
+
+        setTimeout(function() {
+            $("#search_container").prepend("<div id='search_background'></div>");
+        }, 1000);
+        $.getScript("../scripts/search.js");
     });
 
     // Show server page on button click
@@ -145,14 +150,14 @@ $(document).ready(function() {
     });
 
     // Close search, info tab on click
-    $(document.body).on('click', "#searchBack", function() {
-        $("#search_container").removeClass('search_container_active');
-        $('body').css('overflow-y', 'hidden');
-        $("#search_container").css('overflow-y', 'hidden');
-    });
-    $('#infoBack').on('click', function() {
-        $("#infoContainer").css('margin-top', '-220vh');
-    });
+   // $(document.body).on('click', "#searchBack", function() {
+   //     $("#search_container").removeClass('search_container_active');
+   //     $('body').css('overflow-y', 'hidden');
+   //     $("#search_container").css('overflow-y', 'hidden');
+   // });
+   // $('#infoBack').on('click', function() {
+   //     $("#infoContainer").css('margin-top', '-220vh');
+   // });
 
     // Switch between about and lyrics pages
     var infotog = 0;
@@ -492,4 +497,13 @@ function togglePlayButton(isPaused) {
         $("#play").css('background-position-x', '65px');
         paused = true;
     }
+}
+
+function addAll(data) {
+    $.each(data, function(index, value) {
+        eel.add_to_queue(unescape(value['name'].replace(/~/g, "'")), unescape(value['artist']['name'].replace(/~/g,"'")));
+    });
+    $("#search_container").removeClass('search_container_active');
+    $('body').css('overflow-y', 'hidden');
+    $("#search_container").css('overflow-y', 'hidden');
 }

@@ -1,6 +1,33 @@
 var scrollDist = 0;
 lastScrollTop = 0;
+var inAlbum = false;
+var canSearch = true;
+
 $(document).ready(function() {
+    $(document.body).on('click', "#searchBack", function() {
+        if (!inAlbum) {
+            $("#search_container").removeClass('search_container_active');
+            $('body').css('overflow-y', 'hidden');
+            $("#search_container").css('overflow-y', 'hidden');
+        } else {
+            $("#search_background").css('opacity', '0');
+            $("#resultsh1").html("SEARCH");
+
+            if (canSearch) {
+                search();
+                canSearch = false;
+            }
+
+            setTimeout(function() {
+                inAlbum = false;
+                canSearch = true;
+            }, 500);
+        }
+    });
+    $('#infoBack').on('click', function() {
+        $("#infoContainer").css('margin-top', '-220vh');
+    });
+
     $(".genre_button").off().on('click', function() {
         tag = ($(this).next().html());
         index = Math.floor((Math.random() * 10) + 1);
@@ -40,8 +67,9 @@ $("#search_container").on('scroll',function() {
 });
 
 function search() {
+    console.log('one');
     jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.search&track='+$("#search_bar_field").val()+"&limit=4&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json";
-    HTMLToAppend = '<h4>Songs</h4>'
+    HTMLToAppend = '<h4>Songs</h4>';
     $.getJSON(jsonURL, function(data) {
         $.each(data['results']['trackmatches']['track'], function(index, value) {
             title = value['name'];
@@ -68,6 +96,7 @@ function search() {
 }
 
 function getAlbum(title, artist) {
+    inAlbum = true;
     jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+artist+'&album='+title+'&format=json';
     albumTitle = title;
 
@@ -83,5 +112,16 @@ function getAlbum(title, artist) {
         });
         $("#search_results").html(HTMLToAppend);
         $("#resultsh1").html(albumTitle);
+    });
+}
+
+function closeSearch() {
+    $(document.body).on('click', "#searchBack", function() {
+        $("#search_container").removeClass('search_container_active');
+        $('body').css('overflow-y', 'hidden');
+        $("#search_container").css('overflow-y', 'hidden');
+    });
+    $('#infoBack').on('click', function() {
+        $("#infoContainer").css('margin-top', '-220vh');
     });
 }

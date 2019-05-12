@@ -70,6 +70,7 @@ h1.search_bar_active {
    background-color:#389bfd;
    padding:20px;
    flex-basis:21%;
+   margin-top:-15px;
    /*animation:blorb_in 0.4s ease forwards; */
 }
 .genre_button {
@@ -124,6 +125,14 @@ h1.search_bar_active {
     cursor:pointer;
     border-radius:0px 20px;
     background-color:#1D00AD;
+}
+#search_background {
+    opacity:0;
+    height:100vh;
+    position:absolute;
+    width:100vw;
+    transition:opacity 0.4s ease;
+    pointer-events:none;
 }
 .search_result:hover .resultPlus {
     opacity:1;

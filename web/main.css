@@ -114,14 +114,6 @@ body {
     overflow:hidden;
     overflow-x:hidden;
 }
-#search_background {
-    opacity:0;
-    height:100vh;
-    position:absolute;
-    width:100vw;
-    transition:opacity 0.4s ease;
-    pointer-events:none;
-}
 .search_active_sc#search_container {
     top:0%;
 }
