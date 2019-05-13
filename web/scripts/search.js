@@ -9,9 +9,16 @@ $(document).ready(function() {
             $("#search_container").removeClass('search_container_active');
             $('body').css('overflow-y', 'hidden');
             $("#search_container").css('overflow-y', 'hidden');
+            $("#button_container").removeClass('search_active_b');
+            $("#logo_container").removeClass('search_active_l');
+            $("#wave").removeClass('wave_active');
+            $("#search_container").removeClass("search_active_sc");
+            $("#homeBody").css("overflow", "hidden");
+            $("#search_bar h1").removeClass("search_bar_active");
         } else {
             $("#search_background").css('opacity', '0');
             $("#resultsh1").html("SEARCH");
+            $("#search_results").css('filter', 'opacity(0)');
 
             if (canSearch) {
                 search();
@@ -21,11 +28,9 @@ $(document).ready(function() {
             setTimeout(function() {
                 inAlbum = false;
                 canSearch = true;
+                $("#search_results").css('filter', 'opacity(1)');
             }, 500);
         }
-    });
-    $('#infoBack').on('click', function() {
-        $("#infoContainer").css('margin-top', '-220vh');
     });
 
     $(".genre_button").off().on('click', function() {
@@ -67,7 +72,7 @@ $("#search_container").on('scroll',function() {
 });
 
 function search() {
-    console.log('one');
+    $("#search_results").css('filter', 'opacity(0)');
     jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.search&track='+$("#search_bar_field").val()+"&limit=4&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json";
     HTMLToAppend = '<h4>Songs</h4>';
     $.getJSON(jsonURL, function(data) {
@@ -91,11 +96,13 @@ function search() {
             $("#resultsh1").css('animation', 'fade_in 0.4s ease 0.5s forwards');
             $("#search_results").html(HTMLToAppend);
             $("#search_results").css('animation', 'fade_in 0.4s ease 0.5s forwards');
+            $("#search_results").css('filter', 'opacity(1)');
         });
     });
 }
 
 function getAlbum(title, artist) {
+    $("#search_results").css('filter', 'opacity(0)');
     inAlbum = true;
     jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+artist+'&album='+title+'&format=json';
     albumTitle = title;
@@ -112,16 +119,6 @@ function getAlbum(title, artist) {
         });
         $("#search_results").html(HTMLToAppend);
         $("#resultsh1").html(albumTitle);
-    });
-}
-
-function closeSearch() {
-    $(document.body).on('click', "#searchBack", function() {
-        $("#search_container").removeClass('search_container_active');
-        $('body').css('overflow-y', 'hidden');
-        $("#search_container").css('overflow-y', 'hidden');
-    });
-    $('#infoBack').on('click', function() {
-        $("#infoContainer").css('margin-top', '-220vh');
+        $("#search_results").css('filter', 'opacity(1)');
     });
 }

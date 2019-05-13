@@ -155,9 +155,9 @@ $(document).ready(function() {
    //     $('body').css('overflow-y', 'hidden');
    //     $("#search_container").css('overflow-y', 'hidden');
    // });
-   // $('#infoBack').on('click', function() {
-   //     $("#infoContainer").css('margin-top', '-220vh');
-   // });
+    $('#infoBack').on('click', function() {
+        $("#infoContainer").css('margin-top', '-220vh');
+    });
 
     // Switch between about and lyrics pages
     var infotog = 0;

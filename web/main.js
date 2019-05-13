@@ -49,14 +49,14 @@ $(document).ready(function() {
         }
     });
 
-    $(document.body).on('click', "#searchBack", function() {
-        $("#button_container").removeClass('search_active_b');
-        $("#logo_container").removeClass('search_active_l');
-        $("#wave").removeClass('wave_active');
-        $("#search_container").removeClass("search_active_sc");
-        $("#homeBody").css("overflow", "hidden");
-        $("#search_bar h1").removeClass("search_bar_active");
-    });
+ //   $(document.body).on('click', "#searchBack", function() {
+ //       $("#button_container").removeClass('search_active_b');
+ //       $("#logo_container").removeClass('search_active_l');
+ //       $("#wave").removeClass('wave_active');
+ //       $("#search_container").removeClass("search_active_sc");
+ //       $("#homeBody").css("overflow", "hidden");
+ //       $("#search_bar h1").removeClass("search_bar_active");
+ //   });
 
     $("#play").on('click', function() {
         $("#button_container").addClass('search_active_b');
