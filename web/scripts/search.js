@@ -15,6 +15,8 @@ $(document).ready(function() {
             $("#search_container").removeClass("search_active_sc");
             $("#homeBody").css("overflow", "hidden");
             $("#search_bar h1").removeClass("search_bar_active");
+            $("#search_container").removeClass("search_active_sc");
+            $("#homeBody").css("overflow", "hidden");
         } else {
             $("#search_background").css('opacity', '0');
             $("#resultsh1").html("SEARCH");

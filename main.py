@@ -273,12 +273,20 @@ def get_search_results(search_title, search_artist):
 
 
 @eel.expose
+def add_album(data):
+    global play_queue
+    for i in data:
+        print(i['name'])
+        add_to_queue(i['name'], i['artist']['name'])
+
+
+@eel.expose
 def add_to_queue(title, artist):
     global play_queue
-    print(title, artist)
     real_title, link = youtube_scrape.scrape(title, artist, True)
     real_title = real_title.split(' - ')[-1]
     play_queue.append([real_title, artist, link, "user", 'waiting'])
+    print(play_queue)
 
 
 @eel.expose

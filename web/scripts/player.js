@@ -500,9 +500,7 @@ function togglePlayButton(isPaused) {
 }
 
 function addAll(data) {
-    $.each(data, function(index, value) {
-        eel.add_to_queue(unescape(value['name'].replace(/~/g, "'")), unescape(value['artist']['name'].replace(/~/g,"'")));
-    });
+    eel.add_album(data);
     $("#search_container").removeClass('search_container_active');
     $('body').css('overflow-y', 'hidden');
     $("#search_container").css('overflow-y', 'hidden');
