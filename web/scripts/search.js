@@ -106,7 +106,8 @@ function search() {
 function getAlbum(title, artist) {
     $("#search_results").css('filter', 'opacity(0)');
     inAlbum = true;
-    jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+artist+'&album='+title+'&format=json';
+    jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+encodeURIComponent(artist)+'&album='+encodeURIComponent(title)+'&format=json';
+    console.log(jsonURL);
     albumTitle = title;
 
     $.getJSON(jsonURL, function(data) {
