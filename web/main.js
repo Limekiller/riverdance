@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    $.getScript("scripts/search.js");
     // Play logo animations
     var mySVG = $('#paths').drawsvg({stagger: -100, duration: 1000});
     window.setTimeout(function(){
@@ -19,7 +20,6 @@ $(document).ready(function() {
         setTimeout(function() {
             $("#search_container").prepend("<div id='search_background'></div>");
         }, 1000);
-        $.getScript("scripts/search.js");
     });
 
     $("#server").on('click', function() {
@@ -28,6 +28,9 @@ $(document).ready(function() {
         $("#logo_container").addClass('search_active_l');
         $("#search_container").addClass("search_active_sc");
         $("#search_container").load("pages/server.html", function() {
+            $("#searchBack").on('click', function() {
+                $('#serverButton').removeClass('buttonActive');
+            });
             $("#submit").on('click', function() {
                 window.location.replace('pages/player.html')
             });

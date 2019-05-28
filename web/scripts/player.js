@@ -162,11 +162,13 @@ $(document).ready(function() {
     // Switch between about and lyrics pages
     var infotog = 0;
     $('#infoTog').on('click', function() {
+        $("#content").css('opacity', '0');
         if (!infotog) {
             infotog = 1;
             $('#infoContent h1').html('LYRICS');
             $('#infoTog').attr('src','/assets/info.svg');
             eel.get_lyrics(current_song['track']['artist']['name'], current_song['track']['name'])(function(a){
+                $("#content").css('opacity', '1');
                 $('#content').html(a);
             });
         } else {
@@ -474,11 +476,15 @@ function findSwapped() {
 }
 
 function infoToPage(){
-    try {
-        $("#content").html(current_song['track']['wiki']['content'].split('Read more on Last.fm')[0]);
-    } catch(err) {
-        $("#content").html('No description could be found for this track');
-    }
+    eel.get_info(current_song['track']['artist']['name'], current_song['track']['name'])(function(a){
+        $("#content").css('opacity', '1');
+        if (a != '') {
+            $("#content").html(a);
+        } else {
+            $("#content").html("No description could be found for this track");
+        }
+    });
+
     $("#infArtist").html(current_song['track']['artist']['name']);
     $("#infSong").html(current_song['track']['name']);
     $("#infAlbum").html(current_song['track']['album']['title']);

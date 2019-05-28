@@ -125,11 +125,11 @@ def start_song(song):
 
 @eel.expose
 def get_lyrics(artist, title):
-    # Although last.fm does not have an API call for lyrics, they do store them.
-    # Here, we scrape the page for them.
+    # Last.fm used to allow access to lyrics for each song, but now they don't, so we scrape from Genius.
+    # I'm guessing they won't change any time soon since that's, like, their thing
     header = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'}
     try:
-        response = requests.get('https://genius.com/'+artist.replace(' ','-')+'-'+title.replace(' ','-')+'-lyrics', headers=header)
+        response = requests.get('https://genius.com/'+artist.replace(' ','-').replace("'", '')+'-'+title.replace(' ','-').replace("'", '')+'-lyrics', headers=header)
     except requests.exceptions.ConnectionError:
         return None, None
 
@@ -139,6 +139,29 @@ def get_lyrics(artist, title):
     all_title_tags = soup.find_all("div", attrs={"class": "lyrics"})
 
     return str(all_title_tags[0].getText())
+
+
+@eel.expose
+def get_info(artist, title):
+    # Last.fm used to allow access to lyrics for each song, but now they don't, so we scrape from Genius.
+    # I'm guessing they won't change any time soon since that's, like, their thing
+    header = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'}
+    try:
+        response = requests.get('https://genius.com/'+artist.replace(' ','-').replace("'", '')+'-'+title.replace(' ','-').replace("'", '')+'-lyrics', headers=header)
+    except requests.exceptions.ConnectionError:
+        return None, None
+
+    content = response.content
+    soup = BeautifulSoup(content, "html.parser")
+
+    info_body = soup.find_all("div", attrs={"class": "rich_text_formatting"})
+    body = info_body[0].findChildren("p")
+
+    final_string = ''
+    for i in body:
+        final_string += '<p>'+str(i)+'</p>'
+
+    return str(final_string)
 
 
 @eel.expose
@@ -338,7 +361,7 @@ def dl_songs_in_bg():
                 handle_song(i[1], i[0], play_queue[play_queue.index(i)])
 
         for file in os.listdir('./Music/temp/'):
-            if file.rsplit('.', 1)[0] not in [i[0] for i in play_queue]:
+            if file.rsplit('.', 1)[0] not in [i[0].translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"}) for i in play_queue]:
                 try:
                     os.remove('./Music/temp/'+file)
                 except PermissionError:

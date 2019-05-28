@@ -27,7 +27,6 @@ $("#email").change(function() {
     }
 });
 
-
 $('#submit').on('click', function() {
     $("#search_container").removeClass('search_container_active');
     eel.set_email($('#email').val(), $('#pwd').val(), $("#smtp_server").val());

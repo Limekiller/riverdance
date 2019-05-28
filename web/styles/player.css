@@ -410,6 +410,14 @@ h2#infAlbum {
     -webkit-mask-image:linear-gradient(rgba(0,0,0,1) 60%, rgba(0,0,0,0));
     font-family:Rubik;
     letter-spacing:2px;
+    opacity:1;
+    transition:opacity 0.4s ease;
+}
+#content p {
+    white-space:initial;
+}
+#content p a {
+    color:white;
 }
 #infoWave {
     position:absolute;
