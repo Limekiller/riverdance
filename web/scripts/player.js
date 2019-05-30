@@ -15,6 +15,7 @@ var currSongLength = null;
 
 $(document).ready(function() {
 
+    $.getScript("/scripts/search.js");
     eel.toggle_radio(true)(function(a){
         if (a){
             console.log(a);
@@ -162,10 +163,21 @@ $(document).ready(function() {
     // Switch between about and lyrics pages
     var infotog = 0;
     $('#infoTog').on('click', function() {
+        $("#infoContent h1").css('opacity', '0');
+        $("#infoContent h1").css('animation', 'slideUp 0.4s ease reverse forwards');
+        setTimeout(function() {
+            if (!infotog) {
+                $('#infoContent h1').html('ABOUT');
+            } else {
+                $('#infoContent h1').html('LYRICS');
+            }
+            $("#infoContent h1").css('opacity', '1');
+            $("#infoContent h1").css('animation', 'slideDown 0.4s ease forwards');
+        }, 500);
+
         $("#content").css('opacity', '0');
         if (!infotog) {
             infotog = 1;
-            $('#infoContent h1').html('LYRICS');
             $('#infoTog').attr('src','/assets/info.svg');
             eel.get_lyrics(current_song['track']['artist']['name'], current_song['track']['name'])(function(a){
                 $("#content").css('opacity', '1');
@@ -174,7 +186,6 @@ $(document).ready(function() {
         } else {
             infotog = 0;
             infoToPage();
-            $('#infoContent h1').html('ABOUT');
             $('#infoTog').attr('src','/assets/lyrics.svg');
         }
     });
@@ -499,8 +510,8 @@ function togglePlayButton(isPaused) {
         $("#playBarActive").css("width", "100%");
         paused = false;
     } else {
-        $("#playBarActive").css("width", $("#playBarActive").width());
         $("#play").css('background-position-x', '65px');
+        $("#playBarActive").css("width", $("#playBarActive").width());
         paused = true;
     }
 }

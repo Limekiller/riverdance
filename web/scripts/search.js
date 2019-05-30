@@ -89,7 +89,7 @@ function search() {
             $.each(data['results']['albummatches']['album'], function(index, value) {
                 title = value['name'];
                 artist = value['artist'];
-                HTMLToAppend += '<div class="search_result album" style="background-image:url('+value['image'].slice(-1)[0]['#text']+')" onclick="getAlbum(\''+title+'\',\''+artist+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+                HTMLToAppend += '<div class="search_result album" style="background-image:url('+value['image'].slice(-1)[0]['#text']+')" onclick="getAlbum(\''+escape(title)+'\',\''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
             });
             HTMLToAppend += '</div>';
             $('body').css("overflow", "auto");
@@ -104,9 +104,12 @@ function search() {
 }
 
 function getAlbum(title, artist) {
+    title = unescape(title)
+    artist = unescape(artist)
+
     $("#search_results").css('filter', 'opacity(0)');
     inAlbum = true;
-    jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+encodeURIComponent(artist)+'&album='+encodeURIComponent(title)+'&format=json';
+    jsonURL = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist="+encodeURIComponent(artist)+"&album="+encodeURIComponent(title)+"&format=json";
     console.log(jsonURL);
     albumTitle = title;
 

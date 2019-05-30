@@ -5,36 +5,41 @@ import re
 
 def rank_results(result_list, search_title, search_artist, uploader_list):
     """Rank results based on similarity to search term"""
-    scores = []
-    search_artist = search_artist.replace("+", " ").lower()
+    #scores = []
+    #search_artist = search_artist.replace("+", " ").lower()
     search_title = search_title.replace("+", " ").lower()
-    search_terms = search_title.split() + search_artist.split()
+    #search_terms = search_title.split() + search_artist.split()
 
-    # Give score to each result
-    for index, title in enumerate(result_list):
-        title = title.lower()
-        score = 0
+    ## Give score to each result
+    #for index, title in enumerate(result_list):
+    #    title = title.lower()
+    #    score = 0
 
-        # One point for each word in result title
-        for term in search_terms:
-            if term in title:
-                score += 1
+    #    # One point for each word in result title
+    #    for term in search_terms:
+    #        if term in title:
+    #            score += 1
 
-        # 2 points if whole title in result, 2 points for whole artist, 4 points for both
-        if search_title in title:
-            score += 2
-        if search_artist in title:
-            score += 2
-        if search_title in title and search_artist in title:
-            score += 4
-        if search_title == title and (uploader_list[index] == search_artist+" - topic" or uploader_list[index] == 'various artists - topic' or uploader_list[index] == search_artist or uploader_list[index] == search_artist+'\\xa0'):
-            score += 100
-        if 'karaoke' in title:
-            score-=1000
+    #    # 2 points if whole title in result, 2 points for whole artist, 4 points for both
+    #    if search_title in title:
+    #        score += 2
+    #    if search_artist in title:
+    #        score += 2
+    #    if search_title in title and search_artist in title:
+    #        score += 4
+    #    if search_title == title and (uploader_list[index] == search_artist+" - topic" or uploader_list[index] == 'various artists - topic' or uploader_list[index] == search_artist or uploader_list[index] == search_artist+'\\xa0'):
+    #        score += 100
+    #    if 'karaoke' in title:
+    #        score-=1000
 
-        scores.append(score)
+    #    scores.append(score)
 
     # return scores.index(max(scores))
+    for index, title in enumerate(result_list):
+        title = title.lower()
+        if search_title == title:
+            return index
+
     return 0
 
 

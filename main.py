@@ -376,13 +376,16 @@ def check_email():
     last_email = None
     while True:
         if server_listening:
-            email = parse_emails.readmail()
-            if email != last_email:
-                last_email = email
-                song = last_email[0]
-                artist = last_email[1]
-                song, link = youtube_scrape.scrape(song, artist, True)
-                play_queue.append([song, artist, link, "email", 'waiting'])
+            try:
+                email = parse_emails.readmail()
+                if email != last_email:
+                    last_email = email
+                    song = last_email[0]
+                    artist = last_email[1]
+                    song, link = youtube_scrape.scrape(song, artist, True)
+                    play_queue.append([song, artist, link, "email", 'waiting'])
+            except:
+                pass
         eel.sleep(0.5)
 
 
