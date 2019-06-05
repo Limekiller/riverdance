@@ -85,11 +85,14 @@ function search() {
         });
         jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=album.search&album='+$("#search_bar_field").val()+'&limit=4&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json';
         $.getJSON(jsonURL, function(data) {
-            HTMLToAppend += '<h4>Albums</h4><div class="album_holder">';
+            HTMLToAppend += '<h4 id="albums">Albums</h4><div class="album_holder">';
             $.each(data['results']['albummatches']['album'], function(index, value) {
                 title = value['name'];
                 artist = value['artist'];
-                HTMLToAppend += '<div class="search_result album" style="background-image:url('+value['image'].slice(-1)[0]['#text']+')" onclick="getAlbum(\''+escape(title)+'\',\''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+                albumArt = value['image'].slice(-1)[0]['#text'];
+                if (albumArt != '') {
+                    HTMLToAppend += '<div class="search_result album" style="background-image:url('+albumArt+')" onclick="getAlbum(\''+escape(title)+'\',\''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+                }
             });
             HTMLToAppend += '</div>';
             $('body').css("overflow", "auto");
@@ -97,6 +100,10 @@ function search() {
             $('body').css("overflow-x", "hidden");
             $("#resultsh1").css('animation', 'fade_in 0.4s ease 0.5s forwards');
             $("#search_results").html(HTMLToAppend);
+
+            if ($(".album_holder").html() == "") {
+                $("#albums").css('display', 'none');
+            }
             $("#search_results").css('animation', 'fade_in 0.4s ease 0.5s forwards');
             $("#search_results").css('filter', 'opacity(1)');
         });
