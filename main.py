@@ -73,11 +73,14 @@ def handle_song(artist, title, queue_item=None):
                'preferredcodec': 'vorbis',
            }]
     }
-    with youtube_dl.YoutubeDL(options) as ydl:
-        try:
-            ydl.download([video_url])
-        except youtube_dl.DownloadError:
-            pass
+    downloaded = False
+    while not downloaded:
+        with youtube_dl.YoutubeDL(options) as ydl:
+            try:
+                ydl.download([video_url])
+                downloaded = True
+            except:
+                continue
 
     CREATE_NO_WINDOW = 0x08000000
     queue_item[4] = 'ready'

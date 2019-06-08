@@ -76,7 +76,7 @@ $("#search_container").on('scroll',function() {
 function search() {
     $("#search_results").css('filter', 'opacity(0)');
     jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.search&track='+$("#search_bar_field").val()+"&limit=4&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json";
-    HTMLToAppend = '<h4>Songs</h4>';
+    HTMLToAppend = '<h4 id="songs">Songs</h4><p id="viewSongs" onclick="getSongs()">View more</p>';
     $.getJSON(jsonURL, function(data) {
         $.each(data['results']['trackmatches']['track'], function(index, value) {
             title = value['name'];
@@ -85,7 +85,7 @@ function search() {
         });
         jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=album.search&album='+$("#search_bar_field").val()+'&limit=4&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json';
         $.getJSON(jsonURL, function(data) {
-            HTMLToAppend += '<h4 id="albums">Albums</h4><div class="album_holder">';
+            HTMLToAppend += '<h4 id="albums">Albums</h4><p id="viewAlbums" onclick="getAlbums()">View more</p><div class="album_holder">';
             $.each(data['results']['albummatches']['album'], function(index, value) {
                 title = value['name'];
                 artist = value['artist'];
@@ -103,10 +103,59 @@ function search() {
 
             if ($(".album_holder").html() == "") {
                 $("#albums").css('display', 'none');
+                $("#viewAlbums").css('display', 'none');
             }
             $("#search_results").css('animation', 'fade_in 0.4s ease 0.5s forwards');
             $("#search_results").css('filter', 'opacity(1)');
         });
+    });
+}
+
+function getSongs() {
+    inAlbum = true;
+    $("#search_results").css('filter', 'opacity(0)');
+    jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.search&track='+$("#search_bar_field").val()+"&limit=20&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json";
+    HTMLToAppend = '<h4>Songs</h4>';
+    $.getJSON(jsonURL, function(data) {
+        $.each(data['results']['trackmatches']['track'], function(index, value) {
+            title = value['name'];
+            artist = value['artist'];
+            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+        });
+        HTMLToAppend += '</div>';
+        $('body').css("overflow", "auto");
+        $('#search_container').css("overflow", "hidden auto");
+        $('body').css("overflow-x", "hidden");
+        $("#resultsh1").css('animation', 'fade_in 0.4s ease 0.5s forwards');
+        $("#search_results").html(HTMLToAppend);
+        $("#search_results").css('animation', 'fade_in 0.4s ease 0.5s forwards');
+        $("#search_results").css('filter', 'opacity(1)');
+    });
+}
+
+function getAlbums() {
+    inAlbum = true;
+    $("#search_results").css('filter', 'opacity(0)');
+    jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=album.search&album='+$("#search_bar_field").val()+'&limit=20&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json';
+    HTMLToAppend = '<h4>Albums</h4>';
+    $.getJSON(jsonURL, function(data) {
+        HTMLToAppend += '<div class="album_holder">';
+        $.each(data['results']['albummatches']['album'], function(index, value) {
+            title = value['name'];
+            artist = value['artist'];
+            albumArt = value['image'].slice(-1)[0]['#text'];
+            if (albumArt != '') {
+                HTMLToAppend += '<div class="search_result album" style="background-image:url('+albumArt+')" onclick="getAlbum(\''+escape(title)+'\',\''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+            }
+        });
+        HTMLToAppend += '</div>';
+        $('body').css("overflow", "auto");
+        $('#search_container').css("overflow", "hidden auto");
+        $('body').css("overflow-x", "hidden");
+        $("#resultsh1").css('animation', 'fade_in 0.4s ease 0.5s forwards');
+        $("#search_results").html(HTMLToAppend);
+        $("#search_results").css('animation', 'fade_in 0.4s ease 0.5s forwards');
+        $("#search_results").css('filter', 'opacity(1)');
     });
 }
 
