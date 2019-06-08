@@ -204,6 +204,8 @@ h1.search_bar_active {
     font-size:80px;
     opacity:0;
     margin-top:-85px;
+    line-height:70px;
+    margin-bottom:15px;
 }
 #searchBack {
     width:50px;

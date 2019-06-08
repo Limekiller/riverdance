@@ -19,7 +19,7 @@ $(document).ready(function() {
             $("#homeBody").css("overflow", "hidden");
         } else {
             $("#search_background").css('opacity', '0');
-            $("#resultsh1").html("SEARCH");
+            $("#resultsh1").html("RESULTS");
             $("#search_results").css('filter', 'opacity(0)');
 
             if (canSearch) {
