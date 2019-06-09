@@ -125,6 +125,23 @@ def start_song(song):
     time.sleep(2)
     has_started = True
 
+@eel.expose
+def get_artist_image(artist):
+    header = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'}
+    try:
+        response = requests.get('https://www.last.fm/music/'+artist.replace(' ','+'))
+    except requests.exceptions.ConnectionError:
+        return None, None
+
+    content = response.content
+    soup = BeautifulSoup(content, "html.parser")
+
+    all_title_tags = soup.find_all("img", attrs={"class": "avatar"})
+    icon = all_title_tags[0]['src']
+    if icon and '2a96cbd8b46e442fc41c2b86b821562f' not in icon:
+        return [artist, icon]
+    else:
+        return ''
 
 @eel.expose
 def get_lyrics(artist, title):

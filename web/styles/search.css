@@ -34,17 +34,17 @@ h1.search_bar_active {
 .search_bar_container label {
     color:#1D00AD;
 }
-#add_all, #viewSongs, #viewAlbums {
+#add_all, #viewSongs, #viewAlbums, #viewArtists {
     color:white;
     position:relative;
     left:93%;
     transition:text-decoration 0.4s ease;
 }
-#viewSongs, #viewAlbums {
+#viewSongs, #viewAlbums, #viewArtists {
     font-size:15px;
     margin-top:-17px;
 }
-#add_all:hover, #viewSongs:hover, #viewAlbums:hover {
+#add_all:hover, #viewSongs:hover, #viewAlbums:hover, #viewArtists:hover {
     text-decoration:underline;
     cursor:pointer;
 }
@@ -146,17 +146,18 @@ h1.search_bar_active {
 .search_result.album:hover .resultPlus {
     opacity:0;
 }
-.album_holder {
+.album_holder, .artists_holder {
     display:flex;
-    justify-content:space-between;
+    justify-content:start;
     width:830px;
     margin-top:20px;
     flex-wrap:wrap;
 }
-.search_result.album {
+.search_result.album, .search_result.artist {
     width:150px;
     height:150px;
     margin:0;
+    margin-right:25px;
     margin-bottom:35px;
     background-size:contain;
     color:rgba(0,0,0,0);
@@ -164,11 +165,15 @@ h1.search_bar_active {
     background-blend-mode:darken;
     transition:color 0.4s ease, border-radius 0.4s ease, background-color 0.4s ease;
 }
+.search_result.artist {
+    border-radius: 100px;
+    animation:fade_in 0.4s ease forwards;
+}
 .search_result.album span {
     color:rgba(0,0,0,0);
     transition:color 0.4s ease;
 }
-.search_result.album:hover {
+.search_result.album:hover, .search_result.artist:hover {
     color:white;
     background-color:#1D00AD;
 }
