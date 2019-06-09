@@ -70,7 +70,6 @@ $("#search_container").on('scroll',function() {
     }
     lastScrollTop = st;
     $("#search_container").css('backgroundPositionY', -scrollDist*2);
-    console.log(scrollDist);
 });
 
 function search() {
@@ -108,14 +107,9 @@ function search() {
                     title = value['name'];
                     eel.get_artist_image(title)(function(a) {;
                         if (a != '') {
-                            $(".artists_holder").append('<div class="search_result artist" style="background-image:url('+a[1]+')" onclick="getArtist(\''+a[0]+'\')">'+a[0]+'</div>');
+                            $(".artists_holder").append('<div class="search_result artist" style="background-image:url('+a[1]+')" onclick="getArtist(\''+a[0]+'\', \''+a[1]+'\')">'+a[0]+'</div>');
                         }
                     });
-                    //eel.get_artist_image(title)(function(a){
-                    //    if (a != '') {
-                    //        HTMLToAppend += '<div class="search_result artist" style="background-image:url('+a+')" onclick="getArtist(\''+escape(title)+'\')">'+title+'</div>';
-                    //    }
-                    //});
                 });
 
                 HTMLToAppend += '</div>';
@@ -191,7 +185,6 @@ function getAlbum(title, artist) {
     $("#search_results").css('filter', 'opacity(0)');
     inAlbum = true;
     jsonURL = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist="+encodeURIComponent(artist)+"&album="+encodeURIComponent(title)+"&format=json";
-    console.log(jsonURL);
     albumTitle = title;
 
     $.getJSON(jsonURL, function(data) {
@@ -206,6 +199,57 @@ function getAlbum(title, artist) {
         });
         $("#search_results").html(HTMLToAppend);
         $("#resultsh1").html(albumTitle);
+        $("#search_results").css('filter', 'opacity(1)');
+    });
+}
+
+function getArtist(artist, imgURL) {
+    artist = unescape(artist)
+
+    $("#resultsh1").html(artist);
+    $("#search_results").css('filter', 'opacity(0)');
+    inAlbum = true;
+    jsonURL = "http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist="+encodeURIComponent(artist)+"&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json";
+
+    $.getJSON(jsonURL, function(data) {
+        HTMLToAppend = '<div class="album_holder">';
+        $("#search_background").css('background', 'linear-gradient(rgba(0,0,0,0.5), #389bfd 50%),url('+imgURL+')');
+        $("#search_background").css('backgroundSize', 'cover');
+        $("#search_background").css('opacity', '1');
+        $.each(data['topalbums']['album'], function(index, value) {
+            title = value['name'];
+            artist = value['artist']['name'];
+            albumArt = value['image'].slice(-1)[0]['#text'];
+            if (albumArt != '') {
+                HTMLToAppend += '<div class="search_result album" style="background-image:url('+albumArt+')" onclick="getAlbum(\''+escape(title)+'\',\''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+            }
+        });
+        $("#search_results").html(HTMLToAppend);
+        $("#search_results").css('filter', 'opacity(1)');
+    });
+}
+
+function getArtists() {
+    inAlbum = true;
+    $("#search_results").css('filter', 'opacity(0)');
+    jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=artist.search&artist='+$("#search_bar_field").val()+'&limit=20&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json';
+    $.getJSON(jsonURL, function(data) {
+        HTMLToAppend = '<div class="artists_holder">';
+        $.each(data['results']['artistmatches']['artist'], function(index, value) {
+            title = value['name'];
+            eel.get_artist_image(title)(function(a) {;
+                if (a != '') {
+                    $(".artists_holder").append('<div class="search_result artist" style="background-image:url('+a[1]+')" onclick="getArtist(\''+a[0]+'\', \''+a[1]+'\')">'+a[0]+'</div>');
+                }
+            });
+        });
+        HTMLToAppend += '</div>';
+        $('body').css("overflow", "auto");
+        $('#search_container').css("overflow", "hidden auto");
+        $('body').css("overflow-x", "hidden");
+        $("#resultsh1").css('animation', 'fade_in 0.4s ease 0.5s forwards');
+        $("#search_results").html(HTMLToAppend);
+        $("#search_results").css('animation', 'fade_in 0.4s ease 0.5s forwards');
         $("#search_results").css('filter', 'opacity(1)');
     });
 }

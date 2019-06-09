@@ -168,6 +168,10 @@ h1.search_bar_active {
 .search_result.artist {
     border-radius: 100px;
     animation:fade_in 0.4s ease forwards;
+    text-align:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 .search_result.album span {
     color:rgba(0,0,0,0);
