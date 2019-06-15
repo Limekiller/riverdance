@@ -188,9 +188,10 @@ function getAlbum(title, artist) {
     albumTitle = title;
 
     $.getJSON(jsonURL, function(data) {
+        albumArt = data['album']['image'].slice(-1)[0]['#text']
         var obj = JSON.stringify(data['album']['tracks']['track']);
-        HTMLToAppend = '<h2>'+artist+'</h2><span onclick=\'addAll('+obj.replace(/'/g,"~")+')\' id="add_all">Add all +</span>';
-        $("#search_background").css('background', 'linear-gradient(rgba(0,0,0,0.5), #389bfd 50%),url('+data['album']['image'].slice(-1)[0]['#text']+')');
+        HTMLToAppend = '<h2 id="artistName" onclick=\'getArtist("'+artist+'", "'+albumArt+'")\'>'+artist+'</h2><span onclick=\'addAll('+obj.replace(/'/g,"~")+')\' id="add_all">Add all +</span>';
+        $("#search_background").css('background', 'linear-gradient(rgba(0,0,0,0.5), #389bfd 50%),url('+albumArt+')');
         $("#search_background").css('backgroundSize', 'cover');
         $("#search_background").css('opacity', '1');
         $.each(data['album']['tracks']['track'], function(index, value) {
@@ -226,6 +227,7 @@ function getArtist(artist, imgURL) {
         });
         $("#search_results").html(HTMLToAppend);
         $("#search_results").css('filter', 'opacity(1)');
+        $(".album_holder").css('marginTop', '60px');
     });
 }
 

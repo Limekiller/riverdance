@@ -34,6 +34,9 @@ h1.search_bar_active {
 .search_bar_container label {
     color:#1D00AD;
 }
+#artistName {
+    margin-left:5px;
+}
 #add_all, #viewSongs, #viewAlbums, #viewArtists {
     color:white;
     position:relative;
@@ -44,7 +47,7 @@ h1.search_bar_active {
     font-size:15px;
     margin-top:-17px;
 }
-#add_all:hover, #viewSongs:hover, #viewAlbums:hover, #viewArtists:hover {
+#add_all:hover, #viewSongs:hover, #viewAlbums:hover, #viewArtists:hover, #artistName:hover {
     text-decoration:underline;
     cursor:pointer;
 }
