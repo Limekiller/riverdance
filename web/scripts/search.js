@@ -195,6 +195,8 @@ function getAlbum(title, artist) {
     artist = unescape(artist)
 
     $("#search_results").css('filter', 'opacity(0)');
+    $("#resultsh1").css('filter', 'opacity(0)');
+    $("#search_background").css('opacity', '0');
     inAlbum = true;
     jsonURL = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist="+encodeURIComponent(artist)+"&album="+encodeURIComponent(title)+"&format=json";
     albumTitle = title;
@@ -210,9 +212,16 @@ function getAlbum(title, artist) {
             title = value['name'];
             HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span class="resultPlus">+</span></div></div>';
         });
-        $("#search_results").html(HTMLToAppend);
-        $("#resultsh1").html(albumTitle);
-        $("#search_results").css('filter', 'opacity(1)');
+        $('body').css("overflow", "auto");
+        $('#search_container').css("overflow", "hidden auto");
+        $('body').css("overflow-x", "hidden");
+        setTimeout(function () {
+            $("#search_results").html(HTMLToAppend);
+            $("#resultsh1").html(albumTitle);
+            $("#search_results").css('filter', 'opacity(1)');
+            $("#search_background").css('opacity', '1');
+            $("#resultsh1").css('filter', 'opacity(1)');
+        }, 500);
     });
 }
 
@@ -221,6 +230,8 @@ function getAlbum(title, artist) {
 function getArtist(artist, imgURL) {
 
     // In case this is being called from the player page, open the search container
+    $("#resultsh1").css('filter', 'opacity(0)');
+    $("#search_background").css('opacity', '0');
     $("#search_container").addClass('search_container_active');
     // If there is no imgURL, get the artist image
     if (imgURL == "") {
@@ -229,11 +240,9 @@ function getArtist(artist, imgURL) {
         $("#search_results").css('filter', 'opacity(1)');
         eel.get_artist_image(artist)(function(a) {;
             if (a != '') {
-                console.log("ah");
                 imgURL = a[1];
                 $("#search_background").css('background', 'linear-gradient(rgba(0,0,0,0.5), #389bfd 50%),url('+imgURL+')');
                 $("#search_background").css('backgroundSize', 'cover');
-                $("#search_background").css('opacity', '1');
                 $('body').css("overflow", "auto");
                 $('#search_container').css("overflow", "hidden auto");
                 $('body').css("overflow-x", "hidden");
@@ -243,7 +252,6 @@ function getArtist(artist, imgURL) {
 
     artist = unescape(artist)
 
-    $("#resultsh1").html(artist);
     $("#search_results").css('filter', 'opacity(0)');
     inAlbum = true;
     jsonURL = "http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist="+encodeURIComponent(artist)+"&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json";
@@ -263,9 +271,15 @@ function getArtist(artist, imgURL) {
                 HTMLToAppend += '<div class="search_result album" style="background-image:url('+albumArt+')" onclick="getAlbum(\''+escape(title)+'\',\''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
             }
         });
+
         $("#search_results").html(HTMLToAppend);
-        $("#search_results").css('filter', 'opacity(1)');
         $(".album_holder").css('marginTop', '60px');
+        setTimeout (function() {
+            $("#resultsh1").html(artist);
+            $("#search_results").css('filter', 'opacity(1)');
+            $("#search_background").css('opacity', '1');
+            $("#resultsh1").css('filter', 'opacity(1)');
+        }, 1250);
     });
 }
 

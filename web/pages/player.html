@@ -31,7 +31,7 @@
                 </div>
                 <div class='buttonContainer'>
                     <img id='serverButton'class='button' src='../assets/jukebox.svg'/> 
-                    <span class='buttonDesc'>Toggle email control</span>
+                    <span class='buttonDesc'>Toggle jukebox</span>
                 </div>
             </div>
             <div id='contentHolder'>
@@ -41,7 +41,7 @@
                     </div>
                     <div id='songInfo'>
                         <span id='songTitle'></span>
-                        <span id='songArtist' onclick='getArtist($("#songArtist").html(), "")'></span>
+                        <span id='songArtist' ></span>
                     </div>
                 </div>
                 <div class='playerColumn' id='songList'>
@@ -60,9 +60,9 @@
                 </div>
                 <div  class='iCColumn'>
                     <div id='infoArt'></div>
-                    <h2 id='infArtist' class='infoInfo'>ARTIST</h2>
+                    <h2 id='infArtist' onclick='loadFromPlayer("artist", [$("#infArtist").html(), ""])'class='infoInfo'>ARTIST</h2>
                     <h2 id='infSong' class='infoInfo'>SONG</h2>
-                    <h2 id='infAlbum' class='infoInfo'>ALBUM</h2>
+                    <h2 id='infAlbum' onclick='loadFromPlayer("album", [$("#infAlbum").html(), $("#infArtist").html()])'class='infoInfo'>ALBUM</h2>
                 </div>
             </div>
             <object id='infoWave' data='../assets/wave.svg' type='image/svg+xml'></object>

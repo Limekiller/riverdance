@@ -18,7 +18,6 @@ $(document).ready(function() {
     $.getScript("/scripts/search.js");
     eel.toggle_radio(true)(function(a){
         if (a){
-            console.log(a);
            $('#radioButton').addClass('buttonActive');
         }
     });
@@ -114,7 +113,6 @@ $(document).ready(function() {
     // Pause and unpause
     $('#play').on('click', function() {
         var percent = (parseInt($("#playBarActive").css('width'))/window.innerWidth)*100
-        console.log(percent);
         eel.pause_music(percent)(function(a) {
             if (a != 'pausing') {
                 $("#playBarActive").css('transition', 'width '+a+'s linear');
@@ -203,7 +201,6 @@ $(document).ready(function() {
         var eVar =  e.pageX - $(this).offset().left;
         var percent = ((eVar) / $(this).width())*100;
         //var percent = (((e.pageX) / $(this).width())*100)-3;
-        console.log(percent)
         paused = true;
         $("#timeHolder").css('animation', 'changeTime 1.25s ease');
         $("#playBarActive").css('transition', 'width 0.5s ease');
@@ -222,7 +219,6 @@ $(document).ready(function() {
     $("#playBar").mousemove( function(e) {
         var eVar = e.pageX;
         var percent = (((e.pageX) / $(this).width())*100)-3;
-        console.log(percent);
         $("#playBarHelper").css('width', percent+'%');
     });
 
@@ -242,6 +238,37 @@ $(document).ready(function() {
         }
     });
 });
+
+// This is used to load an artist or album page from the player page, in case the search hasn't been loaded yet
+function loadFromPlayer(type, vars){
+    $("#search_container").addClass('search_container_active');
+    $("#search_container").load("../pages/search.html");
+
+    setTimeout(function() {
+        $("#search_container").prepend("<div id='search_background'></div>");
+        $("#genres").fadeOut();
+        $(".album_holder").css('filter', 'opacity(0)');
+        $("#search_bar").addClass("search_bar_active");
+        $("#search_bar h1").addClass("search_bar_active");
+        $("#search_bar_field").val(vars[0]);
+    }, 250);
+    $.getScript("../scripts/search.js").done(function() {
+        search(vars[0]);
+        if (type === "artist") {
+            getArtist(vars[0], vars[1]);
+            inAlbum = false;
+        } else {
+            getAlbum(vars[0], vars[1]);
+            inAlbum = false;
+        }
+    });
+    setTimeout(function() {
+        $("#resultsh1").css('opacity', '1');
+        $(".album_holder").css('filter', 'opacity(1)');
+        $("#search_results").css('opacity', '1');
+        $("#resultsh1").css('filter', 'opacity(1)');
+    }, 1250);
+}
 
 // This function runs every few seconds and updates the song array. Most of the code here is to handle animations
 // and such, trying to keep the UI as smooth as possible
@@ -421,7 +448,6 @@ function updateTimers() {
         minute = Math.floor((currSongLength - totalSeconds) / 60)
         seconds = Math.floor((currSongLength - totalSeconds) - (minute*60)) > 9 ? ""+Math.floor((currSongLength - totalSeconds) - (minute*60)): "0" + Math.floor((currSongLength - totalSeconds) - (minute*60));
         $('#to').html(minute+':'+seconds);
-        console.log(minute+":"+seconds)
     }
 }
 
@@ -456,9 +482,7 @@ eel.expose(getPercent);
 function getPercent(totalLength) {
    $("#playBarActive").css("transition", "");
    $("#playBarActive").css("width", "0%");
-   console.log(totalLength);
    $("#playBarActive").css("transition", "width "+totalLength*.001+"s linear");
-    console.log("here")
    setTimeout(function(){
        $("#playBarActive").css("width", "100%");
    }, 500);
