@@ -150,12 +150,6 @@ $(document).ready(function() {
         eel.fast_forward();
     });
 
-    // Close search, info tab on click
-   // $(document.body).on('click', "#searchBack", function() {
-   //     $("#search_container").removeClass('search_container_active');
-   //     $('body').css('overflow-y', 'hidden');
-   //     $("#search_container").css('overflow-y', 'hidden');
-   // });
     $('#infoBack').on('click', function() {
         $("#infoContainer").css('margin-top', '-220vh');
     });
@@ -240,6 +234,7 @@ $(document).ready(function() {
             $("#search_bar h1").addClass("search_bar_active");
             var script = document.createElement('script');
             script.onload = function() {
+                inAlbum = false;
                 search();
             };
             script.src = '/scripts/search.js';
@@ -248,7 +243,7 @@ $(document).ready(function() {
     });
 });
 
-// This function runs ever few seconds and updates the song array. Most of the code here is to handle animations
+// This function runs every few seconds and updates the song array. Most of the code here is to handle animations
 // and such, trying to keep the UI as smooth as possible
 function updateArray(array){
     var queueData = '';

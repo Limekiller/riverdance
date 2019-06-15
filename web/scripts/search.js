@@ -5,7 +5,11 @@ var canSearch = true;
 
 $(document).ready(function() {
     $(document.body).on('click', "#searchBack", function() {
+
+        // Determine how the back-button should behave based on context
         if (!inAlbum) {
+
+            // These options will close the search menu entirely
             $("#search_container").removeClass('search_container_active');
             $('body').css('overflow-y', 'hidden');
             $("#search_container").css('overflow-y', 'hidden');
@@ -18,10 +22,8 @@ $(document).ready(function() {
             $("#search_container").removeClass("search_active_sc");
             $("#homeBody").css("overflow", "hidden");
         } else {
-            $("#search_background").css('opacity', '0');
-            $("#resultsh1").html("RESULTS");
-            $("#search_results").css('filter', 'opacity(0)');
 
+            // These options will re-run the search function on what's currently in the search bar
             if (canSearch) {
                 search();
                 canSearch = false;
@@ -36,6 +38,8 @@ $(document).ready(function() {
     });
 
     $(".genre_button").off().on('click', function() {
+        // When clicking a genre, scrape the Billboard website for one of the genre's current top tracks, load player,
+        // and enable the radio
         tag = ($(this).next().html());
         index = Math.floor((Math.random() * 10) + 1);
         eel.get_charts(tag, index)(function(a){
@@ -57,6 +61,8 @@ $(document).ready(function() {
         });
     });
 });
+
+// TODO fix this
 $("#search_container").on('scroll',function() {
     var st = $(this).scrollTop();
     if (st > lastScrollTop) {
@@ -72,7 +78,10 @@ $("#search_container").on('scroll',function() {
     $("#search_container").css('backgroundPositionY', -scrollDist*2);
 });
 
+// Search function. Finds top songs, albums, and artists for the query
 function search() {
+    $("#search_background").css('opacity', '0');
+    $("#resultsh1").html("RESULTS");
     $("#search_results").css('filter', 'opacity(0)');
 
     // Get songs
@@ -130,6 +139,7 @@ function search() {
     });
 }
 
+// Runs when user selects "View more." Gets a list of songs and replaces search results
 function getSongs() {
     inAlbum = true;
     $("#search_results").css('filter', 'opacity(0)');
@@ -152,6 +162,7 @@ function getSongs() {
     });
 }
 
+// Just like the above but with albums
 function getAlbums() {
     inAlbum = true;
     $("#search_results").css('filter', 'opacity(0)');
@@ -178,6 +189,7 @@ function getAlbums() {
     });
 }
 
+// Runs when a user selects an album. Gets all tracks from it
 function getAlbum(title, artist) {
     title = unescape(title)
     artist = unescape(artist)
@@ -190,7 +202,7 @@ function getAlbum(title, artist) {
     $.getJSON(jsonURL, function(data) {
         albumArt = data['album']['image'].slice(-1)[0]['#text']
         var obj = JSON.stringify(data['album']['tracks']['track']);
-        HTMLToAppend = '<h2 id="artistName" onclick=\'getArtist("'+artist+'", "'+albumArt+'")\'>'+artist+'</h2><span onclick=\'addAll('+obj.replace(/'/g,"~")+')\' id="add_all">Add all +</span>';
+        HTMLToAppend = '<h2 id="artistName" onclick=\'getArtist("'+artist+'", "")\'>'+artist+'</h2><span onclick=\'addAll('+obj.replace(/'/g,"~")+')\' id="add_all">Add all +</span>';
         $("#search_background").css('background', 'linear-gradient(rgba(0,0,0,0.5), #389bfd 50%),url('+albumArt+')');
         $("#search_background").css('backgroundSize', 'cover');
         $("#search_background").css('opacity', '1');
@@ -204,7 +216,31 @@ function getAlbum(title, artist) {
     });
 }
 
+// Gets all albums for an artist.
+// TODO add top artist tracks, related artists, other potential stats
 function getArtist(artist, imgURL) {
+
+    // In case this is being called from the player page, open the search container
+    $("#search_container").addClass('search_container_active');
+    // If there is no imgURL, get the artist image
+    if (imgURL == "") {
+
+        $("#search_results").css('animation', 'fade_in 0.4s ease 0.5s forwards');
+        $("#search_results").css('filter', 'opacity(1)');
+        eel.get_artist_image(artist)(function(a) {;
+            if (a != '') {
+                console.log("ah");
+                imgURL = a[1];
+                $("#search_background").css('background', 'linear-gradient(rgba(0,0,0,0.5), #389bfd 50%),url('+imgURL+')');
+                $("#search_background").css('backgroundSize', 'cover');
+                $("#search_background").css('opacity', '1');
+                $('body').css("overflow", "auto");
+                $('#search_container').css("overflow", "hidden auto");
+                $('body').css("overflow-x", "hidden");
+            }
+        });
+    }
+
     artist = unescape(artist)
 
     $("#resultsh1").html(artist);
@@ -216,7 +252,9 @@ function getArtist(artist, imgURL) {
         HTMLToAppend = '<div class="album_holder">';
         $("#search_background").css('background', 'linear-gradient(rgba(0,0,0,0.5), #389bfd 50%),url('+imgURL+')');
         $("#search_background").css('backgroundSize', 'cover');
-        $("#search_background").css('opacity', '1');
+        if (imgURL != "") {
+            $("#search_background").css('opacity', '1');
+        }
         $.each(data['topalbums']['album'], function(index, value) {
             title = value['name'];
             artist = value['artist']['name'];
@@ -231,6 +269,7 @@ function getArtist(artist, imgURL) {
     });
 }
 
+// Show more artists
 function getArtists() {
     inAlbum = true;
     $("#search_results").css('filter', 'opacity(0)');
