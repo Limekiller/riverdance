@@ -191,6 +191,7 @@ function getAlbums() {
 
 // Runs when a user selects an album. Gets all tracks from it
 function getAlbum(title, artist) {
+    window.scrollTo(0,0);
     title = unescape(title)
     artist = unescape(artist)
 
@@ -229,6 +230,7 @@ function getAlbum(title, artist) {
 // TODO add top artist tracks, related artists, other potential stats
 function getArtist(artist, imgURL) {
 
+    window.scrollTo(0,0);
     // In case this is being called from the player page, open the search container
     $("#resultsh1").css('filter', 'opacity(0)');
     $("#search_background").css('opacity', '0');
@@ -254,32 +256,41 @@ function getArtist(artist, imgURL) {
 
     $("#search_results").css('filter', 'opacity(0)');
     inAlbum = true;
-    jsonURL = "http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist="+encodeURIComponent(artist)+"&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json";
-
+    jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&limit=4&artist='+artist+'&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json';
+    HTMLToAppend = '<h4 id="songs">Top Songs</h4>';
     $.getJSON(jsonURL, function(data) {
-        HTMLToAppend = '<div class="album_holder">';
-        $("#search_background").css('background', 'linear-gradient(rgba(0,0,0,0.5), #389bfd 50%),url('+imgURL+')');
-        $("#search_background").css('backgroundSize', 'cover');
-        if (imgURL != "") {
-            $("#search_background").css('opacity', '1');
-        }
-        $.each(data['topalbums']['album'], function(index, value) {
+
+        $.each(data['toptracks']['track'], function(index, value) {
             title = value['name'];
-            artist = value['artist']['name'];
-            albumArt = value['image'].slice(-1)[0]['#text'];
-            if (albumArt != '') {
-                HTMLToAppend += '<div class="search_result album" style="background-image:url('+albumArt+')" onclick="getAlbum(\''+escape(title)+'\',\''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
-            }
+            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
         });
 
-        $("#search_results").html(HTMLToAppend);
-        $(".album_holder").css('marginTop', '60px');
-        setTimeout (function() {
-            $("#resultsh1").html(artist);
-            $("#search_results").css('filter', 'opacity(1)');
-            $("#search_background").css('opacity', '1');
-            $("#resultsh1").css('filter', 'opacity(1)');
-        }, 1250);
+        jsonURL = "http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist="+encodeURIComponent(artist)+"&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json";
+
+        $.getJSON(jsonURL, function(data) {
+            HTMLToAppend += '<h4 id="albums">Albums</h4><div class="album_holder">';
+            $("#search_background").css('background', 'linear-gradient(rgba(0,0,0,0.5), #389bfd 50%),url('+imgURL+')');
+            $("#search_background").css('backgroundSize', 'cover');
+            if (imgURL != "") {
+                $("#search_background").css('opacity', '1');
+            }
+            $.each(data['topalbums']['album'], function(index, value) {
+                title = value['name'];
+                artist = value['artist']['name'];
+                albumArt = value['image'].slice(-1)[0]['#text'];
+                if (albumArt != '') {
+                    HTMLToAppend += '<div class="search_result album" style="background-image:url('+albumArt+')" onclick="getAlbum(\''+escape(title)+'\',\''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+                }
+            });
+
+            $("#search_results").html(HTMLToAppend);
+            setTimeout (function() {
+                $("#resultsh1").html(artist);
+                $("#search_results").css('filter', 'opacity(1)');
+                $("#search_background").css('opacity', '1');
+                $("#resultsh1").css('filter', 'opacity(1)');
+            }, 1250);
+        });
     });
 }
 
