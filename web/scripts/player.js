@@ -254,7 +254,7 @@ function loadFromPlayer(type, vars){
     }, 250);
     $.getScript("../scripts/search.js").done(function() {
         search(vars[0]);
-        if (type === "artist") {
+        if (type == "artist") {
             getArtist(vars[0], vars[1]);
             inAlbum = false;
         } else {
@@ -267,6 +267,7 @@ function loadFromPlayer(type, vars){
         $(".album_holder").css('filter', 'opacity(1)');
         $("#search_results").css('opacity', '1');
         $("#resultsh1").css('filter', 'opacity(1)');
+        $("body").css("overflow", "hidden");
     }, 1250);
 }
 

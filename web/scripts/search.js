@@ -282,14 +282,27 @@ function getArtist(artist, imgURL) {
                     HTMLToAppend += '<div class="search_result album" style="background-image:url('+albumArt+')" onclick="getAlbum(\''+escape(title)+'\',\''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
                 }
             });
+            HTMLToAppend += "</div>";
 
-            $("#search_results").html(HTMLToAppend);
-            setTimeout (function() {
-                $("#resultsh1").html(artist);
-                $("#search_results").css('filter', 'opacity(1)');
-                $("#search_background").css('opacity', '1');
-                $("#resultsh1").css('filter', 'opacity(1)');
-            }, 1250);
+            jsonURL = "http://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&limit=8&artist="+artist+"&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json";
+            $.getJSON(jsonURL, function(data) {
+                HTMLToAppend += '<h4 id="albums">Similar Artists</h4><div class="artists_holder">';
+                $.each(data['similarartists']['artist'], function(index, value) {
+                    title = value['name'];
+                    eel.get_artist_image(title)(function(a) {;
+                        if (a != '') {
+                            $(".artists_holder").append('<div class="search_result artist" style="background-image:url('+a[1]+')" onclick="getArtist(\''+a[0]+'\', \''+a[1]+'\')">'+a[0]+'</div>');
+                        }
+                    });
+                });
+                $("#search_results").html(HTMLToAppend);
+                setTimeout (function() {
+                    $("#resultsh1").html(artist);
+                    $("#search_results").css('filter', 'opacity(1)');
+                    $("#search_background").css('opacity', '1');
+                    $("#resultsh1").css('filter', 'opacity(1)');
+                }, 1250);
+            });
         });
     });
 }
