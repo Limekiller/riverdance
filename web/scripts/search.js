@@ -209,9 +209,11 @@ function getAlbum(title, artist) {
         $("#search_background").css('background', 'linear-gradient(rgba(0,0,0,0.5), #389bfd 50%),url('+albumArt+')');
         $("#search_background").css('backgroundSize', 'cover');
         $("#search_background").css('opacity', '1');
+        var trackNum = 0;
         $.each(data['album']['tracks']['track'], function(index, value) {
             title = value['name'];
-            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span class="resultPlus">+</span></div></div>';
+            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+trackNum+" "+title+'<span class="resultPlus">+</span></div></div>';
+            trackNum++;
         });
         $('body').css("overflow", "auto");
         $('#search_container').css("overflow", "hidden auto");
@@ -284,7 +286,7 @@ function getArtist(artist, imgURL) {
             });
             HTMLToAppend += "</div>";
 
-            jsonURL = "http://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&limit=8&artist="+artist+"&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json";
+            jsonURL = "http://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&limit=4&artist="+artist+"&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json";
             $.getJSON(jsonURL, function(data) {
                 HTMLToAppend += '<h4 id="albums">Similar Artists</h4><div class="artists_holder">';
                 $.each(data['similarartists']['artist'], function(index, value) {
