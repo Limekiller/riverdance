@@ -9,14 +9,16 @@ import sys
 import os
 import subprocess
 import shutil
-import parse_emails
-import youtube_scrape
 import youtube_dl
 import pygame
+
 from mutagen.oggvorbis import OggVorbis
 from mutagen.id3 import ID3NoHeaderError
 from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, COMM, TCOM, TCON, TDRC, APIC
 from bs4 import BeautifulSoup
+
+import parse_emails
+import youtube_scrape
 import artist_finder
 
 # Because of eel, we must use global variables. RIP
@@ -147,6 +149,7 @@ def get_artist_image(artist):
 def get_lyrics(artist, title):
     # Last.fm used to allow access to lyrics for each song, but now they don't, so we scrape from Genius.
     # I'm guessing they won't change any time soon since that's, like, their thing
+    # INB4 sued by Genius like Google
     header = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'}
     try:
         response = requests.get('https://genius.com/'+artist.replace(' ','-').replace("'", '')+'-'+title.replace(' ','-').replace("'", '')+'-lyrics', headers=header)
@@ -163,8 +166,8 @@ def get_lyrics(artist, title):
 
 @eel.expose
 def get_info(artist, title):
-    # Last.fm used to allow access to lyrics for each song, but now they don't, so we scrape from Genius.
-    # I'm guessing they won't change any time soon since that's, like, their thing
+    # Get the song summaries from Genius too because Last.fm's are terrible
+
     header = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'}
     try:
         response = requests.get('https://genius.com/'+artist.replace(' ','-').replace("'", '')+'-'+title.replace(' ','-').replace("'", '')+'-lyrics', headers=header)

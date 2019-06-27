@@ -4,6 +4,9 @@ var sorting = false;
 var current_song;
 var radio = false;
 
+// if 0, queue; if 1, files
+var menuSelected = 0;
+
 var realTitle;
 var realArtist;
 var queueInterval;
@@ -61,6 +64,29 @@ $(document).ready(function() {
         var percent = ((eVar) / $(this).width())*100;
         $("#audioBarUI").css('width', (percent)+"%");
         eel.set_audio(percent);
+    });
+
+    // Switch menu types
+    // TODO: add animations
+    $('#queue_i').on('click', function() {
+        if (menuSelected) {
+            $("#disk_i").css('filter', 'invert(1)');
+            $(this).css('filter', 'invert(1) sepia(1) saturate(25) hue-rotate(-30deg) invert(1)');
+            $("#queue").css('display', 'block');
+            $("#files").css('display', 'none');
+            $("#songList h1").html('UP NEXT');
+            menuSelected = 0;
+        }
+    });
+    $('#disk_i').on('click', function() {
+        if (!menuSelected) {
+            $("#queue_i").css('filter', 'invert(1)');
+            $(this).css('filter', 'invert(1) sepia(1) saturate(25) hue-rotate(-30deg) invert(1)');
+            $("#queue").css('display', 'none');
+            $("#files").css('display', 'block');
+            $("#songList h1").html('SAVED');
+            menuSelected = 1;
+        }
     });
 
     // Show search on button click

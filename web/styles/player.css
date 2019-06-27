@@ -34,6 +34,23 @@ body {
     margin-bottom:10px;
     color:#1D00AD;
 }
+#buttonColumn {
+    width:unset;
+    display:flex;
+    flex-direction:column;
+    min-width:unset;
+    margin-right:-20px;
+}
+#buttonColumn img {
+    width:25px;
+    margin-bottom:10px;
+    filter:invert(1);
+    transition:filter 0.4s ease;
+    cursor:pointer;
+}
+img#queue_i{
+    filter:invert(1) sepia(1) saturate(25) hue-rotate(-30deg) invert(1);
+}
 #contentHolder {
     display:flex;
     width:100%;
@@ -235,10 +252,17 @@ body {
     text-transform:capitalize;
     height:70%;
     overflow:auto;
+    opacity:1;
     -webkit-mask-image: linear-gradient(rgba(0,0,0,1) 60%, rgba(0,0,0,0));
+    transition:opacity 0.4s ease;
 }
 #queue::-webkit-scrollbar {
     display:none;
+}
+#files {
+    display:none;
+    opacity:0;
+    transition:opacity 0.4s ease;
 }
 .queueSong {
     background-color:#0080ff;
