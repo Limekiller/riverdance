@@ -34,22 +34,21 @@ body {
     margin-bottom:10px;
     color:#1D00AD;
 }
-#buttonColumn {
-    width:unset;
-    display:flex;
-    flex-direction:column;
-    min-width:unset;
-    margin-right:-20px;
+.folder {
+    width:100px;
+    height:100px;
+    padding:10px;
+    margin:10px;
+    background:blue;
 }
-#buttonColumn img {
-    width:25px;
+.file {
+    width:100%;
+    padding:20px;
+    background:blue;
     margin-bottom:10px;
-    filter:invert(1);
-    transition:filter 0.4s ease;
-    cursor:pointer;
 }
-img#queue_i{
-    filter:invert(1) sepia(1) saturate(25) hue-rotate(-30deg) invert(1);
+#files {
+    flex-wrap:wrap;
 }
 #contentHolder {
     display:flex;
@@ -261,8 +260,8 @@ img#queue_i{
 }
 #files {
     display:none;
-    opacity:0;
     transition:opacity 0.4s ease;
+    -webkit-mask-image: linear-gradient(rgba(0,0,0,1) 60%, rgba(0,0,0,0));
 }
 .queueSong {
     background-color:#0080ff;

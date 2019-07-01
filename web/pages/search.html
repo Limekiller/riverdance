@@ -7,49 +7,51 @@
     </head>
     <body>
         <img id='searchBack' src="/assets/arrow.svg" />
-        <div id='search_bar'>
-            <h1>SEARCH</h1>
-            <input id='search_bar_field' class='search_bar_text' type="text" name="searchTitle">
+        <div id='searchPage'>
+            <div id='search_bar'>
+                <h1>SEARCH</h1>
+                <input id='search_bar_field' class='search_bar_text' type="text" name="searchTitle">
+            </div>
+            <div id='genres'>
+                <div class='genre'>
+                    <div style='animation:fade_in 0.4s .5s ease forwards;' class='genre_button'>
+                        <img src='/assets/pop.svg'/>
+                    </div>
+                    <p>Pop</p>
+                </div>
+                <div class='genre'>
+                    <div style='animation:fade_in 0.4s .6s ease forwards;'class='genre_button'>
+                        <img src='/assets/rock.svg'/>
+                    </div>
+                    <p>Rock</p>
+                </div>
+                <div class='genre'>
+                    <div style='animation:fade_in 0.4s .7s ease forwards;'class='genre_button'>
+                        <img src='/assets/rap.svg'/>
+                    </div>
+                    <p>R&amp;B/Hip-Hop</p>
+                </div>
+                <div class='genre'>
+                    <div style='animation:fade_in 0.4s .8s ease forwards;'class='genre_button'>
+                        <img src='/assets/pop.svg'/>
+                    </div>
+                    <p>Indie</p>
+                </div>
+                <div class='genre'>
+                    <div style='animation:fade_in 0.4s .9s ease forwards;'class='genre_button'>
+                        <img src='/assets/country.svg'/>
+                    </div>
+                    <p>Country</p>
+                </div>
+                <div class='genre'>
+                    <div style='animation:fade_in 0.4s 1s ease forwards;'class='genre_button'>
+                        <img src='/assets/electronic.svg'/>
+                    </div>
+                    <p>Dance/Electronic</p>
+                </div>
+            </div>
+            <h1 id='resultsh1'>RESULTS</h1>
+            <div id='search_results'></div>
         </div>
-        <div id='genres'>
-            <div class='genre'>
-                <div style='animation:fade_in 0.4s .5s ease forwards;' class='genre_button'>
-                    <img src='/assets/pop.svg'/>
-                </div>
-                <p>Pop</p>
-            </div>
-            <div class='genre'>
-                <div style='animation:fade_in 0.4s .6s ease forwards;'class='genre_button'>
-                    <img src='/assets/rock.svg'/>
-                </div>
-                <p>Rock</p>
-            </div>
-            <div class='genre'>
-                <div style='animation:fade_in 0.4s .7s ease forwards;'class='genre_button'>
-                    <img src='/assets/rap.svg'/>
-                </div>
-                <p>R&amp;B/Hip-Hop</p>
-            </div>
-            <div class='genre'>
-                <div style='animation:fade_in 0.4s .8s ease forwards;'class='genre_button'>
-                    <img src='/assets/pop.svg'/>
-                </div>
-                <p>Indie</p>
-            </div>
-            <div class='genre'>
-                <div style='animation:fade_in 0.4s .9s ease forwards;'class='genre_button'>
-                    <img src='/assets/country.svg'/>
-                </div>
-                <p>Country</p>
-            </div>
-            <div class='genre'>
-                <div style='animation:fade_in 0.4s 1s ease forwards;'class='genre_button'>
-                    <img src='/assets/electronic.svg'/>
-                </div>
-                <p>Dance/Electronic</p>
-            </div>
-        </div>
-        <h1 id='resultsh1'>RESULTS</h1>
-        <div id='search_results'></div>
     </body>
 </html>

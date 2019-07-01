@@ -35,6 +35,18 @@ p = None
 eel.init('web')
 
 
+def find_song(title, artist):
+    """This function searches to see if a song has already been saved on the computer"""
+    for saved_artist in os.listdir('./Music/saved'):
+        if artist.lower() == saved_artist.lower():
+            for saved_album in os.listdir('./Music/saved/'+saved_artist):
+                for saved_song in os.listdir('./Music/saved/'+saved_artist+'/'+saved_album):
+                    if title.lower() in saved_song.lower():
+                        shutil.copyfile("./Music/saved/"+saved_artist+"/"+saved_album+"/"+saved_song, "./Music/temp/"+saved_song.lower())
+                        return True
+    return False
+
+
 def handle_song(artist, title, queue_item=None):
     global play_queue
     """This function prepares the song for playing before calling start_song"""
@@ -54,9 +66,13 @@ def handle_song(artist, title, queue_item=None):
         eel.sleep(1)
     # duration = youtube_scrape.get_video_time(video_url)
 
+    if find_song(title, artist):
+        queue_item[4] = 'ready'
+        return
     if os.path.exists('./Music/temp/'+title+'.ogg'):
         #start_song(title)
         return
+
 
     file_title = title.translate ({ord(c): "#" for c in "!@#$%^\"*{};&:/<>?\|`~=_"})
     queue_item[4] = 'downloading'
@@ -237,6 +253,49 @@ def swap_queue(index1, index2):
 
 
 @eel.expose
+def search_saved(search_term):
+    """Searches saved songs, used in the standard search function
+    takes a term to search for and returns a list of matching artists, albums and songs"""
+    search_term = search_term.lower()
+    artists = []
+    albums = []
+    songs = []
+    for artist in os.listdir('./Music/saved'):
+        artist_matched = False;
+        album_matched = False;
+        if search_term in artist.lower() or artist.lower() == search_term:
+            artists.append(artist)
+            artist_matched = True;
+        for album in os.listdir('./Music/saved/'+artist):
+            if search_term in album.lower() or album.lower() == search_term or artist_matched:
+                albums.append(album)
+                album_matched = True;
+            for song in os.listdir('./Music/saved/'+artist+'/'+album):
+                if search_term in song.lower() or song.lower() == search_term or artist_matched or album_matched:
+                    print(song.rsplit('.',1))
+                    songs.append([song.rsplit('.',1)[0], artist])
+
+    if artists or albums or songs:
+        return [artists, albums, songs]
+    else:
+        return 0
+
+
+# TODO
+# This might be used later because a dedicated screen is probably worth it anyway
+@eel.expose
+def reveal_files(url):
+    folder_list = []
+    file_list = []
+    for item in os.listdir(url):
+        if (os.path.isdir(os.path.join(url, item))):
+            folder_list.append(item)
+        else:
+            file_list.append(item)
+    return [folder_list, file_list]
+
+
+@eel.expose
 def pause_music(curr_percent):
     global paused
     global curr_song_length
@@ -265,29 +324,31 @@ def download_song(data):
     global p
     try:
         os.makedirs("./Music/saved/"+data['track']['artist']['name']+'/'
-                    + data['track']['album']['title'].title())
+                    + data['track']['album']['title'])
     except FileExistsError:
         pass
 
+    shutil.copyfile("./Music/temp/" + data['track']['name'].lower() + ".ogg", "./Music/saved/" + data['track']['artist']['name']
+            + "/" + data['track']['album']['title'] + '/' + data['track']['name'] + ".ogg")
 
-    if os.path.isfile('./Music/saved/'+play_queue[0][1].title()+'/'+data['track']['album']['title']+'/'+play_queue[0][0].title()+'.mp3'):
-        os.remove('./Music/saved/'+play_queue[0][1].title()+'/'+data['track']['album']['title']+'/'+play_queue[0][0].title()+'.mp3');
+    if os.path.isfile('./Music/saved/'+play_queue[0][1]+'/'+data['track']['album']['title']+'/'+play_queue[0][0]+'.mp3'):
+        os.remove('./Music/saved/'+play_queue[0][1]+'/'+data['track']['album']['title']+'/'+play_queue[0][0]+'.mp3');
         return
 
     if sys.platform == 'win32':
-        p = subprocess.Popen('ffmpeg -i "./Music/temp/'+play_queue[0][0].title()+'.ogg" -acodec libmp3lame "./Music/saved/'+data['track']['artist']['name']+'/'+data['track']['album']['title']+'/'+play_queue[0][0].title()+'.mp3')
+        p = subprocess.Popen('ffmpeg -i "./Music/temp/'+data['track']['name']+'.ogg" -acodec libmp3lame "./Music/saved/'+data['track']['artist']['name']+'/'+data['track']['album']['title']+'/'+data['track']['name']+'.mp3')
+        p.communicate()
     else:
-        p = subprocess.Popen(['./ffmpeg', '-i', "./Music/temp/"+play_queue[0][0].title()+'.ogg', '-acodec', 'libmp3lame', "./Music/saved/"+data['track']['artist']['name']+'/'+data['track']['album']['title']+'/'+play_queue[0][0].title()+'.mp3'])
-    # os.system('ffmpeg -i "./Music/temp/'+play_queue[0][0].title()+'.ogg" -acodec libmp3lame "./Music/temp/'+play_queue[0][0].title()+'.mp3"')
-    p.communicate()
-
+        # p = subprocess.Popen(['./ffmpeg', '-i', "./Music/temp/"+play_queue[0][0].title()+'.ogg', '-acodec', 'libmp3lame', "./Music/saved/"+data['track']['artist']['name']+'/'+data['track']['album']['title']+'/'+play_queue[0][0].title()+'.mp3'])
+        print('ffmpeg -i "./Music/temp/'+data['track']['name']+'.ogg" -acodec libmp3lame "./Music/saved/'+data['track']['artist']['name']+'/'+data['track']['album']['title']+'/'+data['track']['name']+'.mp3')
+        os.system('ffmpeg -i "./Music/temp/'+data['track']['name'].lower()+'.ogg" -acodec libmp3lame "./Music/saved/'+data['track']['artist']['name']+'/'+data['track']['album']['title']+'/'+data['track']['name']+'.mp3"')
 
    # shutil.copyfile("./Music/temp/" + play_queue[0][0] + ".mp3", "./Music/saved/" + play_queue[0][1].title()
    #                 + "/" + data['track']['album']['title'] + '/' + play_queue[0][0].title() + ".mp3")
 
     try:
-        tags = ID3("./Music/saved/" + play_queue[0][1].title()
-                    + "/" + data['track']['album']['title'] + '/' + play_queue[0][0].title() + ".mp3")
+        tags = ID3("./Music/saved/" + data['track']['artist']['name']
+                    + "/" + data['track']['album']['title'] + '/' + data['track']['name'] + ".mp3")
     except ID3NoHeaderError:
         tags = ID3()
 
@@ -303,8 +364,8 @@ def download_song(data):
     albumart = open('./Music/temp/img.png', 'rb').read()
     tags.add(APIC(encoding=3, mime='image/png', type=3, data=albumart))
 
-    tags.save("./Music/saved/" + play_queue[0][1].title()
-                    + "/" + data['track']['album']['title'] + '/' + play_queue[0][0].title() + ".mp3", v2_version=3)
+    tags.save("./Music/saved/" + data['track']['artist']['name']
+                    + "/" + data['track']['album']['title'] + '/' + data['track']['name'] + ".mp3", v2_version=3)
 
     eel.toggleEnabled("#dl", True)
 

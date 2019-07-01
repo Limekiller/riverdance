@@ -3,7 +3,11 @@ lastScrollTop = 0;
 var inAlbum = false;
 var canSearch = true;
 
+// 0 for search, 1 for files
+var searchMode = 0;
+
 $(document).ready(function() {
+
     $(document.body).on('click', "#searchBack", function() {
 
         // Determine how the back-button should behave based on context
@@ -79,6 +83,7 @@ $("#search_container").on('scroll',function() {
 });
 
 // Search function. Finds top songs, albums, and artists for the query
+// And now it also searches saved music as well, neat
 function search() {
     $("#search_background").css('opacity', '0');
     $("#resultsh1").html("RESULTS");
@@ -121,19 +126,31 @@ function search() {
                     });
                 });
 
-                HTMLToAppend += '</div>';
-                $('body').css("overflow", "auto");
-                $('#search_container').css("overflow", "hidden auto");
-                $('body').css("overflow-x", "hidden");
-                $("#resultsh1").css('animation', 'fade_in 0.4s ease 0.5s forwards');
-                $("#search_results").html(HTMLToAppend);
+                eel.search_saved($("#search_bar_field").val())(function(e) {
+                    console.log(e);
+                    if (e) {
+                        HTMLToAppend += '</div><h4>Your Saved Songs</h4>';
+                        $.each(e[2], function(index, value) {
+                            title = value[0];
+                            artist = value[1];
+                            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+                        });
+                    }
+                    HTMLToAppend += '</div>';
 
-                if ($(".album_holder").html() == "") {
-                    $("#albums").css('display', 'none');
-                    $("#viewAlbums").css('display', 'none');
-                }
-                $("#search_results").css('animation', 'fade_in 0.4s ease 0.5s forwards');
-                $("#search_results").css('filter', 'opacity(1)');
+                    $('body').css("overflow", "auto");
+                    $('#search_container').css("overflow", "hidden auto");
+                    $('body').css("overflow-x", "hidden");
+                    $("#resultsh1").css('animation', 'fade_in 0.4s ease 0.5s forwards');
+                    $("#search_results").html(HTMLToAppend);
+
+                    if ($(".album_holder").html() == "") {
+                        $("#albums").css('display', 'none');
+                        $("#viewAlbums").css('display', 'none');
+                    }
+                    $("#search_results").css('animation', 'fade_in 0.4s ease 0.5s forwards');
+                    $("#search_results").css('filter', 'opacity(1)');
+                });
             });
         });
     });

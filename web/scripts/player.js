@@ -6,6 +6,7 @@ var radio = false;
 
 // if 0, queue; if 1, files
 var menuSelected = 0;
+var fileViewURL = './Music/saved';
 
 var realTitle;
 var realArtist;
@@ -64,29 +65,6 @@ $(document).ready(function() {
         var percent = ((eVar) / $(this).width())*100;
         $("#audioBarUI").css('width', (percent)+"%");
         eel.set_audio(percent);
-    });
-
-    // Switch menu types
-    // TODO: add animations
-    $('#queue_i').on('click', function() {
-        if (menuSelected) {
-            $("#disk_i").css('filter', 'invert(1)');
-            $(this).css('filter', 'invert(1) sepia(1) saturate(25) hue-rotate(-30deg) invert(1)');
-            $("#queue").css('display', 'block');
-            $("#files").css('display', 'none');
-            $("#songList h1").html('UP NEXT');
-            menuSelected = 0;
-        }
-    });
-    $('#disk_i').on('click', function() {
-        if (!menuSelected) {
-            $("#queue_i").css('filter', 'invert(1)');
-            $(this).css('filter', 'invert(1) sepia(1) saturate(25) hue-rotate(-30deg) invert(1)');
-            $("#queue").css('display', 'none');
-            $("#files").css('display', 'block');
-            $("#songList h1").html('SAVED');
-            menuSelected = 1;
-        }
     });
 
     // Show search on button click
@@ -567,4 +545,25 @@ function addAll(data) {
     $("#search_container").removeClass('search_container_active');
     $('body').css('overflow-y', 'hidden');
     $("#search_container").css('overflow-y', 'hidden');
+}
+
+function get_files() {
+
+    eel.reveal_files(fileViewURL)(function(e) {
+        for (var i = 0; i < e[0].length; i++) {
+            $("#files").append("<div class='folder'>"+e[0][i]+"</div>");
+        }
+        for (var i = 0; i < e[1].length; i++) {
+            $("#files").append("<div class='file'>"+e[1][i]+"</div>");
+        }
+        $(".folder").on('click', function() {
+            $("#files").html('');
+            fileViewURL += '/' + $(this).html();
+            get_files();
+        });
+        $(".file").on('click', function() {
+            splitString = fileViewURL.split("/");
+            eel.add_to_queue(unescape($(this).html()), unescape(splitString[3]));
+        });
+    });
 }
