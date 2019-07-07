@@ -2,6 +2,7 @@ var scrollDist = 0;
 lastScrollTop = 0;
 var inAlbum = false;
 var canSearch = true;
+var currentFilesURL = './Music/saved';
 
 // 0 for search, 1 for files
 var searchMode = 0;
@@ -38,6 +39,37 @@ $(document).ready(function() {
                 canSearch = true;
                 $("#search_results").css('filter', 'opacity(1)');
             }, 500);
+        }
+    });
+
+    // Switch between search and file views
+    $("#searchActive").on('click', function() {
+        if (searchMode) {
+            $("#searchActive").addClass('buttonActive');
+            $("#filesActive").removeClass('buttonActive');
+            $("#search_panel").css('display', 'block');
+            $("#files_panel").css('display', 'none')
+            searchMode = 0;
+        }
+    });
+    $("#filesActive").on('click', function() {
+        if (!searchMode) {
+            $("#filesActive").addClass('buttonActive');
+            $("#searchActive").removeClass('buttonActive');
+            $("#search_panel").css('display', 'none');
+            $("#files_panel").css('display', 'block')
+            var HTMLToAppend = '';
+            eel.reveal_files(currentFilesURL)(function(e) {
+                $.each(e[0], function(index, value) {
+                    HTMLToAppend += '<div class=folder>'+value+"</div>";
+                });
+                $("#file_grid").html(HTMLToAppend);
+                $(".folder").on('click', function() {
+                    currentFilesURL += '/'+$(this).html();
+                    getFiles(currentFilesURL);
+                });
+            });
+            searchMode = 1;
         }
     });
 
@@ -81,6 +113,23 @@ $("#search_container").on('scroll',function() {
     lastScrollTop = st;
     $("#search_container").css('backgroundPositionY', -scrollDist*2);
 });
+
+function getFiles(URL) {
+    eel.reveal_files(URL)(function(e) {
+        var HTMLToAppend = '';
+        $.each(e[0], function(index, value) {
+            HTMLToAppend += '<div class=folder>'+value+"</div>";
+        });
+        $.each(e[1], function(index, value) {
+            HTMLToAppend += '<div class=file>'+value+"</div>";
+        });
+        $("#file_grid").html(HTMLToAppend);
+        $(".folder").on('click', function() {
+            currentFilesURL += '/'+$(this).html();
+            getFiles(currentFilesURL);
+        });
+    });
+}
 
 // Search function. Finds top songs, albums, and artists for the query
 // And now it also searches saved music as well, neat
@@ -126,16 +175,16 @@ function search() {
                     });
                 });
 
-                eel.search_saved($("#search_bar_field").val())(function(e) {
-                    console.log(e);
-                    if (e) {
-                        HTMLToAppend += '</div><h4>Your Saved Songs</h4>';
-                        $.each(e[2], function(index, value) {
-                            title = value[0];
-                            artist = value[1];
-                            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
-                        });
-                    }
+                //eel.search_saved($("#search_bar_field").val())(function(e) {
+                //    console.log(e);
+                //    if (e) {
+                //        HTMLToAppend += '</div><h4>Your Saved Songs</h4>';
+                //        $.each(e[2], function(index, value) {
+                //            title = value[0];
+                //            artist = value[1];
+                //            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+                //        });
+                //    }
                     HTMLToAppend += '</div>';
 
                     $('body').css("overflow", "auto");
@@ -150,7 +199,7 @@ function search() {
                     }
                     $("#search_results").css('animation', 'fade_in 0.4s ease 0.5s forwards');
                     $("#search_results").css('filter', 'opacity(1)');
-                });
+                //});
             });
         });
     });
@@ -245,8 +294,7 @@ function getAlbum(title, artist) {
     });
 }
 
-// Gets all albums for an artist.
-// TODO add top artist tracks, related artists, other potential stats
+// Gets an artist page
 function getArtist(artist, imgURL) {
 
     window.scrollTo(0,0);

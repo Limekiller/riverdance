@@ -41,7 +41,7 @@ def find_song(title, artist):
         if artist.lower() == saved_artist.lower():
             for saved_album in os.listdir('./Music/saved/'+saved_artist):
                 for saved_song in os.listdir('./Music/saved/'+saved_artist+'/'+saved_album):
-                    if title.lower() in saved_song.lower():
+                    if title.lower()+'.ogg' == saved_song.lower():
                         shutil.copyfile("./Music/saved/"+saved_artist+"/"+saved_album+"/"+saved_song, "./Music/temp/"+saved_song.lower())
                         return True
     return False
@@ -263,15 +263,15 @@ def search_saved(search_term):
     for artist in os.listdir('./Music/saved'):
         artist_matched = False;
         album_matched = False;
-        if search_term in artist.lower() or artist.lower() == search_term:
+        if search_term in artist.lower() or artist.lower() == search_term and artist not in artists:
             artists.append(artist)
             artist_matched = True;
         for album in os.listdir('./Music/saved/'+artist):
-            if search_term in album.lower() or album.lower() == search_term or artist_matched:
+            if search_term in album.lower() or album.lower() == search_term or artist_matched and album not in albums:
                 albums.append(album)
                 album_matched = True;
             for song in os.listdir('./Music/saved/'+artist+'/'+album):
-                if search_term in song.lower() or song.lower() == search_term or artist_matched or album_matched:
+                if search_term in song.lower() or song.lower() == search_term or artist_matched or album_matched and [song.rsplit('.',1)[0], artist] not in songs:
                     print(song.rsplit('.',1))
                     songs.append([song.rsplit('.',1)[0], artist])
 

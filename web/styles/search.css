@@ -10,7 +10,7 @@
     flex-direction:column;
     transition:top 0.4s ease;
 }
-#search_bar h1 {
+#search_bar h1, #files_panel h1 {
     font-size: 80px;
     margin-bottom:0;
     color:#1D00AD;
@@ -221,14 +221,44 @@ h1.search_bar_active {
     margin-bottom:15px;
     transition: filter 0.4s ease, opacity 0.4s ease;
 }
-#searchBack {
+#searchBack, #searchActive, #filesActive {
     width:50px;
     top:25px;
     position:absolute;
     left:25px;
-    transition:left 0.4s ease;
+    transition:left 0.4s ease, filter 0.4s ease;
 }
 #searchBack:hover {
     left:35px;
     cursor:pointer;
+}
+#searchActive {
+    top:75px; 
+}
+#filesActive {
+    top:125px; 
+    filter:invert(1);
+}
+#file_grid {
+    display:flex;
+    flex-wrap:wrap;
+}
+.folder {
+    width:100px;
+    height:100px;
+    padding:10px;
+    margin:10px;
+    background:blue;
+}
+.file {
+    width:100%;
+    padding:20px;
+    background:blue;
+    margin-bottom:10px;
+}
+#files_panel {
+    display:none;
+    width:70%;
+    margin:0 auto;
+    margin-top:100px;
 }
