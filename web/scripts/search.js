@@ -9,36 +9,54 @@ var searchMode = 0;
 
 $(document).ready(function() {
 
-    $(document.body).on('click', "#searchBack", function() {
-
+    $(document.body).off('click').on('click', "#searchBack", function() {
+        console.log("run once");
         // Determine how the back-button should behave based on context
-        if (!inAlbum) {
+        if (currentFilesURL != './Music/saved') {
+            var lastIndex = currentFilesURL.lastIndexOf("/");
+            currentFilesURL = currentFilesURL.slice(0, lastIndex);
+            console.log(currentFilesURL);
+            var HTMLToAppend = '';
+            eel.reveal_files(currentFilesURL)(function(e) {
+                $.each(e[0], function(index, value) {
+                    HTMLToAppend += '<div class=folder>'+value+"</div>";
+                });
+                $("#file_grid").html(HTMLToAppend);
+                $(".folder").on('click', function() {
+                    currentFilesURL += '/'+$(this).html();
+                    getFiles(currentFilesURL);
+                });
+            });
 
-            // These options will close the search menu entirely
-            $("#search_container").removeClass('search_container_active');
-            $('body').css('overflow-y', 'hidden');
-            $("#search_container").css('overflow-y', 'hidden');
-            $("#button_container").removeClass('search_active_b');
-            $("#logo_container").removeClass('search_active_l');
-            $("#wave").removeClass('wave_active');
-            $("#search_container").removeClass("search_active_sc");
-            $("#homeBody").css("overflow", "hidden");
-            $("#search_bar h1").removeClass("search_bar_active");
-            $("#search_container").removeClass("search_active_sc");
-            $("#homeBody").css("overflow", "hidden");
         } else {
+            if (!inAlbum) {
 
-            // These options will re-run the search function on what's currently in the search bar
-            if (canSearch) {
-                search();
-                canSearch = false;
+                // These options will close the search menu entirely
+                $("#search_container").removeClass('search_container_active');
+                $('body').css('overflow-y', 'hidden');
+                $("#search_container").css('overflow-y', 'hidden');
+                $("#button_container").removeClass('search_active_b');
+                $("#logo_container").removeClass('search_active_l');
+                $("#wave").removeClass('wave_active');
+                $("#search_container").removeClass("search_active_sc");
+                $("#homeBody").css("overflow", "hidden");
+                $("#search_bar h1").removeClass("search_bar_active");
+                $("#search_container").removeClass("search_active_sc");
+                $("#homeBody").css("overflow", "hidden");
+            } else {
+
+                // These options will re-run the search function on what's currently in the search bar
+                if (canSearch) {
+                    search();
+                    canSearch = false;
+                }
+
+                setTimeout(function() {
+                    inAlbum = false;
+                    canSearch = true;
+                    $("#search_results").css('filter', 'opacity(1)');
+                }, 500);
             }
-
-            setTimeout(function() {
-                inAlbum = false;
-                canSearch = true;
-                $("#search_results").css('filter', 'opacity(1)');
-            }, 500);
         }
     });
 

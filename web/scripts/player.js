@@ -19,7 +19,7 @@ var currSongLength = null;
 
 $(document).ready(function() {
 
-    $.getScript("/scripts/search.js");
+    //$.getScript("/scripts/search.js");
     eel.toggle_radio(true)(function(a){
         if (a){
            $('#radioButton').addClass('buttonActive');

@@ -1,5 +1,6 @@
 $(document).ready(function() {
-    $.getScript("scripts/search.js");
+    //$.getScript("scripts/search.js");
+    $('head').append('<link rel="stylesheet" type="text/css" href="styles/search.css">');
     // Play logo animations
     var mySVG = $('#paths').drawsvg({stagger: -100, duration: 1000});
     window.setTimeout(function(){
@@ -10,16 +11,16 @@ $(document).ready(function() {
 
     // Activate search page on click
     $("#search").on('click', function() {
-        $('head').append('<link rel="stylesheet" type="text/css" href="styles/search.css">');
+        $("#search_container").load("pages/search.html");
         $("#button_container").addClass('search_active_b');
         $("#wave").addClass('wave_active');
         $("#logo_container").addClass('search_active_l');
         $("#search_container").addClass("search_active_sc");
-        $("#search_container").load("pages/search.html");
 
         setTimeout(function() {
             $("#search_container").prepend("<div id='search_background'></div>");
         }, 1000);
+        $.getScript("scripts/search.js");
     });
 
     $("#server").on('click', function() {
@@ -43,12 +44,7 @@ $(document).ready(function() {
             $("#genres").fadeOut();
             $("#search_bar").addClass("search_bar_active");
             $("#search_bar h1").addClass("search_bar_active");
-            var script = document.createElement('script');
-            script.onload = function() {
-                search();
-            };
-            script.src = '/scripts/search.js';
-            document.head.appendChild(script);
+            search();
         }
     });
 
