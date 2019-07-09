@@ -281,8 +281,6 @@ def search_saved(search_term):
         return 0
 
 
-# TODO
-# This might be used later because a dedicated screen is probably worth it anyway
 @eel.expose
 def reveal_files(url):
     folder_list = []
@@ -291,7 +289,8 @@ def reveal_files(url):
         if (os.path.isdir(os.path.join(url, item))):
             folder_list.append(item)
         else:
-            file_list.append(item)
+            if item.split('.')[-1] == 'ogg':
+                file_list.append([item.split('.')[0], url.split('/')[-2]])
     return [folder_list, file_list]
 
 

@@ -15,7 +15,6 @@ $(document).ready(function() {
         if (currentFilesURL != './Music/saved') {
             var lastIndex = currentFilesURL.lastIndexOf("/");
             currentFilesURL = currentFilesURL.slice(0, lastIndex);
-            console.log(currentFilesURL);
             var HTMLToAppend = '';
             eel.reveal_files(currentFilesURL)(function(e) {
                 $.each(e[0], function(index, value) {
@@ -139,7 +138,7 @@ function getFiles(URL) {
             HTMLToAppend += '<div class=folder>'+value+"</div>";
         });
         $.each(e[1], function(index, value) {
-            HTMLToAppend += '<div class=file>'+value+"</div>";
+            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(value[0])+'\', \''+escape(value[1])+'\')">'+value[0]+'<span>'+value[1]+'</span><span class="resultPlus">+</span></div>';
         });
         $("#file_grid").html(HTMLToAppend);
         $(".folder").on('click', function() {
