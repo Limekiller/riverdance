@@ -154,8 +154,8 @@ def get_artist_image(artist):
     content = response.content
     soup = BeautifulSoup(content, "html.parser")
 
-    all_title_tags = soup.find_all("img", attrs={"class": "avatar"})
-    icon = all_title_tags[0]['src']
+    all_title_tags = soup.find_all("div", attrs={"class": "header-new-background-image"})
+    icon = all_title_tags[0]['content']
     if icon and '2a96cbd8b46e442fc41c2b86b821562f' not in icon:
         return [artist, icon]
     else:

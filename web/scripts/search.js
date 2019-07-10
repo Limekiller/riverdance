@@ -10,9 +10,8 @@ var searchMode = 0;
 $(document).ready(function() {
 
     $(document.body).off('click').on('click', "#searchBack", function() {
-        console.log("run once");
         // Determine how the back-button should behave based on context
-        if (currentFilesURL != './Music/saved') {
+        if (currentFilesURL != './Music/saved' && searchMode) {
             var lastIndex = currentFilesURL.lastIndexOf("/");
             currentFilesURL = currentFilesURL.slice(0, lastIndex);
             var HTMLToAppend = '';
@@ -20,10 +19,18 @@ $(document).ready(function() {
                 $.each(e[0], function(index, value) {
                     HTMLToAppend += '<div class=folder>'+value+"</div>";
                 });
-                $("#file_grid").html(HTMLToAppend);
+                $("#file_grid").css('opacity', 0);
+                window.setTimeout(function() {
+                    $("#file_grid").css('opacity', 1);
+                    $("#file_grid").html(HTMLToAppend);
+                }, 500);
                 $(".folder").on('click', function() {
                     currentFilesURL += '/'+$(this).html();
-                    getFiles(currentFilesURL);
+                    $("#file_grid").css('opacity', 0);
+                    window.setTimeout(function () {
+                        getFiles(currentFilesURL);
+                        $("#file_grid").css('opacity', 1);
+                    }, 500);
                 });
             });
 
@@ -83,7 +90,11 @@ $(document).ready(function() {
                 $("#file_grid").html(HTMLToAppend);
                 $(".folder").on('click', function() {
                     currentFilesURL += '/'+$(this).html();
-                    getFiles(currentFilesURL);
+                    $("#file_grid").css('opacity', 0);
+                    window.setTimeout(function() {
+                        getFiles(currentFilesURL);
+                        $("#file_grid").css('opacity', 1);
+                    }, 500);
                 });
             });
             searchMode = 1;
@@ -142,8 +153,12 @@ function getFiles(URL) {
         });
         $("#file_grid").html(HTMLToAppend);
         $(".folder").on('click', function() {
+            $("#file_grid").css('opacity', 0);
             currentFilesURL += '/'+$(this).html();
-            getFiles(currentFilesURL);
+            window.setTimeout(function() {
+                $("#file_grid").css('opacity', 1);
+                getFiles(currentFilesURL);
+            }, 500);
         });
     });
 }

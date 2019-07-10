@@ -44,7 +44,7 @@ h5 {
     width:200px;
 }
 .buttonActive {
-    filter:sepia(1) saturate(25) hue-rotate(-30deg) invert(1) !important;
+    filter: sepia(1) saturate(25) hue-rotate(-30deg) invert(1) !important;
 }
 @keyframes fade_in {
     from{opacity:0;}

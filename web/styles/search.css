@@ -237,28 +237,32 @@ h1.search_bar_active {
 }
 #filesActive {
     top:125px; 
-    filter:invert(1);
 }
 #file_grid {
     display:flex;
     flex-wrap:wrap;
+    transition:opacity 0.4s ease;
 }
 .folder {
     width:100px;
     height:100px;
     padding:10px;
-    margin:10px;
-    background:blue;
+    margin:20px;
+    border-radius:20px 0px;
+    background:#0080ff;
+    color:white;
+    transition:background 0.4s ease, border-radius 0.4s ease;
 }
-.file {
-    width:100%;
-    padding:20px;
-    background:blue;
-    margin-bottom:10px;
+.folder:hover {
+    cursor:pointer;
+    background:#1D00AD;
+    border-radius:0px 20px;
 }
 #files_panel {
     display:none;
     width:70%;
     margin:0 auto;
+    opacity:0;
     margin-top:100px;
+    animation:fade_in 0.4s ease forwards;
 }
