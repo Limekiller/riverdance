@@ -222,7 +222,7 @@ h1.search_bar_active {
     transition: filter 0.4s ease, opacity 0.4s ease;
 }
 #searchBack, #searchActive, #filesActive {
-    width:50px;
+    width:40px;
     top:25px;
     position:absolute;
     left:25px;
@@ -233,10 +233,10 @@ h1.search_bar_active {
     cursor:pointer;
 }
 #searchActive {
-    top:75px; 
+    top:100px; 
 }
 #filesActive {
-    top:125px; 
+    top:145px; 
 }
 #file_grid {
     display:flex;

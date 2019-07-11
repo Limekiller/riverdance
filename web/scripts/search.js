@@ -23,15 +23,15 @@ $(document).ready(function() {
                 window.setTimeout(function() {
                     $("#file_grid").css('opacity', 1);
                     $("#file_grid").html(HTMLToAppend);
-                }, 500);
-                $(".folder").on('click', function() {
-                    currentFilesURL += '/'+$(this).html();
-                    $("#file_grid").css('opacity', 0);
-                    window.setTimeout(function () {
-                        getFiles(currentFilesURL);
-                        $("#file_grid").css('opacity', 1);
-                    }, 500);
+                    $(".folder").on('click', function() {
+                        currentFilesURL += '/'+$(this).html();
+                        $("#file_grid").css('opacity', 0);
+                        window.setTimeout(function () {
+                            getFiles(currentFilesURL);
+                            $("#file_grid").css('opacity', 1);
+                        }, 500);
                 });
+                }, 500);
             });
 
         } else {
@@ -143,6 +143,7 @@ $("#search_container").on('scroll',function() {
 });
 
 function getFiles(URL) {
+    console.log(currentFilesURL);
     eel.reveal_files(URL)(function(e) {
         var HTMLToAppend = '';
         $.each(e[0], function(index, value) {

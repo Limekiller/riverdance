@@ -435,10 +435,14 @@ function getAlbumArt(title, artist) {
 
 eel.expose(toggleEnabled);
 function toggleEnabled(elemString, toggleBool) {
+    console.log(elemString);
     if (toggleBool) {
         $(elemString).css('opacity', '1');
         $(elemString).css('pointer-events', 'all');
     } else {
+        if (elemString == "#dl") {
+            $('#dl').css('background-position-y', '0px');
+        }
         $(elemString).css('opacity', '0.5');
         $(elemString).css('pointer-events', 'none');
     }
@@ -566,4 +570,9 @@ function get_files() {
             eel.add_to_queue(unescape($(this).html()), unescape(splitString[3]));
         });
     });
+}
+
+eel.expose(getCurrentSong);
+function getCurrentSong() {
+    return current_song;
 }

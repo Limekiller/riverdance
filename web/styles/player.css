@@ -192,14 +192,14 @@ body {
     padding:20px;
 }
 .button {
-    width:50px;
+    width:40px;
     transition:filter 0.4s ease;
 }
 .buttonContainer {
     transition:transform 0.4s ease;
     display:flex;
     height:50px;
-    margin-bottom:30px;
+    margin-bottom:35px;
 }
 .buttonContainer:hover {
     transform:translateX(10px);

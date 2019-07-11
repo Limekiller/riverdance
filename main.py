@@ -31,18 +31,21 @@ skip = False
 curr_song_length = float('inf')
 has_started = False
 volume = 0.5
+already_downloaded = False
 p = None
 eel.init('web')
 
 
 def find_song(title, artist):
     """This function searches to see if a song has already been saved on the computer"""
+    global already_downloaded
     for saved_artist in os.listdir('./Music/saved'):
         if artist.lower() == saved_artist.lower():
             for saved_album in os.listdir('./Music/saved/'+saved_artist):
                 for saved_song in os.listdir('./Music/saved/'+saved_artist+'/'+saved_album):
                     if title.lower()+'.ogg' == saved_song.lower():
                         shutil.copyfile("./Music/saved/"+saved_artist+"/"+saved_album+"/"+saved_song, "./Music/temp/"+saved_song.lower())
+                        already_downloaded = True
                         return True
     return False
 
@@ -113,6 +116,7 @@ def start_song(song):
     """Play song with PyGame at correct sample rate"""
     global curr_song_length
     global has_started
+    global already_downloaded
     global volume
     song_loaded = False
 
@@ -139,9 +143,17 @@ def start_song(song):
     eel.getPercent(curr_song_length)
     eel.setCurrSongLength(curr_song_length);
 
+    # If it's playing a downloaded song, change the UI so that deletion is possible
+    if (already_downloaded):
+        eel.toggleEnabled("#dl", False)
+        eel.toggleEnabled("#dl", True)
+        already_downloaded = False
+
     pygame.mixer.music.play()
     time.sleep(2)
     has_started = True
+
+
 
 @eel.expose
 def get_artist_image(artist):
@@ -330,17 +342,16 @@ def download_song(data):
     shutil.copyfile("./Music/temp/" + data['track']['name'].lower() + ".ogg", "./Music/saved/" + data['track']['artist']['name']
             + "/" + data['track']['album']['title'] + '/' + data['track']['name'] + ".ogg")
 
-    if os.path.isfile('./Music/saved/'+play_queue[0][1]+'/'+data['track']['album']['title']+'/'+play_queue[0][0]+'.mp3'):
-        os.remove('./Music/saved/'+play_queue[0][1]+'/'+data['track']['album']['title']+'/'+play_queue[0][0]+'.mp3');
+    if os.path.isfile('./Music/saved/'+data['track']['artist']['name']+'/'+data['track']['album']['title']+'/'+data['track']['name']+'.mp3'):
+        os.remove('./Music/saved/'+data['track']['artist']['name']+'/'+data['track']['album']['title']+'/'+data['track']['name']+'.mp3');
         return
 
     if sys.platform == 'win32':
-        p = subprocess.Popen('ffmpeg -i "./Music/temp/'+data['track']['name']+'.ogg" -acodec libmp3lame "./Music/saved/'+data['track']['artist']['name']+'/'+data['track']['album']['title']+'/'+data['track']['name']+'.mp3')
+        p = subprocess.Popen('ffmpeg -n -i "./Music/temp/'+data['track']['name']+'.ogg" -acodec libmp3lame "./Music/saved/'+data['track']['artist']['name']+'/'+data['track']['album']['title']+'/'+data['track']['name']+'.mp3')
         p.communicate()
     else:
         # p = subprocess.Popen(['./ffmpeg', '-i', "./Music/temp/"+play_queue[0][0].title()+'.ogg', '-acodec', 'libmp3lame', "./Music/saved/"+data['track']['artist']['name']+'/'+data['track']['album']['title']+'/'+play_queue[0][0].title()+'.mp3'])
-        print('ffmpeg -i "./Music/temp/'+data['track']['name']+'.ogg" -acodec libmp3lame "./Music/saved/'+data['track']['artist']['name']+'/'+data['track']['album']['title']+'/'+data['track']['name']+'.mp3')
-        os.system('ffmpeg -i "./Music/temp/'+data['track']['name'].lower()+'.ogg" -acodec libmp3lame "./Music/saved/'+data['track']['artist']['name']+'/'+data['track']['album']['title']+'/'+data['track']['name']+'.mp3"')
+        os.system('ffmpeg -n -i "./Music/temp/'+data['track']['name'].lower()+'.ogg" -acodec libmp3lame "./Music/saved/'+data['track']['artist']['name']+'/'+data['track']['album']['title']+'/'+data['track']['name']+'.mp3"')
 
    # shutil.copyfile("./Music/temp/" + play_queue[0][0] + ".mp3", "./Music/saved/" + play_queue[0][1].title()
    #                 + "/" + data['track']['album']['title'] + '/' + play_queue[0][0].title() + ".mp3")
