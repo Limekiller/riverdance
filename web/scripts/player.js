@@ -16,13 +16,32 @@ var timerVar = setInterval(updateTimers, 1000);
 var totalSeconds = 0;
 var paused = true;
 var currSongLength = null;
+var focused = true;
 
 $(document).ready(function() {
 
-    //$.getScript("/scripts/search.js");
     eel.toggle_radio(true)(function(a){
         if (a){
            $('#radioButton').addClass('buttonActive');
+        }
+    });
+
+    // Listen for unfocus event
+    $(window).blur(function() {
+        focused = false;
+    });
+    $(window).focus(function() {
+        if (!focused) {
+            var timePercent = totalSeconds/currSongLength;
+            var timeLeft = currSongLength-totalSeconds;
+            var widthTo = $("#playBar").width()*timePercent;
+            console.log($("#playBar").width()*timePercent);
+            $("#playBarActive").css('transition', 'width 0.5s ease');
+            $("#playBarActive").css("width", widthTo+'px');
+            window.setTimeout(function() {
+                $("#playBarActive").css('transition', 'width '+timeLeft+'s linear');
+                $("#playBarActive").css("width", '100%');
+            }, 400);
         }
     });
 
@@ -31,7 +50,9 @@ $(document).ready(function() {
         if (!sorting) {
             eel.get_queue()(function(a){updateArray(a);});
         }
-    }, 2000);
+    }, 1000);
+
+
 
     // If the player was opened through the create server page, let the UI reflect that
     eel.get_email()(function (a) {
