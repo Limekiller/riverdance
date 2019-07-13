@@ -151,7 +151,7 @@ def start_song(song):
         already_downloaded = False
 
     pygame.mixer.music.play()
-    time.sleep(2)
+    # time.sleep(2)
     has_started = True
 
 
@@ -395,7 +395,10 @@ def add_album(data, albumName):
     global play_queue
     play_queue.append([albumName, '%%%album_start%%%'])
     for j, i in enumerate(data):
-        add_to_queue(i['name'], i['artist']['name'])
+        try:
+            add_to_queue(i['name'], i['artist']['name'])
+        except:
+            pass
     play_queue.append([albumName, '%%%album_end%%%'])
     print(play_queue)
 

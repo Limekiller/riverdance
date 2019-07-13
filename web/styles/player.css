@@ -300,6 +300,10 @@ body {
 .email {
     background-image:url('../assets/collab.svg');
 }
+.queue_album {
+    padding:5px;
+    background-color:white;
+}
 #artLoading {
     width:100%;
     height:100%;

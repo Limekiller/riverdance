@@ -303,13 +303,12 @@ function updateArray(array){
     var nextSong = false;
     array.forEach(function(item, index) {
         // If we're adding an album, do the stuff we need to
-        if (item[0] === "%%%album%%%") {
-            queueData += '<div class="queue_album">'
-            $.each(item[2], function(index2, value) {
-                queueData += '<div class="queueSong" id="'+(index-1)+'">'+value[0]+
-                   '<span class="queueArtist">'+value[1]+'</span><div class="source '+value[3]+'"></div><span class="queueDel">X</span></div>';
-            });
-            queueData += '</div>'
+        if (item[1] === "%%%album_start%%%") {
+            queueData += '<div class="queue_album">';
+            return;
+        } else if (item[1] == "%%%album_end%%%") {
+            queueData += '</div>';
+            return;
         }
 
         // If the first song is different, that means we're actually moving to a new song.
