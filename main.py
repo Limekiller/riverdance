@@ -63,11 +63,19 @@ def handle_song(artist, title, queue_item=None):
         eel.artLoading(True)
         eel.getAlbumArt(title, artist)
 
-    # This gets the duration of the song from the youtube page itself. This is no longer needed, as we find the actual
-    # length of the song file once it's downloaded
+    # If not all song info is complete in the queue, do that first
+    if not queue_item[2]:
+        real_title, link = youtube_scrape.scrape(title, artist, True)
+        real_title = real_title.split(' - ')[-1]
+        queue_item[0] = real_title
+        queue_item[2] = link
+
     video_url = "https://youtube.com" + queue_item[2]
     while queue_item[4] == 'downloading':
         eel.sleep(1)
+
+    # This gets the duration of the song from the youtube page itself. This is no longer needed, as we find the actual
+    # length of the song file once it's downloaded
     # duration = youtube_scrape.get_video_time(video_url)
 
     if find_song(title, artist):
@@ -406,9 +414,9 @@ def add_album(data, albumName):
 @eel.expose
 def add_to_queue(title, artist):
     global play_queue
-    real_title, link = youtube_scrape.scrape(title, artist, True)
-    real_title = real_title.split(' - ')[-1]
-    play_queue.append([real_title, artist, link, "user", 'waiting'])
+    #real_title, link = youtube_scrape.scrape(title, artist, True)
+    #real_title = real_title.split(' - ')[-1]
+    play_queue.append([title, artist, None, "user", 'waiting'])
     print(play_queue)
 
 
@@ -456,6 +464,15 @@ def begin_playback():
 def dl_songs_in_bg():
     while True:
         for i in play_queue:
+            if i[1] == "%%%album_start%%%" or i[1] == "%%%album_end%%%":
+                continue
+
+           # if not i[2]:
+           #     real_title, link = youtube_scrape.scrape(i[0], i[1], True)
+           #     real_title = real_title.split(' - ')[-1]
+           #     i[0] = real_title
+           #     i[2] = link
+
             song_title = i[0].translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"})
             if not os.path.exists("./Music/temp/"+song_title+'.ogg'):
                 handle_song(i[1], i[0], play_queue[play_queue.index(i)])
@@ -526,9 +543,10 @@ def play_music():
                     play_queue.pop(1)
                     play_queue.pop(1)
 
-            artist, song = play_queue[0][1], play_queue[0][0]
             #eel.sleep(2)
+            artist, song = play_queue[0][1], play_queue[0][0]
             handle_song(artist, song)
+            artist, song = play_queue[0][1], play_queue[0][0]
             start_song(song)
 
         # Check time, and if the duration of the song has passed, handle things
@@ -554,6 +572,7 @@ def play_music():
 
                 artist, song = play_queue[0][1], play_queue[0][0]
                 handle_song(artist, song)
+                artist, song = play_queue[0][1], play_queue[0][0]
                 print("Now playing: " + artist + " - " + song)
                 start_song(song)
             else:
