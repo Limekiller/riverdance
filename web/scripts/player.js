@@ -34,11 +34,10 @@ $(document).ready(function() {
         focused = false;
     });
     $(window).focus(function() {
-        if (!focused) {
+        if (!focused && !paused) {
             var timePercent = totalSeconds/currSongLength;
             var timeLeft = currSongLength-totalSeconds;
             var widthTo = $("#playBar").width()*timePercent;
-            console.log($("#playBar").width()*timePercent);
             $("#playBarActive").css('transition', 'width 0.5s ease');
             $("#playBarActive").css("width", widthTo+'px');
             window.setTimeout(function() {
