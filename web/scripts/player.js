@@ -27,6 +27,9 @@ $(document).ready(function() {
     });
 
     // Listen for unfocus event
+    // Because CSS animation is used for playbar, it won't start when the window isn't focused
+    // So here what we're doing is calculating where the playbar should be at when the window comes into focus again
+    // TODO: fix bus with this, such as playbar starting if leave and resume focus while loading
     $(window).blur(function() {
         focused = false;
     });
@@ -51,8 +54,6 @@ $(document).ready(function() {
             eel.get_queue()(function(a){updateArray(a);});
         }
     }, 1000);
-
-
 
     // If the player was opened through the create server page, let the UI reflect that
     eel.get_email()(function (a) {
@@ -302,13 +303,22 @@ function updateArray(array){
     var queueData = '';
     var nextSong = false;
     array.forEach(function(item, index) {
+        // If we're adding an album, do the stuff we need to
+        if (item[0] === "%%%album%%%") {
+            queueData += '<div class="queue_album">'
+            $.each(item[2], function(index2, value) {
+                queueData += '<div class="queueSong" id="'+(index-1)+'">'+value[0]+
+                   '<span class="queueArtist">'+value[1]+'</span><div class="source '+value[3]+'"></div><span class="queueDel">X</span></div>';
+            });
+            queueData += '</div>'
+        }
+
         // If the first song is different, that means we're actually moving to a new song.
         // Play queue and title animations as we transition
         if (index == 0) {
             if ($("#songTitle").text() != item[0]) {
                 $("#songInfo").css('animation', 'changeTime 1s ease');
                 nextSong = true;
-
 
                 setTimeout(function() {
                     $("#songTitle").html(item[0]);
@@ -565,8 +575,9 @@ function togglePlayButton(isPaused) {
     }
 }
 
-function addAll(data) {
-    eel.add_album(data);
+function addAll(data, albumName) {
+    console.log(albumName);
+    eel.add_album(data, albumName);
     $("#search_container").removeClass('search_container_active');
     $('body').css('overflow-y', 'hidden');
     $("#search_container").css('overflow-y', 'hidden');

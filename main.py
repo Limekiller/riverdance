@@ -391,19 +391,24 @@ def get_search_results(search_title, search_artist):
 
 
 @eel.expose
-def add_album(data):
+def add_album(data, albumName):
     global play_queue
-    for i in data:
-        print(i['name'])
-        add_to_queue(i['name'], i['artist']['name'])
+    album = ['%%%album%%%', albumName, []]
+    for j, i in enumerate(data):
+        add_to_queue(i['name'], i['artist']['name'], album)
+    play_queue.append(album)
+    print(play_queue)
 
 
 @eel.expose
-def add_to_queue(title, artist):
+def add_to_queue(title, artist, album_container_array=None):
     global play_queue
     real_title, link = youtube_scrape.scrape(title, artist, True)
     real_title = real_title.split(' - ')[-1]
-    play_queue.append([real_title, artist, link, "user", 'waiting'])
+    if album_container_array != None:
+        album_container_array[2].append([real_title, artist, link, "user", 'waiting'])
+    else:
+        play_queue.append([real_title, artist, link, "user", 'waiting'])
     print(play_queue)
 
 
@@ -512,6 +517,10 @@ def play_music():
     while True:
 
         if curr_song_length == float('inf') and play_queue:
+            # If an album is upcoming, move the first track in the album's queue to the top of the main queue
+            if play_queue[0][0] == '%%%album%%%':
+                play_queue.insert(0, play_queue[0][2].pop(0))
+
             artist, song = play_queue[0][1], play_queue[0][0]
             #eel.sleep(2)
             handle_song(artist, song)
@@ -531,6 +540,10 @@ def play_music():
             #eel.sleep(2)
             # If there's a song in the queue, play it; otherwise, do nothing
             if play_queue:
+                # If an album is upcoming, move the first track in the album's queue to the top of the main queue
+                if play_queue[0][0] == '%%%album%%%':
+                    play_queue.insert(0, play_queue[0][2].pop(0))
+
                 artist, song = play_queue[0][1], play_queue[0][0]
                 handle_song(artist, song)
                 print("Now playing: " + artist + " - " + song)

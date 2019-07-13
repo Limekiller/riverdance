@@ -304,7 +304,7 @@ function getAlbum(title, artist) {
     $.getJSON(jsonURL, function(data) {
         albumArt = data['album']['image'].slice(-1)[0]['#text']
         var obj = JSON.stringify(data['album']['tracks']['track']);
-        HTMLToAppend = '<h2 id="artistName" onclick=\'getArtist("'+artist+'", "")\'>'+artist+'</h2><span onclick=\'addAll('+obj.replace(/'/g,"~")+')\' id="add_all">Add all +</span>';
+        HTMLToAppend = '<h2 id="artistName" onclick=\'getArtist("'+artist+'", "")\'>'+artist+'</h2><span onclick=\'addAll('+obj.replace(/'/g,"~")+', "'+albumTitle+'")\' id="add_all">Add all +</span>';
         $("#search_background").css('background', 'linear-gradient(rgba(0,0,0,0.5), #389bfd 50%),url('+albumArt+')');
         $("#search_background").css('backgroundSize', 'cover');
         $("#search_background").css('opacity', '1');
