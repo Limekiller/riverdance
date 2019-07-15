@@ -22,7 +22,7 @@ $(document).ready(function() {
 
     eel.toggle_radio(true)(function(a){
         if (a){
-           $('#radioButton').addClass('buttonActive');
+            $('#radioButton').addClass('buttonActive');
         }
     });
 
@@ -52,7 +52,7 @@ $(document).ready(function() {
         if (!sorting) {
             eel.get_queue()(function(a){updateArray(a);});
         }
-    }, 1000);
+    }, 2000);
 
     // If the player was opened through the create server page, let the UI reflect that
     eel.get_email()(function (a) {
@@ -149,11 +149,11 @@ $(document).ready(function() {
     // Download song
     $('#dl').on('click', function() {
         if ($(this).css('background-position-y') == '0px') {
-                $('#dl').css('background-position-y', '-30px');
-                toggleEnabled('#dl', true);
+            $('#dl').css('background-position-y', '-30px');
+            toggleEnabled('#dl', true);
         } else {
-                $('#dl').css('background-position-y', '0px');
-                toggleEnabled('#dl', false);
+            $('#dl').css('background-position-y', '0px');
+            toggleEnabled('#dl', false);
         }
         eel.download_song(current_song);
     });
@@ -163,7 +163,7 @@ $(document).ready(function() {
         toggleEnabled('#playerControls', false);
         $("#playBarActive").css("transition", "");
         $("#playBarActive").css("width", "0");
-       // just animation stuff
+        // just animation stuff
         $(this).animate({backgroundPositionX: '30px'}, 400,
             function() {
                 window.setTimeout(function() {
@@ -310,7 +310,7 @@ function updateArray(array){
             } else {
                 queueData += 'open';
             }
-            queueData+='"><h3>'+item[0]+'</h3>';
+            queueData+='"><h3 class="alb_h3" >'+item[0]+'</h3>';
             return;
         } else if (item[1] == "%%%album_end%%%") {
             queueData += '<div id="'+(index-1)+'"></div></div>';
@@ -332,31 +332,20 @@ function updateArray(array){
                     $("#songInfo").css('animation', '');
                 }, 1000);
             }
-        // Otherwise, if the item is not already in the list (it's a new item), add a fade-in animation to it.
+            // Otherwise, if the item is not already in the list (it's a new item), add a fade-in animation to it.
         } else if ($('#'+(index-1)).length == 0) {
-               queueData += '<div style="animation:fade_in 0.4s ease forwards;" class="queueSong" id="'+(index-1)+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel">X</span></div>';
-        // Else, just add the song without adding animations
+            queueData += '<div style="animation:fade_in 0.4s ease forwards;" class="queueSong" id="'+(index-1)+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel">X</span></div>';
+            // Else, just add the song without adding animations
         } else {
             // However, again, to make it a smoother experience, check if the item is currently being hovered,
             // and if so, add the hovering classes right away so there is no unwanted animation
             if (hovering.includes(item[0]) && hovering.includes(item[1])) {
-               queueData += '<div class="queueSong queueSongActive" id="'+(index-1)+'">'+item[0]+
-                   '<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel">X</span></div>';
+                queueData += '<div class="queueSong queueSongActive" id="'+(index-1)+'">'+item[0]+
+                    '<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel">X</span></div>';
             } else {
-               queueData += '<div class="queueSong" id="'+(index-1)+'">'+item[0]+
-                   '<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel">X</span></div>';
+                queueData += '<div class="queueSong" id="'+(index-1)+'">'+item[0]+
+                    '<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel">X</span></div>';
             }
-        }
-    });
-
-    $(".queue_album h3").on('click', function() {
-        console.log("wow");
-        eel.toggle_album_view($(this).html());
-
-        if ($(this).parent().hasClass('closed')) {
-            $(this).parent().removeClass('closed');
-        } else {
-            $(this).parent().addClass('closed');
         }
     });
 
@@ -379,7 +368,7 @@ function updateArray(array){
             $(this).parent().addClass('queueSongDeleted');
             $(".queueDel").css('display', 'none');
             $(this).parent().css('animation', 'fade_out 0.4s ease forwards');
-		    deleteIndex($(this).parent().attr('id'));
+            deleteIndex($(this).parent().attr('id'));
 
             setTimeout(function() {
                 eel.get_queue()(function(a){updateArray(a);});
@@ -389,6 +378,20 @@ function updateArray(array){
                     eel.get_queue()(function(a){updateArray(a);});
                 }
             }, 2000);
+        });
+
+        $(".queue_album h3").on('click', function() {
+            eel.toggle_album_view($(this).html());
+
+            if ($(this).parent().hasClass('closed')) {
+                $(this).parent().removeClass('closed');
+            } else {
+                $(".queue_album .queueSong").css('animation', 'fade_out 0.4s ease forwards');
+                $(this).parent().css('max-height', '32px');
+                window.setTimeout(function() {
+                    $(this).parent().addClass('closed');
+                }, 400);
+            }
         });
 
         // Add or remove classes based on hover
@@ -410,7 +413,7 @@ function updateArray(array){
                 elemAfter = $(".ui-sortable-placeholder").next();
                 sorting = true;
             },
-            deactivate: function() {findSwapped($(this)); $(".queueSong").css('pointer-events', 'none');},
+            deactivate: function(event, ui) {findSwapped($(this), $(ui.item).data('sortable-item').currentItem[0].id);$(".queueSong").css('pointer-events', 'none');},
             change: function(event, ui) {
                 if ($(".ui-sortable-placeholder").prev().attr('id') < elemBefore.attr('id') || $(".ui-sortable-placeholder").prev().attr('id') == undefined) {
                     $(".ui-sortable-placeholder").next().css('animation', 'slideDown 0.2s ease');
@@ -427,6 +430,7 @@ function updateArray(array){
             },
             animation: 200,
             revert: true,
+            cancel: 'h3'
         }
         $("#queue").sortable(sortOptions);
         $(".queue_album").sortable(sortOptions);
@@ -439,7 +443,7 @@ function addToQueue(title, artist) {
 
     $("#search_container").removeClass('search_container_active');
     $("#search_container").css('overflow-y', 'hidden');
-	$(".queueDel").css('display', 'none');
+    $(".queueDel").css('display', 'none');
 }
 
 function deleteIndex(index) {
@@ -485,7 +489,6 @@ function getAlbumArt(title, artist) {
 
 eel.expose(toggleEnabled);
 function toggleEnabled(elemString, toggleBool) {
-    console.log(elemString);
     if (toggleBool) {
         $(elemString).css('opacity', '1');
         $(elemString).css('pointer-events', 'all');
@@ -513,7 +516,7 @@ function updateTimers() {
 
 eel.expose(setCurrSongLength);
 function setCurrSongLength(length) {
-        currSongLength = length*.001;
+    currSongLength = length*.001;
 }
 
 
@@ -539,35 +542,71 @@ function artLoading(loading) {
 
 eel.expose(getPercent);
 function getPercent(totalLength) {
-   $("#playBarActive").css("transition", "");
-   $("#playBarActive").css("width", "0%");
-   $("#playBarActive").css("transition", "width "+totalLength*.001+"s linear");
-   setTimeout(function(){
-       $("#playBarActive").css("width", "100%");
-   }, 500);
+    $("#playBarActive").css("transition", "");
+    $("#playBarActive").css("width", "0%");
+    $("#playBarActive").css("transition", "width "+totalLength*.001+"s linear");
+    setTimeout(function(){
+        $("#playBarActive").css("width", "100%");
+    }, 500);
 }
 
-function findSwapped(div) {
-    var old_index;
+function findSwapped(div, draggedID) {
+    realIndex = -1;
     var new_index;
-    var current_sum = -99;
-    div.children().each(function(index) {
-        this_index = $(this).attr('id');
-        if (this_index != index && Math.abs(this_index - index) > current_sum) {
-            current_sum = Math.abs(this_index - index);
-            old_index = $(this).attr('id');
-            new_index = index;
+    div.children().each(function() {
+        if ($(this).hasClass("alb_h3")) {
+            realIndex = parseInt($(this).parent().attr('id'));
+            return;
         }
+        realIndex++;
+        if ($(this).attr('id') == draggedID) {
+            new_index = realIndex;
+            return false;
+        }
+        if ($(this).hasClass('queue_album') && !div.hasClass('queue_album')) {
+            realIndex = realIndex + $(this).children().length - 1;
+            console.log(realIndex);
+        }
+
     });
-    // hovering = 'null';
-    if (div.hasClass('queue_album')) {
-        new_index = parseInt(new_index) + parseInt(div.attr('id'));
-    }
-    console.log(old_index)
-    console.log(new_index)
-    eel.swap_queue(old_index, new_index);
+    eel.swap_queue(draggedID, new_index);
     setTimeout(function() {sorting = false}, 1000);
 }
+
+//function findSwapped(div, draggedID) {
+//    var old_index;
+//    var new_index;
+//    var current_sum = -99;
+//    realIndex = -1;
+//    div.children().each(function(index) {
+//        console.log(div.children());
+//        if ($(this).hasClass("alb_h3")) {
+//            return;
+//        }
+//
+//        realIndex++;
+//        this_index = $(this).attr('id');
+//        if (div.hasClass('queue_album') && realIndex == 0) {
+//            realIndex = parseInt(realIndex) + parseInt(this_index);
+//        }
+//        if (this_index != realIndex && Math.abs(this_index - realIndex) > current_sum) {
+//            current_sum = Math.abs(this_index - realIndex);
+//            old_index = $(this).attr('id');
+//            new_index = realIndex;
+//        }
+//        if ($(this).hasClass('queue_album') && !div.hasClass('queue_album')) {
+//            realIndex = $(this).children().last().attr('id');
+//        }
+//    });
+//    // hovering = 'null';
+//    // if (div.hasClass('queue_album')) {
+//    //     new_index = parseInt(new_index) + parseInt(div.attr('id'));
+//    // }
+//    console.log(old_index);
+//    console.log(new_index);
+//    eel.swap_queue(old_index, new_index);
+//    setTimeout(function() {sorting = false}, 1000);
+//}
 
 function infoToPage(){
     eel.get_info(current_song['track']['artist']['name'], current_song['track']['name'])(function(a){
@@ -600,7 +639,6 @@ function togglePlayButton(isPaused) {
 }
 
 function addAll(data, albumName) {
-    console.log(albumName);
     eel.add_album(data, albumName);
     $("#search_container").removeClass('search_container_active');
     $('body').css('overflow-y', 'hidden');

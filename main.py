@@ -276,18 +276,13 @@ def swap_queue(index1, index2):
             if item[1] == '%%%album_end%%%':
                 album_end = index+int(index1)+1
                 list_to_insert = play_queue[int(index1)+1:album_end+1]
-                print(list_to_insert)
                 del play_queue[int(index1)+1:album_end+1]
-                print(play_queue)
 
                 for song in reversed(list_to_insert):
                     play_queue.insert(int(index2)+1, song)
-                print(play_queue)
                 return
 
-    print(index2, index1)
     play_queue.insert(int(index2)+1, play_queue.pop(int(index1)+1))
-    print(play_queue)
 
 
 @eel.expose
@@ -310,7 +305,6 @@ def search_saved(search_term):
                 album_matched = True;
             for song in os.listdir('./Music/saved/'+artist+'/'+album):
                 if search_term in song.lower() or song.lower() == search_term or artist_matched or album_matched and [song.rsplit('.',1)[0], artist] not in songs:
-                    print(song.rsplit('.',1))
                     songs.append([song.rsplit('.',1)[0], artist])
 
     if artists or albums or songs:
@@ -420,11 +414,9 @@ def toggle_album_view(albumName):
     for i in play_queue:
         if i[0].lower() == albumName.lower() and i[1] == '%%%album_start%%%':
             if i[2] == 'open':
-                print('WOW')
                 i[2] = 'closed'
             else:
                 i[2] = 'open'
-    print(play_queue)
 
 
 @eel.expose
@@ -620,5 +612,5 @@ if not os.path.exists('./Music'):
 eel.spawn(use_radio)
 eel.spawn(check_email)
 eel.spawn(dl_songs_in_bg)
-eel.start('main.html')
+eel.start('./pages/player.html')
 

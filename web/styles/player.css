@@ -307,12 +307,29 @@ body {
     padding:5px;
     background-color:white;
     overflow:hidden;
-    height:auto;
+    margin-bottom:20px;
+    border-radius:0px 10px;
+    max-height:1000px;
+    transition:max-height 0.4s ease;
+}
+.queue_album h3:before {
+    content:'';
+    height:20px;
+    width:20px;
+    right:5px;
+    background:blue;
+    position:absolute;
+    pointer-events:all;
+}
+.closed {
+    max-height:32px;
 }
 .queue_album h3 {
     color:#0080ff;
     margin-top:5px;
     margin-bottom:10px;
+    position:relative;
+    pointer-events:none;
 }
 #artLoading {
     width:100%;
