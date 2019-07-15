@@ -334,17 +334,17 @@ function updateArray(array){
             }
             // Otherwise, if the item is not already in the list (it's a new item), add a fade-in animation to it.
         } else if ($('#'+(index-1)).length == 0) {
-            queueData += '<div style="animation:fade_in 0.4s ease forwards;" class="queueSong" id="'+(index-1)+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel">X</span></div>';
+            queueData += '<div style="animation:fade_in 0.4s ease forwards;" class="queueSong" id="'+(index-1)+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel"></span></div>';
             // Else, just add the song without adding animations
         } else {
             // However, again, to make it a smoother experience, check if the item is currently being hovered,
             // and if so, add the hovering classes right away so there is no unwanted animation
             if (hovering.includes(item[0]) && hovering.includes(item[1])) {
                 queueData += '<div class="queueSong queueSongActive" id="'+(index-1)+'">'+item[0]+
-                    '<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel">X</span></div>';
+                    '<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel"></span></div>';
             } else {
                 queueData += '<div class="queueSong" id="'+(index-1)+'">'+item[0]+
-                    '<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel">X</span></div>';
+                    '<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel"></span></div>';
             }
         }
     });
@@ -384,10 +384,12 @@ function updateArray(array){
             eel.toggle_album_view($(this).html());
 
             if ($(this).parent().hasClass('closed')) {
+                $(this).parent().addClass('rotate');
                 $(this).parent().removeClass('closed');
             } else {
                 $(".queue_album .queueSong").css('animation', 'fade_out 0.4s ease forwards');
                 $(this).parent().css('max-height', '32px');
+                $(this).parent().addClass('rotate');
                 window.setTimeout(function() {
                     $(this).parent().addClass('closed');
                 }, 400);
