@@ -247,6 +247,9 @@ body {
     transition:opacity 0.4s ease;
     -webkit-mask-image: linear-gradient(rgba(0,0,0,1) 60%, rgba(0,0,0,0));
 }
+.closed .queueSong {
+    display:none;
+}
 .queueSong {
     background-color:#0080ff;
     padding:15px;
@@ -303,6 +306,13 @@ body {
 .queue_album {
     padding:5px;
     background-color:white;
+    overflow:hidden;
+    height:auto;
+}
+.queue_album h3 {
+    color:#0080ff;
+    margin-top:5px;
+    margin-bottom:10px;
 }
 #artLoading {
     width:100%;

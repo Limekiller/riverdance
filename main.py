@@ -270,7 +270,24 @@ def get_email():
 def swap_queue(index1, index2):
     """This function facilitates in changing the queue. Javascript determines which songs have been switched when the user
     switches them, and then passes them here to actually complete the process"""
+    if play_queue[int(index1)+1][1] == '%%%album_start%%%':
+        album_end = 0
+        for index, item in enumerate(play_queue[int(index1)+1:]):
+            if item[1] == '%%%album_end%%%':
+                album_end = index+int(index1)+1
+                list_to_insert = play_queue[int(index1)+1:album_end+1]
+                print(list_to_insert)
+                del play_queue[int(index1)+1:album_end+1]
+                print(play_queue)
+
+                for song in reversed(list_to_insert):
+                    play_queue.insert(int(index2)+1, song)
+                print(play_queue)
+                return
+
+    print(index2, index1)
     play_queue.insert(int(index2)+1, play_queue.pop(int(index1)+1))
+    print(play_queue)
 
 
 @eel.expose
@@ -399,16 +416,27 @@ def get_search_results(search_title, search_artist):
 
 
 @eel.expose
+def toggle_album_view(albumName):
+    for i in play_queue:
+        if i[0].lower() == albumName.lower() and i[1] == '%%%album_start%%%':
+            if i[2] == 'open':
+                print('WOW')
+                i[2] = 'closed'
+            else:
+                i[2] = 'open'
+    print(play_queue)
+
+
+@eel.expose
 def add_album(data, albumName):
     global play_queue
-    play_queue.append([albumName, '%%%album_start%%%'])
+    play_queue.append([albumName, '%%%album_start%%%', 'open'])
     for j, i in enumerate(data):
         try:
             add_to_queue(i['name'], i['artist']['name'])
         except:
             pass
     play_queue.append([albumName, '%%%album_end%%%'])
-    print(play_queue)
 
 
 @eel.expose
@@ -417,14 +445,12 @@ def add_to_queue(title, artist):
     #real_title, link = youtube_scrape.scrape(title, artist, True)
     #real_title = real_title.split(' - ')[-1]
     play_queue.append([title, artist, None, "user", 'waiting'])
-    print(play_queue)
 
 
 @eel.expose
 def delete_from_queue(index):
     global play_queue
     play_queue.pop(int(index)+1)
-    print(play_queue)
 
 
 @eel.expose
@@ -546,7 +572,6 @@ def play_music():
             #eel.sleep(2)
             artist, song = play_queue[0][1], play_queue[0][0]
             handle_song(artist, song)
-            artist, song = play_queue[0][1], play_queue[0][0]
             start_song(song)
 
         # Check time, and if the duration of the song has passed, handle things
@@ -572,7 +597,6 @@ def play_music():
 
                 artist, song = play_queue[0][1], play_queue[0][0]
                 handle_song(artist, song)
-                artist, song = play_queue[0][1], play_queue[0][0]
                 print("Now playing: " + artist + " - " + song)
                 start_song(song)
             else:

@@ -304,10 +304,16 @@ function updateArray(array){
     array.forEach(function(item, index) {
         // If we're adding an album, do the stuff we need to
         if (item[1] === "%%%album_start%%%") {
-            queueData += '<div class="queue_album">';
+            queueData += '<div id="'+(index-1)+'" class="queue_album '
+            if (item[2] == 'closed') {
+                queueData += 'closed';
+            } else {
+                queueData += 'open';
+            }
+            queueData+='"><h3>'+item[0]+'</h3>';
             return;
         } else if (item[1] == "%%%album_end%%%") {
-            queueData += '</div>';
+            queueData += '<div id="'+(index-1)+'"></div></div>';
             return;
         }
 
@@ -342,6 +348,19 @@ function updateArray(array){
             }
         }
     });
+
+    $(".queue_album h3").on('click', function() {
+        console.log("wow");
+        eel.toggle_album_view($(this).html());
+
+        if ($(this).parent().hasClass('closed')) {
+            $(this).parent().removeClass('closed');
+        } else {
+            $(this).parent().addClass('closed');
+        }
+    });
+
+
     // Only update the queue if it has changed
     if ($("#queue").html() != queueData) {
         // Play the queue animation if we are moving to the next song
@@ -384,14 +403,14 @@ function updateArray(array){
         // Allow queue items to be draggable and sortable
         var elemBefore;
         var elemAfter;
-        $("#queue").sortable({
+        sortOptions = {
             axis: "y",
             activate: function() {
                 elemBefore = $(".ui-sortable-placeholder").prev();
                 elemAfter = $(".ui-sortable-placeholder").next();
                 sorting = true;
             },
-            deactivate: function() {findSwapped(); $(".queueSong").css('pointer-events', 'none');},
+            deactivate: function() {findSwapped($(this)); $(".queueSong").css('pointer-events', 'none');},
             change: function(event, ui) {
                 if ($(".ui-sortable-placeholder").prev().attr('id') < elemBefore.attr('id') || $(".ui-sortable-placeholder").prev().attr('id') == undefined) {
                     $(".ui-sortable-placeholder").next().css('animation', 'slideDown 0.2s ease');
@@ -407,8 +426,10 @@ function updateArray(array){
                 }, 200);
             },
             animation: 200,
-            revert: true
-        });
+            revert: true,
+        }
+        $("#queue").sortable(sortOptions);
+        $(".queue_album").sortable(sortOptions);
     }
 }
 
@@ -526,11 +547,11 @@ function getPercent(totalLength) {
    }, 500);
 }
 
-function findSwapped() {
+function findSwapped(div) {
     var old_index;
     var new_index;
     var current_sum = -99;
-    $("#queue").children().each(function(index) {
+    div.children().each(function(index) {
         this_index = $(this).attr('id');
         if (this_index != index && Math.abs(this_index - index) > current_sum) {
             current_sum = Math.abs(this_index - index);
@@ -539,6 +560,11 @@ function findSwapped() {
         }
     });
     // hovering = 'null';
+    if (div.hasClass('queue_album')) {
+        new_index = parseInt(new_index) + parseInt(div.attr('id'));
+    }
+    console.log(old_index)
+    console.log(new_index)
     eel.swap_queue(old_index, new_index);
     setTimeout(function() {sorting = false}, 1000);
 }
