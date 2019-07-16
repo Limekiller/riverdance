@@ -232,7 +232,6 @@ body {
     margin-top:0vh;
 }
 #queue {
-    text-transform:capitalize;
     height:70%;
     overflow:auto;
     opacity:1;
@@ -272,7 +271,6 @@ body {
 .queueArtist {
     display:block;
     font-size:12px;
-    text-transform:capitalize;
 }
 .queueDel {
     position:absolute;
@@ -528,12 +526,10 @@ span#splashSongTitle {
     font-size:60px;
     display:block;
     line-height:55px;
-    text-transform:capitalize;
 }
 span#splashSongArtist {
     font-weight:700;
     font-size:40px;
-    text-transform:capitalize;
 }
 @keyframes slideUp {
     from {transform:translateY(75px);}

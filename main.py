@@ -81,7 +81,7 @@ def handle_song(artist, title, queue_item=None):
     if find_song(title, artist):
         queue_item[4] = 'ready'
         return
-    if os.path.exists('./Music/temp/'+title+'.ogg'):
+    if os.path.exists('./Music/temp/'+title.lower()+'.ogg'):
         #start_song(title)
         return
 
@@ -90,7 +90,7 @@ def handle_song(artist, title, queue_item=None):
     queue_item[4] = 'downloading'
     options = {
         'format': 'best',
-        'outtmpl': './Music/temp/'+file_title+".%(ext)s",
+        'outtmpl': './Music/temp/'+file_title.lower()+".%(ext)s",
         'nocheckcertificate': True,
            'external_downloader_args': [{
                'hide_banner': True,
@@ -137,10 +137,10 @@ def start_song(song):
         try:
             # Get song length and set global var, and get frequency and play with pygame at that freq. (stupid that pygame wouldn't
             # do this automatically)
-            song_file = OggVorbis("./Music/temp/" + file_title + ".ogg")
+            song_file = OggVorbis("./Music/temp/" + file_title.lower() + ".ogg")
             curr_song_length = song_file.info.length * 1000
             pygame.mixer.init(frequency=song_file.info.sample_rate)
-            pygame.mixer.music.load("./Music/temp/" + file_title + ".ogg")
+            pygame.mixer.music.load("./Music/temp/" + file_title.lower() + ".ogg")
             song_loaded = True
         except:
             pass
@@ -492,7 +492,7 @@ def dl_songs_in_bg():
            #     i[2] = link
 
             song_title = i[0].translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"})
-            if not os.path.exists("./Music/temp/"+song_title+'.ogg'):
+            if not os.path.exists("./Music/temp/"+song_title.lower()+'.ogg'):
                 handle_song(i[1], i[0], play_queue[play_queue.index(i)])
 
         for file in os.listdir('./Music/temp/'):

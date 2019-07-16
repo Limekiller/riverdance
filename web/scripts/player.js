@@ -465,7 +465,7 @@ function getAlbumArt(title, artist) {
         try {
             realTitle = data['results']['trackmatches']['track'][0]['name'];
             realArtist = data['results']['trackmatches']['track'][0]['artist'];
-            jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+realArtist+'&track='+realTitle+'&format=json'
+            jsonURL = 'http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=8aef36b2e4731be3a1ea47ad992eb984&artist='+encodeURIComponent(realArtist)+'&track='+encodeURIComponent(realTitle)+'&format=json'
 
             $.getJSON(jsonURL, function(dat2) {
                 try {
@@ -567,7 +567,6 @@ function findSwapped(div, draggedID) {
         }
         if ($(this).hasClass('queue_album') && !div.hasClass('queue_album')) {
             realIndex = realIndex + $(this).children().length - 1;
-            console.log(realIndex);
         }
 
     });
