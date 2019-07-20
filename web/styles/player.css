@@ -123,7 +123,7 @@ body {
     transition:background-position-y 0.4s ease, transform 0.4s ease, opacity 0.4s ease;
 }
 #ff {
-    background-image:url('../assets/ffrw.svg');
+    background-image:url('../assets/ffrw.png');
     background-position-x:0px;
 }
 #player {
@@ -152,8 +152,9 @@ body {
     top:25px;
 }
 #audioButton {
-    background-image:url('/assets/audio.svg');
+    background-image:url('/assets/audio.png');
     width:25px;
+    background-size:contain;
     height:25px;
     position:absolute;
     top:0px;
@@ -194,6 +195,7 @@ body {
 .button {
     width:40px;
     transition:filter 0.4s ease;
+    object-fit:contain;
 }
 .buttonContainer {
     transition:transform 0.4s ease;
@@ -262,7 +264,7 @@ body {
     border-radius:0px 20px;
     background-color:#1D00AD;
 }
-.queueSong:hover .queueDel, .queueSong:hover .source {
+.queueSong:hover .queueDel, .queueSong:hover .source, .queueSong .queueDelActive {
     opacity:1;
 }
 .queueSongDeleted {
@@ -298,10 +300,10 @@ body {
     height:20px;
 }
 .radio {
-    background-image:url('../assets/radio.svg');
+    background-image:url('../assets/radio.png');
 }
 .user {
-    background-image:url('../assets/search.svg');
+    background-image:url('../assets/search.png');
 }
 .email {
     background-image:url('../assets/collab.svg');

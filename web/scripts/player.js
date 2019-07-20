@@ -67,17 +67,17 @@ $(document).ready(function() {
 
     eel.begin_playback();
 
-    // Show the splash every 10s,
+    // Show the splash every 20s,
     splashTimeout = setTimeout(function() {
         $("#artistSplash").addClass('showSplash');
-    }, 10000);
+    }, 20000);
     // But fade it out/cancel the timer every time the mouse moves
     $(document).mousemove(function(event) {
         $("#artistSplash").removeClass('showSplash');
         clearTimeout(splashTimeout);
         splashTimeout = setTimeout(function() {
             $("#artistSplash").addClass('showSplash');
-        }, 10000);
+        }, 20000);
     });
 
     // Audio
@@ -341,7 +341,7 @@ function updateArray(array){
             // and if so, add the hovering classes right away so there is no unwanted animation
             if (hovering.includes(item[0]) && hovering.includes(item[1])) {
                 queueData += '<div class="queueSong queueSongActive" id="'+(index-1)+'">'+item[0]+
-                    '<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel"></span></div>';
+                    '<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel queueDelActive"></span></div>';
             } else {
                 queueData += '<div class="queueSong" id="'+(index-1)+'">'+item[0]+
                     '<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel"></span></div>';
@@ -353,9 +353,13 @@ function updateArray(array){
     // Only update the queue if it has changed
     if ($("#queue").html() != queueData) {
         // Play the queue animation if we are moving to the next song
-        if (nextSong) {
-            $("#0").css('opacity', '0');
-            $("#0").css('margin-top', '-80px');
+        if (nextSong && !$("#0").hasClass('queue_album')) {
+            var elemToAnim = 0;
+            if ($("#0").hasClass('queue_album')) {
+                elemToAnim = 1;
+            }
+            $("#"+elemToAnim).css('opacity', '0');
+            $("#"+elemToAnim).css('margin-top', '-80px');
             setTimeout(function() {
                 $("#queue").html(queueData);
             }, 500);
@@ -402,6 +406,7 @@ function updateArray(array){
             $(this).addClass('queueSongActive');
         }, function() {
             $(this).removeClass('queueSongActive');
+            $(this).children('.queueDel').removeClass('queueDelActive');
             hovering = 'null';
         });
 

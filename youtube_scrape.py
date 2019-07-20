@@ -7,7 +7,7 @@ def rank_results(result_list, search_title, search_artist, uploader_list):
     """Rank results based on similarity to search term"""
     #scores = []
     #search_artist = search_artist.replace("+", " ").lower()
-    search_title = search_title.replace("+", " ").lower()
+    search_title = search_title.replace("+", " ")
     #search_terms = search_title.split() + search_artist.split()
 
     ## Give score to each result
@@ -36,7 +36,7 @@ def rank_results(result_list, search_title, search_artist, uploader_list):
 
     # return scores.index(max(scores))
     for index, title in enumerate(result_list):
-        title = title.lower()
+        title = title
         if search_title == title:
             return index
 
@@ -91,14 +91,14 @@ def scrape(search_title, search_artist, get_top_result=False):
 
     for h3 in all_title_tags:
         try:
-            title.append(h3.find('a').text.lower())
+            title.append(h3.find('a').text)
             ref.append(h3.find('a')['href'])
         except TypeError:
             return None, None
 
     for div in all_uploader_tags:
         try:
-            uploader.append(div.text.lower())
+            uploader.append(div.text)
         except TypeError:
             pass
 
