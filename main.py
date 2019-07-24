@@ -328,6 +328,12 @@ def reveal_files(url):
 
 
 @eel.expose
+def delete_folder(url):
+    shutil.rmtree(url)
+    eel.getFiles(os.path.split(url)[0]);
+
+
+@eel.expose
 def pause_music(curr_percent):
     global paused
     global curr_song_length

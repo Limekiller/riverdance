@@ -347,7 +347,7 @@ function updateArray(array){
             // and if so, add the hovering classes right away so there is no unwanted animation
             if (hovering.includes(item[0]) && hovering.includes(item[1])) {
                 queueData += '<div class="queueSong queueSongActive" id="'+(index-1)+'">'+item[0]+
-                    '<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel queueDelActive"></span></div>';
+                    '<span class="queueArtist">'+item[1]+'</span><div class="source active '+item[3]+'"></div><span class="queueDel active"></span></div>';
             } else {
                 queueData += '<div class="queueSong" id="'+(index-1)+'">'+item[0]+
                     '<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel"></span></div>';
@@ -423,7 +423,7 @@ function updateArray(array){
             $(this).addClass('queueSongActive');
         }, function() {
             $(this).removeClass('queueSongActive');
-            $(this).children('.queueDel').removeClass('queueDelActive');
+            $(this).children().removeClass('active');
             hovering = 'null';
         });
 

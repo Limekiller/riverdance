@@ -258,6 +258,9 @@ h1.search_bar_active {
     background:#1D00AD;
     border-radius:5px 20px;
 }
+.folder:hover .folderDel {
+    opacity:1;
+}
 #files_panel {
     display:none;
     width:70%;

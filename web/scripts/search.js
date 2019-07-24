@@ -17,14 +17,18 @@ $(document).ready(function() {
             var HTMLToAppend = '';
             eel.reveal_files(currentFilesURL)(function(e) {
                 $.each(e[0], function(index, value) {
-                    HTMLToAppend += '<div class=folder>'+value+"</div>";
+                    HTMLToAppend += '<div class=folder>'+value+"<div class='folderDel'></div></div>";
                 });
                 $("#file_grid").css('opacity', 0);
                 window.setTimeout(function() {
                     $("#file_grid").css('opacity', 1);
                     $("#file_grid").html(HTMLToAppend);
+                    $(".folderDel").on('click', function(e) {
+                        e.stopPropagation();
+                        eel.delete_folder(currentFilesURL + '/' + $(this).parent().text());
+                    });
                     $(".folder").on('click', function() {
-                        currentFilesURL += '/'+$(this).html();
+                        currentFilesURL += '/'+$(this).text();
                         $("#file_grid").css('opacity', 0);
                         window.setTimeout(function () {
                             getFiles(currentFilesURL);
@@ -85,11 +89,15 @@ $(document).ready(function() {
             var HTMLToAppend = '';
             eel.reveal_files(currentFilesURL)(function(e) {
                 $.each(e[0], function(index, value) {
-                    HTMLToAppend += '<div class=folder>'+value+"</div>";
+                    HTMLToAppend += '<div class=folder>'+value+"<div class='folderDel'></div></div>";
                 });
                 $("#file_grid").html(HTMLToAppend);
+                $(".folderDel").on('click', function(e) {
+                    e.stopPropagation();
+                    eel.delete_folder(currentFilesURL + '/' + $(this).parent().text());
+                });
                 $(".folder").on('click', function() {
-                    currentFilesURL += '/'+$(this).html();
+                    currentFilesURL += '/'+$(this).text();
                     $("#file_grid").css('opacity', 0);
                     window.setTimeout(function() {
                         getFiles(currentFilesURL);
@@ -142,20 +150,25 @@ $("#search_container").on('scroll',function() {
     $("#search_container").css('backgroundPositionY', -scrollDist*2);
 });
 
+eel.expose(getFiles);
 function getFiles(URL) {
     console.log(currentFilesURL);
     eel.reveal_files(URL)(function(e) {
         var HTMLToAppend = '';
         $.each(e[0], function(index, value) {
-            HTMLToAppend += '<div class=folder>'+value+"</div>";
+            HTMLToAppend += '<div class=folder>'+value+"<div class='folderDel'></div></div>";
         });
         $.each(e[1], function(index, value) {
             HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(value[0])+'\', \''+escape(value[1])+'\')">'+value[0]+'<span>'+value[1]+'</span><span class="resultPlus">+</span></div>';
         });
         $("#file_grid").html(HTMLToAppend);
+        $(".folderDel").on('click', function(e) {
+            e.stopPropagation();
+            eel.delete_folder(currentFilesURL + '/' + $(this).parent().text());
+        });
         $(".folder").on('click', function() {
             $("#file_grid").css('opacity', 0);
-            currentFilesURL += '/'+$(this).html();
+            currentFilesURL += '/'+$(this).text();
             window.setTimeout(function() {
                 $("#file_grid").css('opacity', 1);
                 getFiles(currentFilesURL);
