@@ -127,7 +127,7 @@ body {
     background-position-x:0px;
 }
 #player {
-    border-radius:20px 0px;
+    border-radius:20px 5px;
     height:fit-content;
     width:300px;
 }
@@ -140,7 +140,7 @@ body {
     transition:transform 0.4s ease, background-position-x 0.4s ease;
 }
 #songList {
-    border-radius:20px 0px;
+    border-radius:20px 5px;
     color:white;
     width:50%;
 }
@@ -254,14 +254,14 @@ body {
 .queueSong {
     background-color:#0080ff;
     padding:15px;
-    border-radius:20px 0px;
+    border-radius:20px 5px;
     margin-bottom:20px;
     min-height:32px;
     position:relative;
     transition:border-radius 0.4s ease, margin 0.4s ease, background-color 0.4s ease, transform 0.4s ease, opacity 0.4s ease;
 }
 .queueSong:hover, .queueSongActive {
-    border-radius:0px 20px;
+    border-radius:5px 20px;
     background-color:#1D00AD;
 }
 .queueSong:hover .queueDel, .queueSong:hover .source, .queueSong .queueDelActive {
@@ -295,9 +295,11 @@ body {
     margin-right:50px;
     margin-top:-25px;
     background-repeat:no-repeat;
+    background-size:contain;
     opacity:0;
     width:30px;
     height:20px;
+    filter:sepia(257) saturate(82) hue-rotate(287deg) invert(1) brightness(2.15) !important
 }
 .radio {
     background-image:url('../assets/radio.png');
@@ -306,16 +308,16 @@ body {
     background-image:url('../assets/search.png');
 }
 .email {
-    background-image:url('../assets/collab.svg');
+    background-image:url('../assets/jukebox.png');
 }
 .queue_album {
     padding:5px;
-    background-color:white;
     overflow:hidden;
     margin-bottom:20px;
-    border-radius:0px 10px;
+    border-radius:5px 10px;
+    background-color:none;
     max-height:3000px;
-    transition:max-height 0.4s ease;
+    transition:max-height 0.4s ease, background-color 0.4s ease;
 }
 .queue_album h3::before {
     content:'';
@@ -324,29 +326,45 @@ body {
     right:5px;
     position:absolute;
     pointer-events:all;
+    filter: sepia(1) saturate(25) hue-rotate(-30deg) invert(1) !important;
     background-image:url('../assets/plus.png');
     background-size:20px;
     background-position:center;
-    filter: sepia(1) saturate(25) hue-rotate(-30deg) invert(1) !important;
     transform:rotate(0deg);
+}
+.queue_album.closed {
+    background-color:white;
+    transition:max-height 0.4s ease, background-color 0.4s ease;
+}
+.queue_album.closed:hover h3 {
+   color:#242bc3;
+}
+.queue_album.closed h3 {
+    color:#0080ff;
+    transition:color 0.4s ease;
 }
 .queue_album.rotate h3::before {
     transform:rotate(0deg);
     animation:rotate_x 0.4s ease forwards; 
+    filter:none !important;
 }
 .queue_album.open h3::before {
     transform:rotate(45deg);
+    filter:none !important;
 }
 .queue_album.open.rotate h3::before {
     transform:rotate(45deg);
     animation:rotate_x 0.4s ease reverse forwards; 
+    transition:max-height 0.4s ease, background-color 0.4s ease 0.4s;
+    filter: sepia(1) saturate(25) hue-rotate(-30deg) invert(1) !important;
 }
 .queue_album h3 {
-    color:#0080ff;
+    color:white;
     margin-top:5px;
     margin-bottom:10px;
     position:relative;
     pointer-events:none;
+    transition:color 0.4s ease;
 }
 .closed {
     max-height:32px;
@@ -564,6 +582,6 @@ span#splashSongArtist {
     100%{transform:translateY(0px);opacity:1;}
 }
 @keyframes rotate_x {
-    from {transform:rotate(0deg);}
-    to {transform:rotate(45deg);}
+    from {transform:rotate(0deg);filter:none !important;}
+    to {transform:rotate(45deg);filter: sepia(1) saturate(25) hue-rotate(-30deg) invert(1) !important;}
 }

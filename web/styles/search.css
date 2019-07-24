@@ -54,14 +54,14 @@ h1.search_bar_active {
 #search_bar input[type=text] {
     width:100%;
     border:none;
-    border-radius:20px 0px;
+    border-radius:20px 5px;
     padding:30px;
     transition:border-radius 0.4s ease;
     background-color:#1D00AD;
     color:white;
 }
 #search_bar input[type=text]:hover {
-    border-radius:0px 20px;
+    border-radius:5px 20px;
 }
 #genres {
     display:flex;
@@ -126,13 +126,13 @@ h1.search_bar_active {
     color:white;
     padding:15px;
     margin-top:15px;
-    border-radius:20px 0px;
+    border-radius:20px 5px;
     transition:border-radius 0.4s ease, background-color 0.4s ease;
     /*animation:fade_in 0.4s ease forwards;*/
 }
 .search_result:hover {
     cursor:pointer;
-    border-radius:0px 20px;
+    border-radius:5px 20px;
     background-color:#1D00AD;
 }
 #search_background {
@@ -244,11 +244,11 @@ h1.search_bar_active {
     transition:opacity 0.4s ease;
 }
 .folder {
-    width:100px;
-    height:100px;
+    width:150px;
+    height:150px;
     padding:10px;
-    margin:20px;
-    border-radius:20px 0px;
+    margin:10px;
+    border-radius:20px 5px;
     background:#0080ff;
     color:white;
     transition:background 0.4s ease, border-radius 0.4s ease;
@@ -256,7 +256,7 @@ h1.search_bar_active {
 .folder:hover {
     cursor:pointer;
     background:#1D00AD;
-    border-radius:0px 20px;
+    border-radius:5px 20px;
 }
 #files_panel {
     display:none;

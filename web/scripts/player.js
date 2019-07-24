@@ -52,7 +52,7 @@ $(document).ready(function() {
         if (!sorting) {
             eel.get_queue()(function(a){updateArray(a);});
         }
-    }, 2000);
+    }, 1500);
 
     // If the player was opened through the create server page, let the UI reflect that
     eel.get_email()(function (a) {
@@ -322,6 +322,7 @@ function updateArray(array){
         if (index == 0) {
             if ($("#songTitle").text() != item[0]) {
                 $("#songInfo").css('animation', 'changeTime 1s ease');
+                $("#queue").addClass("animation_playing");
                 nextSong = true;
 
                 setTimeout(function() {
@@ -330,11 +331,16 @@ function updateArray(array){
                 }, 500);
                 setTimeout(function() {
                     $("#songInfo").css('animation', '');
+                    $("#queue").removeClass("animation_playing");
                 }, 1000);
             }
             // Otherwise, if the item is not already in the list (it's a new item), add a fade-in animation to it.
         } else if ($('#'+(index-1)).length == 0) {
+            //$("#queue").addClass("animation_playing");
             queueData += '<div style="animation:fade_in 0.4s ease forwards;" class="queueSong" id="'+(index-1)+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel"></span></div>';
+            setTimeout(function() {
+                $("#queue").removeClass("animation_playing");
+            }, 500);
             // Else, just add the song without adding animations
         } else {
             // However, again, to make it a smoother experience, check if the item is currently being hovered,
@@ -350,11 +356,12 @@ function updateArray(array){
     });
 
 
-    // Only update the queue if it has changed
-    if ($("#queue").html() != queueData) {
+    // Only update the queue if it has changed and there is no animation in progress
+    if ($("#queue").html() != queueData && !$("#queue").hasClass('animation_playing')) {
         // Play the queue animation if we are moving to the next song
         if (nextSong && !$("#0").hasClass('queue_album')) {
             var elemToAnim = 0;
+            $("#queue").addClass('animation_playing');
             if ($("#0").hasClass('queue_album')) {
                 elemToAnim = 1;
             }
@@ -362,40 +369,50 @@ function updateArray(array){
             $("#"+elemToAnim).css('margin-top', '-80px');
             setTimeout(function() {
                 $("#queue").html(queueData);
+                $("#queue").removeClass('animation_playing');
             }, 500);
         } else {
             $("#queue").html(queueData);
         }
         // Delete queue items on click
         $('.queueDel').on('click', function() {
-            clearTimeout(queueInterval);
+            //clearTimeout(queueInterval);
             $(this).parent().addClass('queueSongDeleted');
+            $("#queue").addClass("animation_playing");
             $(".queueDel").css('display', 'none');
             $(this).parent().css('animation', 'fade_out 0.4s ease forwards');
             deleteIndex($(this).parent().attr('id'));
 
             setTimeout(function() {
                 eel.get_queue()(function(a){updateArray(a);});
-            }, 250);
-            queueInterval = setInterval(function() {
-                if (!sorting) {
-                    eel.get_queue()(function(a){updateArray(a);});
-                }
-            }, 2000);
+                $("#queue").removeClass("animation_playing");
+            }, 500);
+           // queueInterval = setInterval(function() {
+           //     if (!sorting) {
+           //         eel.get_queue()(function(a){updateArray(a);});
+           //     }
+           // }, 2000);
         });
 
         $(".queue_album h3").on('click', function() {
             eel.toggle_album_view($(this).html());
 
+            $("#queue").addClass('animation_playing');
+            setTimeout(function() {
+                $("#queue").removeClass('animation_playing');
+            }, 500);
             if ($(this).parent().hasClass('closed')) {
                 $(this).parent().addClass('rotate');
                 $(this).parent().removeClass('closed');
             } else {
+                var elem = $(this);
                 $(".queue_album .queueSong").css('animation', 'fade_out 0.4s ease forwards');
                 $(this).parent().css('max-height', '32px');
                 $(this).parent().addClass('rotate');
                 window.setTimeout(function() {
-                    $(this).parent().addClass('closed');
+                    elem.parent().addClass('closed');
+                    elem.parent().css('background', 'white');
+                    elem.css('color', '#0080ff');
                 }, 400);
             }
         });

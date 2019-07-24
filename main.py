@@ -143,6 +143,7 @@ def start_song(song):
             pygame.mixer.music.load("./Music/temp/" + file_title.lower() + ".ogg")
             song_loaded = True
         except:
+            eel.sleep(1)
             pass
 
     pygame.mixer.music.set_volume(volume)
