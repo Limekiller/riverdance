@@ -98,7 +98,6 @@ h1.search_bar_active {
 .genre_button img {
     height:60px;
     margin-top:20px;
-    transform:rotate(15deg);
 }
 .genre p {
     margin:0 auto;
@@ -237,6 +236,9 @@ h1.search_bar_active {
 }
 #filesActive {
     top:145px; 
+}
+#filesActive:hover, #searchActive:hover {
+    cursor:pointer;
 }
 #file_grid {
     display:flex;
