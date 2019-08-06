@@ -503,7 +503,7 @@ def dl_songs_in_bg():
                 handle_song(i[1], i[0], play_queue[play_queue.index(i)])
 
         for file in os.listdir('./Music/temp/'):
-            if file.rsplit('.', 1)[0] not in [i[0].translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"}) for i in play_queue]:
+            if file.rsplit('.', 1)[0] not in [i[0].translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"}).lower() for i in play_queue]:
                 try:
                     os.remove('./Music/temp/'+file)
                 except PermissionError:
