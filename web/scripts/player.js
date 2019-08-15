@@ -322,7 +322,6 @@ function updateArray(array){
         if (index == 0) {
             if ($("#songTitle").text() != item[0]) {
                 $("#songInfo").css('animation', 'changeTime 1s ease');
-                $("#queue").addClass("animation_playing");
                 nextSong = true;
 
                 setTimeout(function() {
