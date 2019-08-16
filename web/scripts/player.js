@@ -1,6 +1,5 @@
 var serverListening = false;
 var hovering = 'null';
-var sorting = false;
 var current_song;
 var radio = false;
 
@@ -17,6 +16,7 @@ var totalSeconds = 0;
 var paused = true;
 var currSongLength = null;
 var focused = true;
+var animation_playing = false;
 
 $(document).ready(function() {
 
@@ -47,12 +47,6 @@ $(document).ready(function() {
         }
     });
 
-    // Continually query the back-end for queue information
-    queueInterval = setInterval(function() {
-        if (!sorting) {
-            eel.get_queue()(function(a){updateArray(a);});
-        }
-    }, 1500);
 
     // If the player was opened through the create server page, let the UI reflect that
     eel.get_email()(function (a) {
@@ -312,8 +306,8 @@ function updateArray(array){
             } else {
                 queueData += 'open';
             }
-            queueData+='"><h3 class="alb_h3" >'+item[0]+'</h3>';
-            queueData+='<span class="queueDel"></span>';
+            queueData+='"><h3 >'+item[0]+'</h3>';
+            queueData+='<span class="queueDel alb_h3"></span>';
             return;
         } else if (item[1] == "%%%album_end%%%") {
             queueData += '<div id="'+(index-1)+'"></div></div>';
@@ -333,15 +327,11 @@ function updateArray(array){
                 }, 500);
                 setTimeout(function() {
                     $("#songInfo").css('animation', '');
-                    $("#queue").removeClass("animation_playing");
                 }, 1000);
             }
             // Otherwise, if the item is not already in the list (it's a new item), add a fade-in animation to it.
         } else if ($('#'+(index-1)).length == 0) {
             queueData += '<div style="animation:fade_in 0.4s ease forwards;" class="queueSong" id="'+(index-1)+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel"></span></div>';
-            setTimeout(function() {
-                $("#queue").removeClass("animation_playing");
-            }, 500);
             // Else, just add the song without adding animations
         } else {
             // However, again, to make it a smoother experience, check if the item is currently being hovered,
@@ -358,11 +348,10 @@ function updateArray(array){
 
 
     // Only update the queue if it has changed and there is no animation in progress
-    if ($("#queue").html() != queueData && !$("#queue").hasClass('animation_playing')) {
+    if ($("#queue").html() != queueData ) {
         // Play the queue animation if we are moving to the next song
         if (nextSong && !$("#0").hasClass('queue_album')) {
             var elemToAnim = 0;
-            $("#queue").addClass('animation_playing');
             if ($("#0").hasClass('queue_album')) {
                 elemToAnim = 1;
             }
@@ -370,7 +359,6 @@ function updateArray(array){
             $("#"+elemToAnim).css('margin-top', '-80px');
             setTimeout(function() {
                 $("#queue").html(queueData);
-                $("#queue").removeClass('animation_playing');
             }, 500);
         } else {
             $("#queue").html(queueData);
@@ -379,8 +367,6 @@ function updateArray(array){
         // Delete queue items on click
         $('.queueDel').on('click', function() {
             $(this).parent().addClass('queueSongDeleted');
-            $("#queue").addClass("animation_playing");
-            $(".queueDel").css('display', 'none');
             $(this).parent().css('animation', 'fade_out 0.4s ease forwards');
 
             if ($(this).parent().hasClass('queue_album')) {
@@ -398,17 +384,12 @@ function updateArray(array){
 
             setTimeout(function() {
                 eel.get_queue()(function(a){updateArray(a);});
-                $("#queue").removeClass("animation_playing");
             }, 1000);
         });
 
         $(".queue_album h3").on('click', function() {
             eel.toggle_album_view($(this).html());
 
-            $("#queue").addClass('animation_playing');
-            setTimeout(function() {
-                $("#queue").removeClass('animation_playing');
-            }, 1000);
             if ($(this).parent().hasClass('closed')) {
                 $(this).parent().css('background-color', 'rgba(0,0,0,0)');
                 $(this).parent().addClass('rotate');
@@ -451,9 +432,9 @@ function updateArray(array){
             activate: function() {
                 elemBefore = $(".ui-sortable-placeholder").prev();
                 elemAfter = $(".ui-sortable-placeholder").next();
-                sorting = true;
+                animation_playing = true;
             },
-            deactivate: function(event, ui) {findSwapped($(this), $(ui.item).data('sortable-item').currentItem[0].id);$(".queueSong").css('pointer-events', 'none');},
+            deactivate: function(event, ui) {animation_playing = false;findSwapped($(this), $(ui.item).data('sortable-item').currentItem[0].id);$(".queueSong").css('pointer-events', 'none');},
             change: function(event, ui) {
                 if ($(".ui-sortable-placeholder").prev().attr('id') < elemBefore.attr('id') || $(".ui-sortable-placeholder").prev().attr('id') == undefined) {
                     $(".ui-sortable-placeholder").next().css('animation', 'slideDown 0.2s ease');
@@ -609,7 +590,7 @@ function findSwapped(div, draggedID) {
 
     });
     eel.swap_queue(draggedID, new_index);
-    setTimeout(function() {sorting = false}, 1000);
+    jsGetQueue();
 }
 
 //function findSwapped(div, draggedID) {
@@ -708,4 +689,11 @@ function get_files() {
 eel.expose(getCurrentSong);
 function getCurrentSong() {
     return current_song;
+}
+
+eel.expose(jsGetQueue);
+function jsGetQueue() {
+    if (!animation_playing) {
+        eel.get_queue()(function(a){updateArray(a);});
+    }
 }

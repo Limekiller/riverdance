@@ -284,6 +284,7 @@ def swap_queue(index1, index2):
                 return
 
     play_queue.insert(int(index2)+1, play_queue.pop(int(index1)+1))
+    eel.jsGetQueue()
 
 
 @eel.expose
@@ -424,6 +425,8 @@ def toggle_album_view(albumName):
                 i[2] = 'closed'
             else:
                 i[2] = 'open'
+    time.sleep(0.7)
+    eel.jsGetQueue()
 
 
 @eel.expose
@@ -436,6 +439,7 @@ def add_album(data, albumName):
         except:
             pass
     play_queue.append([albumName, '%%%album_end%%%'])
+    eel.jsGetQueue()
 
 
 @eel.expose
@@ -444,12 +448,15 @@ def add_to_queue(title, artist):
     #real_title, link = youtube_scrape.scrape(title, artist, True)
     #real_title = real_title.split(' - ')[-1]
     play_queue.append([title, artist, None, "user", 'waiting'])
+    eel.jsGetQueue()
 
 
 @eel.expose
 def delete_from_queue(index):
     global play_queue
     play_queue.pop(int(index)+1)
+    time.sleep(0.5)
+    eel.jsGetQueue()
 
 
 @eel.expose
@@ -529,6 +536,7 @@ def check_email():
                     artist = last_email[1]
                     song, link = youtube_scrape.scrape(song, artist, True)
                     play_queue.append([song, artist, link, "email", 'waiting'])
+                    eel.jsGetQueue()
             except:
                 pass
         eel.sleep(0.5)
@@ -545,6 +553,7 @@ def use_radio():
                 song, link = youtube_scrape.scrape(song, artist, True)
                 song = song.split(' - ')[-1]
                 play_queue.append([song, artist, link, "radio", 'waiting'])
+                eel.jsGetQueue()
             except:
                 pass
 
@@ -570,6 +579,7 @@ def play_music():
                 if play_queue[2][1] == '%%%album_end%%%':
                     play_queue.pop(1)
                     play_queue.pop(1)
+                eel.jsGetQueue()
 
             #eel.sleep(2)
             artist, song = play_queue[0][1], play_queue[0][0]
@@ -603,6 +613,7 @@ def play_music():
                 start_song(song)
             else:
                 curr_song_length = float('inf')
+            eel.jsGetQueue()
 
         eel.sleep(0.5)
 
