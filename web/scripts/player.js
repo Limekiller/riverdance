@@ -375,24 +375,31 @@ function updateArray(array){
         } else {
             $("#queue").html(queueData);
         }
+
         // Delete queue items on click
         $('.queueDel').on('click', function() {
-            //clearTimeout(queueInterval);
             $(this).parent().addClass('queueSongDeleted');
             $("#queue").addClass("animation_playing");
             $(".queueDel").css('display', 'none');
             $(this).parent().css('animation', 'fade_out 0.4s ease forwards');
-            deleteIndex($(this).parent().attr('id'));
+
+            if ($(this).parent().hasClass('queue_album')) {
+                var startingNum = Number($(this).parent().attr('id'))+1;
+                var numOfChildren = Number($(this).parent().children().length)-2;
+                for (var i = 0; i < numOfChildren; i++) {
+                    deleteIndex(startingNum);
+                }
+            }
+
+            var elem = $(this);
+            setTimeout(function() {
+                deleteIndex(elem.parent().attr('id'));
+            }, 50);
 
             setTimeout(function() {
                 eel.get_queue()(function(a){updateArray(a);});
                 $("#queue").removeClass("animation_playing");
-            }, 500);
-           // queueInterval = setInterval(function() {
-           //     if (!sorting) {
-           //         eel.get_queue()(function(a){updateArray(a);});
-           //     }
-           // }, 2000);
+            }, 1000);
         });
 
         $(".queue_album h3").on('click', function() {

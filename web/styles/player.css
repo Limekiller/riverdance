@@ -268,7 +268,7 @@ body {
     opacity:1;
 }
 .queueSongDeleted {
-    margin-bottom: -60px;
+    margin-bottom: -64px !important;
 }
 .queueArtist {
     display:block;
@@ -324,7 +324,7 @@ body {
     border-radius:5px 10px;
     background-color:none;
     max-height:3000px;
-    transition:max-height 0.4s ease, background-color 0.4s ease, padding 0.4s ease;
+    transition:max-height 0.4s ease, background-color 0.4s ease, padding 0.4s ease, margin-bottom 0.4s ease;
 }
 .queue_album.closed .queueDel {
     filter: sepia(1) saturate(25) hue-rotate(-30deg) invert(1);
@@ -348,7 +348,7 @@ body {
 }
 .queue_album.closed {
     background-color:white;
-    transition:max-height 0.4s ease, background-color 0.4s ease, padding 0.4s ease;
+    transition:max-height 0.4s ease, background-color 0.4s ease, padding 0.4s ease, margin-bottom 0.4s ease;
 }
 .queue_album.closed:hover h3 {
    color:#242bc3;
