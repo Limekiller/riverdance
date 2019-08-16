@@ -500,7 +500,10 @@ def dl_songs_in_bg():
 
             song_title = i[0].translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"})
             if not os.path.exists("./Music/temp/"+song_title.lower()+'.ogg'):
-                handle_song(i[1], i[0], play_queue[play_queue.index(i)])
+                try:
+                    handle_song(i[1], i[0], play_queue[play_queue.index(i)])
+                except:
+                    pass
 
         for file in os.listdir('./Music/temp/'):
             if file.rsplit('.', 1)[0] not in [i[0].translate({ord(c): "#" for c in "!@#$%^\"&*{};:/<>?\|`~=_"}).lower() for i in play_queue]:

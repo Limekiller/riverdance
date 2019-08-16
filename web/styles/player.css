@@ -318,13 +318,20 @@ body {
     background-image:url('../assets/jukebox.png');
 }
 .queue_album {
-    padding:5px;
     overflow:hidden;
+    position:relative;
     margin-bottom:20px;
     border-radius:5px 10px;
     background-color:none;
     max-height:3000px;
-    transition:max-height 0.4s ease, background-color 0.4s ease;
+    transition:max-height 0.4s ease, background-color 0.4s ease, padding 0.4s ease;
+}
+.queue_album.closed .queueDel {
+    filter: sepia(1) saturate(25) hue-rotate(-30deg) invert(1);
+    margin-right:50px;
+    margin-top:-30px;
+    transition:filter 0.4s ease;
+    opacity:1;
 }
 .queue_album h3::before {
     content:'';
@@ -341,7 +348,7 @@ body {
 }
 .queue_album.closed {
     background-color:white;
-    transition:max-height 0.4s ease, background-color 0.4s ease;
+    transition:max-height 0.4s ease, background-color 0.4s ease, padding 0.4s ease;
 }
 .queue_album.closed:hover h3 {
    color:#242bc3;
@@ -358,11 +365,12 @@ body {
 .queue_album.open h3::before {
     transform:rotate(45deg);
     filter:none !important;
+    transition:filter 0.4s ease;
 }
 .queue_album.open.rotate h3::before {
     transform:rotate(45deg);
     animation:rotate_x 0.4s ease reverse forwards; 
-    transition:max-height 0.4s ease, background-color 0.4s ease 0.4s;
+    transition:filter 0.4s ease;
     filter: sepia(1) saturate(25) hue-rotate(-30deg) invert(1) !important;
 }
 .queue_album h3 {
@@ -374,7 +382,8 @@ body {
     transition:color 0.4s ease;
 }
 .closed {
-    max-height:32px;
+    min-height:32px;
+    padding:10px;
     transition:max-height 0.4s ease-in;
 }
 #artLoading {

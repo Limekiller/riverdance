@@ -29,7 +29,7 @@ $(document).ready(function() {
     // Listen for unfocus event
     // Because CSS animation is used for playbar, it won't start when the window isn't focused
     // So here what we're doing is calculating where the playbar should be at when the window comes into focus again
-    // TODO: fix bus with this, such as playbar starting if leave and resume focus while loading
+    // TODO: fix bugs with this, such as playbar starting if leave and resume focus while loading
     $(window).blur(function() {
         focused = false;
     });
@@ -265,6 +265,7 @@ $(document).ready(function() {
 });
 
 // This is used to load an artist or album page from the player page, in case the search hasn't been loaded yet
+// TODO: Still needed?
 function loadFromPlayer(type, vars){
     $("#search_container").addClass('search_container_active');
     $("#search_container").load("../pages/search.html");
@@ -302,6 +303,7 @@ function updateArray(array){
     var queueData = '';
     var nextSong = false;
     array.forEach(function(item, index) {
+
         // If we're adding an album, do the stuff we need to
         if (item[1] === "%%%album_start%%%") {
             queueData += '<div id="'+(index-1)+'" class="queue_album '
@@ -311,6 +313,7 @@ function updateArray(array){
                 queueData += 'open';
             }
             queueData+='"><h3 class="alb_h3" >'+item[0]+'</h3>';
+            queueData+='<span class="queueDel"></span>';
             return;
         } else if (item[1] == "%%%album_end%%%") {
             queueData += '<div id="'+(index-1)+'"></div></div>';
@@ -335,7 +338,6 @@ function updateArray(array){
             }
             // Otherwise, if the item is not already in the list (it's a new item), add a fade-in animation to it.
         } else if ($('#'+(index-1)).length == 0) {
-            //$("#queue").addClass("animation_playing");
             queueData += '<div style="animation:fade_in 0.4s ease forwards;" class="queueSong" id="'+(index-1)+'">'+item[0]+'<span class="queueArtist">'+item[1]+'</span><div class="source '+item[3]+'"></div><span class="queueDel"></span></div>';
             setTimeout(function() {
                 $("#queue").removeClass("animation_playing");
@@ -399,10 +401,18 @@ function updateArray(array){
             $("#queue").addClass('animation_playing');
             setTimeout(function() {
                 $("#queue").removeClass('animation_playing');
-            }, 500);
+            }, 1000);
             if ($(this).parent().hasClass('closed')) {
+                $(this).parent().css('background-color', 'rgba(0,0,0,0)');
                 $(this).parent().addClass('rotate');
-                $(this).parent().removeClass('closed');
+                $(".queue_album .queueSong").css('opacity', '0');
+                var elem = $(this).parent();
+                setTimeout(function() {
+                    elem.removeClass('closed');
+                }, 400);
+                setTimeout(function() {
+                    $(".queue_album .queueSong").css('opacity', '1');
+                }, 500);
             } else {
                 var elem = $(this);
                 $(".queue_album .queueSong").css('animation', 'fade_out 0.4s ease forwards');
