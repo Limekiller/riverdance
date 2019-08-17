@@ -347,115 +347,112 @@ function updateArray(array){
     });
 
 
-    // Only update the queue if it has changed and there is no animation in progress
-    if ($("#queue").html() != queueData ) {
-        // Play the queue animation if we are moving to the next song
-        if (nextSong && !$("#0").hasClass('queue_album')) {
-            var elemToAnim = 0;
-            if ($("#0").hasClass('queue_album')) {
-                elemToAnim = 1;
+    // Play the queue animation if we are moving to the next song
+    if (nextSong && !$("#0").hasClass('queue_album')) {
+        var elemToAnim = 0;
+        if ($("#0").hasClass('queue_album')) {
+            elemToAnim = 1;
+        }
+        $("#"+elemToAnim).css('opacity', '0');
+        $("#"+elemToAnim).css('margin-top', '-80px');
+        setTimeout(function() {
+            $("#queue").html(queueData);
+        }, 500);
+    } else {
+        $("#queue").html(queueData);
+    }
+
+    // Delete queue items on click
+    $('.queueDel').on('click', function() {
+        $(this).parent().addClass('queueSongDeleted');
+        $(this).parent().css('animation', 'fade_out 0.4s ease forwards');
+
+        if ($(this).parent().hasClass('queue_album')) {
+            var startingNum = Number($(this).parent().attr('id'))+1;
+            var numOfChildren = Number($(this).parent().children().length)-2;
+            for (var i = 0; i < numOfChildren; i++) {
+                deleteIndex(startingNum);
             }
-            $("#"+elemToAnim).css('opacity', '0');
-            $("#"+elemToAnim).css('margin-top', '-80px');
+        }
+
+        var elem = $(this);
+        setTimeout(function() {
+            deleteIndex(elem.parent().attr('id'));
+        }, 50);
+
+        setTimeout(function() {
+            eel.get_queue()(function(a){updateArray(a);});
+        }, 1000);
+    });
+
+    $(".queue_album h3").on('click', function() {
+        eel.toggle_album_view($(this).html());
+
+        if ($(this).parent().hasClass('closed')) {
+            $(this).parent().css('background-color', 'rgba(0,0,0,0)');
+            $(this).parent().addClass('rotate');
+            $(".queue_album .queueSong").css('opacity', '0');
+            var elem = $(this).parent();
             setTimeout(function() {
-                $("#queue").html(queueData);
+                elem.removeClass('closed');
+            }, 400);
+            setTimeout(function() {
+                $(".queue_album .queueSong").css('opacity', '1');
             }, 500);
         } else {
-            $("#queue").html(queueData);
-        }
-
-        // Delete queue items on click
-        $('.queueDel').on('click', function() {
-            $(this).parent().addClass('queueSongDeleted');
-            $(this).parent().css('animation', 'fade_out 0.4s ease forwards');
-
-            if ($(this).parent().hasClass('queue_album')) {
-                var startingNum = Number($(this).parent().attr('id'))+1;
-                var numOfChildren = Number($(this).parent().children().length)-2;
-                for (var i = 0; i < numOfChildren; i++) {
-                    deleteIndex(startingNum);
-                }
-            }
-
             var elem = $(this);
-            setTimeout(function() {
-                deleteIndex(elem.parent().attr('id'));
-            }, 50);
-
-            setTimeout(function() {
-                eel.get_queue()(function(a){updateArray(a);});
-            }, 1000);
-        });
-
-        $(".queue_album h3").on('click', function() {
-            eel.toggle_album_view($(this).html());
-
-            if ($(this).parent().hasClass('closed')) {
-                $(this).parent().css('background-color', 'rgba(0,0,0,0)');
-                $(this).parent().addClass('rotate');
-                $(".queue_album .queueSong").css('opacity', '0');
-                var elem = $(this).parent();
-                setTimeout(function() {
-                    elem.removeClass('closed');
-                }, 400);
-                setTimeout(function() {
-                    $(".queue_album .queueSong").css('opacity', '1');
-                }, 500);
-            } else {
-                var elem = $(this);
-                $(".queue_album .queueSong").css('animation', 'fade_out 0.4s ease forwards');
-                $(this).parent().css('max-height', '32px');
-                $(this).parent().addClass('rotate');
-                window.setTimeout(function() {
-                    elem.parent().addClass('closed');
-                    elem.parent().css('background', 'white');
-                    elem.css('color', '#0080ff');
-                }, 400);
-            }
-        });
-
-        // Add or remove classes based on hover
-        $(".queueSong").hover(function() {
-            hovering = $(this).html();
-            $(this).addClass('queueSongActive');
-        }, function() {
-            $(this).removeClass('queueSongActive');
-            $(this).children().removeClass('active');
-            hovering = 'null';
-        });
-
-        // Allow queue items to be draggable and sortable
-        var elemBefore;
-        var elemAfter;
-        sortOptions = {
-            axis: "y",
-            activate: function() {
-                elemBefore = $(".ui-sortable-placeholder").prev();
-                elemAfter = $(".ui-sortable-placeholder").next();
-                animation_playing = true;
-            },
-            deactivate: function(event, ui) {animation_playing = false;findSwapped($(this), $(ui.item).data('sortable-item').currentItem[0].id);$(".queueSong").css('pointer-events', 'none');},
-            change: function(event, ui) {
-                if ($(".ui-sortable-placeholder").prev().attr('id') < elemBefore.attr('id') || $(".ui-sortable-placeholder").prev().attr('id') == undefined) {
-                    $(".ui-sortable-placeholder").next().css('animation', 'slideDown 0.2s ease');
-                } else {
-                    $(".ui-sortable-placeholder").prev().css('animation', 'slideUp 0.2s ease');
-                }
-
-                elemBefore = $(".ui-sortable-placeholder").prev();
-                elemAfter = $(".ui-sortable-placeholder").next();
-                setTimeout(function() {
-                    elemBefore.css('animation', '');
-                    elemAfter.css('animation', '');
-                }, 200);
-            },
-            animation: 200,
-            revert: true,
-            cancel: 'h3'
+            $(".queue_album .queueSong").css('animation', 'fade_out 0.4s ease forwards');
+            $(this).parent().css('max-height', '32px');
+            $(this).parent().addClass('rotate');
+            window.setTimeout(function() {
+                elem.parent().addClass('closed');
+                elem.parent().css('background', 'white');
+                elem.css('color', '#0080ff');
+            }, 400);
         }
-        $("#queue").sortable(sortOptions);
-        $(".queue_album").sortable(sortOptions);
+    });
+
+    // Add or remove classes based on hover
+    $(".queueSong").hover(function() {
+        hovering = $(this).html();
+        $(this).addClass('queueSongActive');
+    }, function() {
+        $(this).removeClass('queueSongActive');
+        $(this).children().removeClass('active');
+        hovering = 'null';
+    });
+
+    // Allow queue items to be draggable and sortable
+    var elemBefore;
+    var elemAfter;
+    sortOptions = {
+        axis: "y",
+        activate: function() {
+            elemBefore = $(".ui-sortable-placeholder").prev();
+            elemAfter = $(".ui-sortable-placeholder").next();
+            animation_playing = true;
+        },
+        deactivate: function(event, ui) {animation_playing = false;findSwapped($(this), $(ui.item).data('sortable-item').currentItem[0].id);$(".queueSong").css('pointer-events', 'none');},
+        change: function(event, ui) {
+            if ($(".ui-sortable-placeholder").prev().attr('id') < elemBefore.attr('id') || $(".ui-sortable-placeholder").prev().attr('id') == undefined) {
+                $(".ui-sortable-placeholder").next().css('animation', 'slideDown 0.2s ease');
+            } else {
+                $(".ui-sortable-placeholder").prev().css('animation', 'slideUp 0.2s ease');
+            }
+
+            elemBefore = $(".ui-sortable-placeholder").prev();
+            elemAfter = $(".ui-sortable-placeholder").next();
+            setTimeout(function() {
+                elemBefore.css('animation', '');
+                elemAfter.css('animation', '');
+            }, 200);
+        },
+        animation: 200,
+        revert: true,
+        cancel: 'h3'
     }
+    $("#queue").sortable(sortOptions);
+    $(".queue_album").sortable(sortOptions);
 }
 
 function addToQueue(title, artist) {
@@ -585,7 +582,7 @@ function findSwapped(div, draggedID) {
             return false;
         }
         if ($(this).hasClass('queue_album') && !div.hasClass('queue_album')) {
-            realIndex = realIndex + $(this).children().length - 1;
+            realIndex = realIndex + $(this).children().length - 2;
         }
 
     });
