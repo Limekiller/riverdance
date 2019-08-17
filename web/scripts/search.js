@@ -159,7 +159,7 @@ function getFiles(URL) {
             HTMLToAppend += '<div class=folder>'+value+"<div class='folderDel'></div></div>";
         });
         $.each(e[1], function(index, value) {
-            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(value[0])+'\', \''+escape(value[1])+'\')">'+value[0]+'<span>'+value[1]+'</span><span class="resultPlus">+</span></div>';
+            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(value[0])+'\', \''+escape(value[1])+'\')">'+value[0]+'<span>'+value[1]+'</span><span class="resultPlus"></span></div>';
         });
         $("#file_grid").html(HTMLToAppend);
         $(".folderDel").on('click', function(e) {
@@ -191,7 +191,7 @@ function search() {
         $.each(data['results']['trackmatches']['track'], function(index, value) {
             title = value['name'];
             artist = value['artist'];
-            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus"></span></div>';
         });
 
         // Get Albums
@@ -203,7 +203,7 @@ function search() {
                 artist = value['artist'];
                 albumArt = value['image'].slice(-1)[0]['#text'];
                 if (albumArt != '') {
-                    HTMLToAppend += '<div class="search_result album" style="background-image:url('+albumArt+')" onclick="getAlbum(\''+escape(title)+'\',\''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+                    HTMLToAppend += '<div class="search_result album" style="background-image:url('+albumArt+')" onclick="getAlbum(\''+escape(title)+'\',\''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus"></span></div>';
                 }
             });
             HTMLToAppend += '</div>';
@@ -221,16 +221,6 @@ function search() {
                     });
                 });
 
-                //eel.search_saved($("#search_bar_field").val())(function(e) {
-                //    console.log(e);
-                //    if (e) {
-                //        HTMLToAppend += '</div><h4>Your Saved Songs</h4>';
-                //        $.each(e[2], function(index, value) {
-                //            title = value[0];
-                //            artist = value[1];
-                //            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
-                //        });
-                //    }
                     HTMLToAppend += '</div>';
 
                     $('body').css("overflow", "auto");
@@ -245,6 +235,7 @@ function search() {
                     }
                     $("#search_results").css('animation', 'fade_in 0.4s ease 0.5s forwards');
                     $("#search_results").css('filter', 'opacity(1)');
+                    enablePlusChange();
                 //});
             });
         });
@@ -261,7 +252,7 @@ function getSongs() {
         $.each(data['results']['trackmatches']['track'], function(index, value) {
             title = value['name'];
             artist = value['artist'];
-            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus"></span></div>';
         });
         HTMLToAppend += '</div>';
         $('body').css("overflow", "auto");
@@ -271,6 +262,7 @@ function getSongs() {
         $("#search_results").html(HTMLToAppend);
         $("#search_results").css('animation', 'fade_in 0.4s ease 0.5s forwards');
         $("#search_results").css('filter', 'opacity(1)');
+        enablePlusChange();
     });
 }
 
@@ -287,7 +279,7 @@ function getAlbums() {
             artist = value['artist'];
             albumArt = value['image'].slice(-1)[0]['#text'];
             if (albumArt != '') {
-                HTMLToAppend += '<div class="search_result album" style="background-image:url('+albumArt+')" onclick="getAlbum(\''+escape(title)+'\',\''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+                HTMLToAppend += '<div class="search_result album" style="background-image:url('+albumArt+')" onclick="getAlbum(\''+escape(title)+'\',\''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus"></span></div>';
             }
         });
         HTMLToAppend += '</div>';
@@ -303,7 +295,8 @@ function getAlbums() {
 
 // Runs when a user selects an album. Gets all tracks from it
 function getAlbum(title, artist) {
-    window.scrollTo(0,0);
+
+    document.getElementById("search_bar").scrollIntoView({behavior: "smooth", block: "center"});
     title = unescape(title)
     artist = unescape(artist)
 
@@ -324,7 +317,7 @@ function getAlbum(title, artist) {
         var trackNum = 0;
         $.each(data['album']['tracks']['track'], function(index, value) {
             title = value['name'];
-            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+trackNum+" "+title+'<span class="resultPlus">+</span></div></div>';
+            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+trackNum+" "+title+'<span class="resultPlus"></span></div></div>';
             trackNum++;
         });
         $('body').css("overflow", "auto");
@@ -336,6 +329,7 @@ function getAlbum(title, artist) {
             $("#search_results").css('filter', 'opacity(1)');
             $("#search_background").css('opacity', '1');
             $("#resultsh1").css('filter', 'opacity(1)');
+            enablePlusChange();
         }, 500);
     });
 }
@@ -343,7 +337,7 @@ function getAlbum(title, artist) {
 // Gets an artist page
 function getArtist(artist, imgURL) {
 
-    window.scrollTo(0,0);
+    document.getElementById("search_bar").scrollIntoView({behavior: "smooth", block: "center"});
     // In case this is being called from the player page, open the search container
     $("#resultsh1").css('filter', 'opacity(0)');
     $("#search_background").css('opacity', '0');
@@ -375,8 +369,9 @@ function getArtist(artist, imgURL) {
 
         $.each(data['toptracks']['track'], function(index, value) {
             title = value['name'];
-            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+            HTMLToAppend += '<div class="search_result" onclick="addToQueue(\''+escape(title)+'\', \''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus"></span></div>';
         });
+        enablePlusChange();
 
         jsonURL = "http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist="+encodeURIComponent(artist)+"&api_key=8aef36b2e4731be3a1ea47ad992eb984&format=json";
 
@@ -392,7 +387,7 @@ function getArtist(artist, imgURL) {
                 artist = value['artist']['name'];
                 albumArt = value['image'].slice(-1)[0]['#text'];
                 if (albumArt != '') {
-                    HTMLToAppend += '<div class="search_result album" style="background-image:url('+albumArt+')" onclick="getAlbum(\''+escape(title)+'\',\''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus">+</span></div>';
+                    HTMLToAppend += '<div class="search_result album" style="background-image:url('+albumArt+')" onclick="getAlbum(\''+escape(title)+'\',\''+escape(artist)+'\')">'+title+'<span>'+artist+'</span><span class="resultPlus"></span></div>';
                 }
             });
             HTMLToAppend += "</div>";
@@ -443,5 +438,11 @@ function getArtists() {
         $("#search_results").html(HTMLToAppend);
         $("#search_results").css('animation', 'fade_in 0.4s ease 0.5s forwards');
         $("#search_results").css('filter', 'opacity(1)');
+    });
+}
+
+function enablePlusChange() {
+    $(".search_result").on('click', function() {
+        $(this).children(".resultPlus").css('background-image', 'url("../assets/check.png")');
     });
 }

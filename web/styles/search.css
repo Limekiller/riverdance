@@ -127,6 +127,7 @@ h1.search_bar_active {
     margin-top:15px;
     border-radius:20px 5px;
     transition:border-radius 0.4s ease, background-color 0.4s ease;
+    position:relative;
     /*animation:fade_in 0.4s ease forwards;*/
 }
 .search_result:hover {
@@ -202,12 +203,17 @@ h1.search_bar_active {
 }
 .resultPlus {
     position:absolute;
-    margin-top:-30px;
     margin-left:750px;
+    bottom:50%;
+    transform:translateY(50%);
     font-size:30px !important;
     opacity:0;
     transition:all 0.4s ease;
     cursor:pointer;
+    width:20px;
+    height:20px;
+    background-image:url("../assets/plus.png");
+    background-size:cover;
 }
 #resultsh1 {
     width:800px;

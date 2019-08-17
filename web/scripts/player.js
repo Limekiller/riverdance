@@ -459,9 +459,9 @@ function addToQueue(title, artist) {
     $('body').css('overflow-y', 'hidden');
     eel.add_to_queue(unescape(title), unescape(artist));
 
-    $("#search_container").removeClass('search_container_active');
-    $("#search_container").css('overflow-y', 'hidden');
-    $(".queueDel").css('display', 'none');
+    //$("#search_container").removeClass('search_container_active');
+    //$("#search_container").css('overflow-y', 'hidden');
+    //$(".queueDel").css('display', 'none');
 }
 
 function deleteIndex(index) {
