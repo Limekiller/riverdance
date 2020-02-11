@@ -143,6 +143,7 @@ body {
     border-radius:20px 5px;
     color:white;
     width:50%;
+	margin-top:0px;
 }
 #audioContainer {
     width:25px;
@@ -239,6 +240,12 @@ body {
     opacity:1;
     -webkit-mask-image: linear-gradient(rgba(0,0,0,1) 60%, rgba(0,0,0,0));
     transition:opacity 0.4s ease;
+}
+#queue:first-child {
+	padding-top:100px;
+}
+#queue > div:last-child {
+	margin-bottom:200px;
 }
 #queue::-webkit-scrollbar {
     display:none;
