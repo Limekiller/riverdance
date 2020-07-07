@@ -2,6 +2,6 @@
     "main": "main.js",
     "productName": "Riverdance",
     "devDependencies": {
-        "electron": "^2.0.0"
+        "electron": "^9.1.0"
     }
 }
